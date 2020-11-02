@@ -10,12 +10,9 @@
         </nuxt-link>
       </div>
       <div>
-        <nuxt-link
-          to="/other"
-          exact
-        >
-          Next page
-        </nuxt-link>
+        <button @click="logout">
+          Logout
+        </button>
       </div>
     </nav>
   </header>
@@ -23,6 +20,12 @@
 
 <script>
 export default {
+
+  methods: {
+    async logout() {
+      await this.$auth.logout();
+    },
+  }
 
 }
 </script>

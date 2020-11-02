@@ -7,13 +7,13 @@
 
 <script>
 import appHeader from '@/components/header'
+
 export default {
-  components: { appHeader }
+  components: {
+    appHeader
+  }
 }
 </script>
 
 <style>
-body {
-  margin: 0 !important;
-}
 </style>
