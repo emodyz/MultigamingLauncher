@@ -13,6 +13,7 @@ module.exports = {
   loading: false,
   css: [
     '~/assets/tooltip.css',
+    '~/assets/transitions.scss'
   ],
   plugins: [
     '~/plugins/vue-tooltip.js'

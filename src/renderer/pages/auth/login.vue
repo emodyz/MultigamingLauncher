@@ -38,6 +38,7 @@ export default {
   auth: 'guest',
   name: 'Login',
   layout: 'auth',
+  transition: 'fade',
 
   data () {
     return {

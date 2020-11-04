@@ -11,6 +11,8 @@
 import {remote} from 'electron'
 
 export default {
+  transition: 'fade',
+
   computed: {
     user () {
       return this.$store.state.auth.user

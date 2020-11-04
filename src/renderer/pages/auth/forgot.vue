@@ -40,6 +40,8 @@ export default {
   name: 'Forgot',
   auth: 'guest',
   layout: 'auth',
+  transition: 'fade',
+
 
   data () {
     return {
