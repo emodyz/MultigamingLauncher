@@ -20,11 +20,10 @@
 
 <script>
 export default {
-
   methods: {
-    async logout() {
-      await this.$auth.logout();
-    },
+    async logout () {
+      await this.$auth.logout()
+    }
   }
 
 }

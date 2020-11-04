@@ -11,8 +11,11 @@ module.exports = {
     meta: [{ charset: 'utf-8' }]
   },
   loading: false,
+  css: [
+    '~/assets/tooltip.css',
+  ],
   plugins: [
-
+    '~/plugins/vue-tooltip.js'
   ],
   buildModules: [
     '@nuxt/typescript-build',
@@ -36,7 +39,7 @@ module.exports = {
         endpoints: {
           login: { url: '/auth/login', method: 'post', propertyName: 'access_token' },
           logout: false,
-          user: { url: '/user', method: 'get', propertyName: 'data'}
+          user: { url: '/user', method: 'get', propertyName: 'data' }
         },
         tokenRequired: true,
         tokenType: 'Bearer',
@@ -46,7 +49,7 @@ module.exports = {
     }
   },
   axios: {
-      baseURL: 'https://multigamingpanel.test/api',
+    baseURL: 'https://multigamingpanel.test/api'
   },
   tailwindcss: {
     // Options

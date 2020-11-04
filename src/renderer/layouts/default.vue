@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <app-header />
+  <Sidebar>
     <nuxt />
-  </div>
+  </Sidebar>
 </template>
 
 <script>
-import appHeader from '@/components/header'
+import Header from '@/components/header'
+import Sidebar from '@/components/sidebar'
 
 export default {
   components: {
-    appHeader
+    Header,
+    Sidebar
   }
 }
 </script>
