@@ -8,6 +8,7 @@ module.exports = {
     extend: {}
   },
   variants: {
+    outline: []
   },
   plugins: []
 }

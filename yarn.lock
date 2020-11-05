@@ -8289,6 +8289,11 @@ no-case@^3.0.3:
     lower-case "^2.0.1"
     tslib "^1.10.0"
 
+node-downloader-helper@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/node-downloader-helper/-/node-downloader-helper-1.0.15.tgz#927079ffd84da0a9aeda83694236a60f70419bf3"
+  integrity sha512-kSey5EPtYm6lDnXPFh7kiczeRkkpxKYKPogc5IJvOaYbJojvdjD0Lrtbs+62bug1KHYdhr4WBjbkdAVUR0k+4w==
+
 node-emoji@^1.8.1:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.10.0.tgz#8886abd25d9c7bb61802a658523d1f8d2a89b2da"

@@ -53,6 +53,5 @@ module.exports = {
     baseURL: 'https://multigamingpanel.test/api'
   },
   tailwindcss: {
-    // Options
   }
 }

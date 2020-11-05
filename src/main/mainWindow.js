@@ -1,5 +1,6 @@
 import path from 'path'
 import BrowserWinHandler from './BrowserWinHandler'
+
 const isDev = process.env.NODE_ENV === 'development'
 
 const INDEX_PATH = path.join(__dirname, '..', 'renderer', 'index.html')
@@ -7,7 +8,9 @@ const DEV_SERVER_URL = process.env.DEV_SERVER_URL // eslint-disable-line prefer-
 
 const winHandler = new BrowserWinHandler({
   height: 600,
-  width: 1000
+  width: 1000,
+  minHeight: 500,
+  minWidth: 400
 })
 
 winHandler.onCreated(browserWindow => {

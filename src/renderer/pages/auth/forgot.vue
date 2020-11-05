@@ -42,7 +42,6 @@ export default {
   layout: 'auth',
   transition: 'fade',
 
-
   data () {
     return {
       loading: false,

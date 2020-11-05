@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row h-full">
+  <div class="flex flex-row h-full bg-gray-200">
     <nav class="bg-gray-900 w-20 justify-between flex flex-col slide">
       <div class="mt-10 mb-10">
         <a href="#" @click="goToPanel">
@@ -51,14 +51,14 @@
         </a>
       </div>
     </nav>
-    <div class="px-16 py-4 text-gray-700 bg-gray-200 h-screen w-screen pl-20">
+    <div class="px-16 py-4 text-gray-700 bg-gray-200 h-screen w-screen ml-20 relative">
       <slot />
     </div>
   </div>
 </template>
 
 <script>
-import {remote} from "electron";
+import {remote} from 'electron'
 
 export default {
   methods: {
@@ -66,8 +66,8 @@ export default {
       await this.$auth.logout()
     },
 
-    goToPanel() {
-      const url = this.$axios.defaults.baseURL.replace('/api', '');
+    goToPanel () {
+      const url = this.$axios.defaults.baseURL.replace('/api', '')
       remote.shell.openExternal(url)
     }
   }
