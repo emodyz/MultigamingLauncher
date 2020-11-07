@@ -59,9 +59,9 @@
     "webpack-node-externals": "2.5.2"
   },
   "dependencies": {
+    "@emodyz/node-downloader": "^1.0.0-RC2.5",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.2",
-    "node-downloader-helper": "^1.0.15",
     "v-tooltip": "^2.0.3"
   }
 }
