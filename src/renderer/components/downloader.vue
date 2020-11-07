@@ -25,11 +25,6 @@ export default {
     ProgressBar
   },
 
-  data() {
-    return {
-    }
-  },
-
   computed: {
     progresses () {
       return this.$store.state.downloaders.progresses

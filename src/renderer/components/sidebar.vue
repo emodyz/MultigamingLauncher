@@ -12,7 +12,7 @@
           <ul>
             <li class="mb-6">
               <NuxtLink to="/">
-                <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-green-500 " fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green-900 " fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                 </svg>
               </NuxtLink>
@@ -30,6 +30,14 @@
         </div>
       </div>
       <div class="mb-4">
+
+        <a class="flex justify-center cursor-pointer mb-6">
+          <div class="w-8 h-7" v-bind:class="{'loader': downloaders.size > 0}">
+            <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green m-2" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            </svg>
+          </div>
+        </a>
         <a class="cursor-pointer" @click="logout">
           <span>
             <svg
@@ -61,6 +69,14 @@
 import {remote} from 'electron'
 
 export default {
+  name: "sidebar",
+
+  computed: {
+    downloaders () {
+      return this.$store.state.downloaders.list;
+    }
+  },
+
   methods: {
     async logout () {
       await this.$auth.logout()
@@ -86,4 +102,42 @@ export default {
   @keyframes slide {
     100% { left: 0; }
   }
+
+  @keyframes rotate {
+    100% {
+      -webkit-transform: rotate(1turn);
+      transform: rotate(1turn);
+    }
+  }
+  .loader {
+    position: relative;
+    overflow: hidden;
+    border-radius: 40%;
+  }
+  .loader::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background-repeat: no-repeat;
+    background-size: 50% 50%, 50% 50%;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-image: linear-gradient(#1a202c, #1a202c), linear-gradient(#CCFF00, #CCFF00) , linear-gradient(#CCFF00, #CCFF00) , linear-gradient(#CCFF00, #CCFF00);;
+    animation: rotate 1s linear infinite;
+  }
+  .loader::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 2px;
+    top: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    background: #1a202c;
+    border-radius: 40%;
+  }
+
 </style>

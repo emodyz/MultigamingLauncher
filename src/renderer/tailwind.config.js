@@ -5,7 +5,11 @@ module.exports = {
   },
   purge: [],
   theme: {
-    extend: {}
+    extend: {
+      colors: {
+        'acid-green': '#CCFF00'
+      }
+    }
   },
   variants: {
     outline: []
