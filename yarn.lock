@@ -922,10 +922,10 @@
     global-agent "^2.0.2"
     global-tunnel-ng "^2.7.1"
 
-"@emodyz/node-downloader@1.0.0-RC1":
-  version "1.0.0-RC1"
-  resolved "https://registry.yarnpkg.com/@emodyz/node-downloader/-/node-downloader-1.0.0-RC1.tgz#c6947191690ceeb6f6c68dd8bfab0198fa46e2cc"
-  integrity sha512-EuuDlvlgfyMSgnGj+M++DBg1MVZ1AuuUsUysQc4kSUZ2ZdOIQVTwjSBlxMF48kf6kuWjhaFTNZCJtxk43CnkOQ==
+"@emodyz/node-downloader@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@emodyz/node-downloader/-/node-downloader-1.0.0.tgz#5e2f850b5a935b05c968cc83ee40caa2a2e7cf4f"
+  integrity sha512-uJ/24Tw8CM/VpN32O3NJT0kvAY1AYpFwPfoEnSiWF7gQ2BWBtx/QxjwGDIdH4avuEyV+G9A/eS0qJ4lv3dCImg==
   dependencies:
     node-downloader-helper "^1.0.15"
 
