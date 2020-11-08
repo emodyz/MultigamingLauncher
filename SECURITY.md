@@ -10,8 +10,8 @@ Patch a potential vulnerability security that could lead to the leakage of your 
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2020.11.0   | :white_check_mark: |
+| 6.0.0   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
-No flaw has currently been detected.
+If you discover a security vulnerability within, please send an e-mail to Léo Hubert via [leohub@live.fr](mailto:leohub@live.fr). All security vulnerabilities will be promptly addressed.
