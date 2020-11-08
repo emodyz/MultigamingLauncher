@@ -106,12 +106,12 @@ export default {
       return bytes.toFixed(dp) + ' ' + units[u]
     },
 
-    handleProgress(stats) {
+    handleProgress (stats) {
       this.progress = stats.progressTotal
       this.speed = this.humanFileSize(stats.speed) + '/s'
     },
 
-    handleDownloaderEnded(downloadInfo) {
+    handleDownloaderEnded (downloadInfo) {
       this.downloading = false
       this.progress = 0
     },
