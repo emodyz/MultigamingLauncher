@@ -8,11 +8,9 @@
 </p>
 
 ## About MultiGaming Launcher
-> **Note:** This repository contains the core code of the Laravel framework. If you want to build an application using Laravel, visit the main [Laravel repository](https://github.com/laravel/laravel).
+> **Note:** This project cannot be used without [MultigamingPanel](https://github.com/emodyz/MultigamingPanel).
 
-This MultiGaming Launcher is an out of the box software that makes it easier for creators of custom game servers to share their creations with their player base. 
-
-This project cannot be used without [MultigamingPanel](https://github.com/emodyz/MultigamingPanel).  
+This MultiGaming Launcher is an out of the box software that makes it easier for creators of custom game servers to share their creations with their player base.   
 
 ## Documentation
 
