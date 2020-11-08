@@ -30,9 +30,8 @@
         </div>
       </div>
       <div class="mb-4">
-
         <a class="flex justify-center cursor-pointer mb-6">
-          <div class="w-8 h-7" v-bind:class="{'loader': downloaders.size > 0}">
+          <div :class="{'loader': downloaders.size > 0}" class="w-8 h-7">
             <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green m-2" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
             </svg>
@@ -69,11 +68,11 @@
 import {remote} from 'electron'
 
 export default {
-  name: "sidebar",
+  name: 'Sidebar',
 
   computed: {
     downloaders () {
-      return this.$store.state.downloaders.list;
+      return this.$store.state.downloaders.list
     }
   },
 
