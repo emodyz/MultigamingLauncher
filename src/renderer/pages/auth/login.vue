@@ -43,8 +43,8 @@ export default {
   data () {
     return {
       loading: false,
-      email: 'root@root.com',
-      password: 'password',
+      email: '',
+      password: '',
       errors: []
     }
   },

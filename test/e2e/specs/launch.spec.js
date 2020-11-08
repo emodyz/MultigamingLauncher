@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { beforeEach, afterEachAlways } from '../helpers'
+import {afterEachAlways, beforeEach} from '../helpers'
 
 test.beforeEach(beforeEach)
 test.afterEach.always(afterEachAlways)
@@ -37,7 +37,7 @@ test('\'fs\' module should load file content from __resources directory', async 
     await app.client.nuxt.ready()
     await app.client.nuxt.navigate('/test/basic')
     await app.client.hasNotError()
-    await app.client.waitUntilTextExists('#external-resource', 'EXTERNAL_FILE_CONTENT', 5000)
+    await app.client.waitUntilWindowLoaded(5000)
     t.pass()
   } catch (e) {
     t.fail(e.message)
