@@ -33,7 +33,7 @@ export const mutations = {
         state.progresses.set(server, stats.progressTotal)
         state.progresses = new Map(state.progresses)
       })
-      downloader.on('end', stats => {
+      downloader.on('end', () => {
         state.list.delete(server)
         state.list = new Map(state.list)
 

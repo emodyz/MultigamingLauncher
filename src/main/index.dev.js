@@ -40,8 +40,6 @@ app.on('ready', () => {
 })
 
 mainWinHandler.onCreated(browserWindow => {
-  return
-
   browserWindow.webContents.openDevTools()
 })
 

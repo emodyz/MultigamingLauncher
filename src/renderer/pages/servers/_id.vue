@@ -11,25 +11,39 @@
         </div>
         <div class="flex flex-col pt-6">
           <span class="font-bold underline">Status:</span>
-          <span v-if="server.status.online" class="text-center flex rounded bg-green-500 uppercase px-2 py-1 text-xs text-white font-bold mr-3">Online</span>
-          <span v-if="!server.status.online" class="text-center flex rounded bg-red-500 uppercase px-2 py-1 text-xs text-white font-bold mr-3">Offline</span>
+          <span v-if="server.status.online"
+                class="text-center flex rounded bg-green-500 uppercase px-2 py-1 text-xs text-white font-bold mr-3"
+          >Online</span>
+          <span v-if="!server.status.online"
+                class="text-center flex rounded bg-red-500 uppercase px-2 py-1 text-xs text-white font-bold mr-3"
+          >Offline</span>
         </div>
       </div>
     </div>
 
-    <div class="flex items-center flex-col justify-center shadow-lg absolute bottom-0 left-0 right-0" style="z-index: 1">
+    <div class="flex items-center flex-col justify-center shadow-lg absolute bottom-0 left-0 right-0"
+         style="z-index: 1"
+    >
       <div v-if="downloading" class="w-full p-3">
         <div class="flex flex-col items-center justify-center content-center">
           <span>{{ speed }}</span>
-          <span v-if="this.downloader">{{ this.downloader.filesDownloaded }} / {{ this.downloader.filesToDownload }}</span>
+          <span v-if="downloader">{{ downloader.filesDownloaded }} / {{ downloader.filesToDownload }}</span>
         </div>
         <ProgressBar :progress="progress" />
       </div>
       <div class="flex flex-row">
-        <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="stopDownload">STOP</button>
-        <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="pauseDownload">PAUSE</button>
-        <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="resumeDownload">RESUME</button>
-        <button v-if="!downloading" class=" m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="startDownload">DOWNLOAD</button>
+        <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="stopDownload">
+          STOP
+        </button>
+        <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="pauseDownload">
+          PAUSE
+        </button>
+        <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="resumeDownload">
+          RESUME
+        </button>
+        <button v-if="!downloading" class=" m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="startDownload">
+          DOWNLOAD
+        </button>
       </div>
     </div>
   </div>
@@ -111,7 +125,7 @@ export default {
       this.speed = this.humanFileSize(stats.speed) + '/s'
     },
 
-    handleDownloaderEnded (downloadInfo) {
+    handleDownloaderEnded () {
       this.downloading = false
       this.progress = 0
     },

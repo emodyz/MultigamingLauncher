@@ -10,7 +10,7 @@
     "test:e2e": "cross-env NODE_ENV=test TEST_TYPE=e2e ava",
     "test": "yarn run test:unit && yarn run test:e2e",
     "lint": "node_modules/.bin/eslint --ext .js,.vue,.ts -f ./node_modules/eslint-friendly-formatter ./src",
-    "lint:fix": "yarn run lint -- --fix",
+    "lint:fix": "yarn run lint --fix",
     "preinstall": "node .electron-nuxt/check-engines.js",
     "postinstall": "electron-builder install-app-deps & yarn run lint:fix"
   },
@@ -20,9 +20,6 @@
   "homepage": "https://github.com/michalzaq12/electron-nuxt/blob/master/README.md",
   "engines": {
     "node": ">=12.13.0"
-  },
-  "resolutions": {
-    "@types/node": "12.12.6"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "0.5.8",
