@@ -26,7 +26,7 @@ export const mutations = {
     state.progresses = new Map(state.progresses)
   },
 
-  start (state, server) {
+  start (state, {server, forceDownload = false}) {
     const downloader = state.list.get(server)
     if (downloader) {
       downloader.on('progress', stats => {
@@ -40,7 +40,7 @@ export const mutations = {
         state.progresses.delete(server)
         state.progresses = new Map(state.progresses)
       })
-      downloader.start()
+      downloader.start(forceDownload)
     }
   },
 

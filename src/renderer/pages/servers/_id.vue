@@ -156,7 +156,7 @@ export default {
             const manifest = Object.values(modpack.manifest)
 
             manifest.forEach(file => {
-              this.downloader.addFile(file.url, '/Users/hubert_i/Downloads/test')
+              this.downloader.addFile(file.url, '/Users/hubert_i/Downloads/test', null, file.sha256)
             })
           })
 
@@ -166,7 +166,10 @@ export default {
           })
 
           this.handleDownloaderEvents()
-          this.$store.commit('downloaders/start', this.id)
+          this.$store.commit('downloaders/start', {
+            server: this.id,
+            forceDownload: false
+          })
         }).catch(e => console.log(e))
     },
 
