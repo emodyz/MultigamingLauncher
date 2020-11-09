@@ -3,12 +3,12 @@ const ICONS_DIR = 'build/icons/'
 const windowsOS = {
   win: {
     icon: ICONS_DIR + 'win-icon.ico',
-    publisherName: 'michal',
+    publisherName: 'emodyz',
     target: 'nsis'
   },
 
   nsis: {
-    differentialPackage: true
+    differentialPackage: false // Set true to enable updates
   }
 }
 
@@ -43,9 +43,9 @@ const macOS = {
 
 module.exports = {
   asar: false,
-  productName: 'My browser',
-  appId: 'org.michalzarach.my-browser',
-  artifactName: 'my-browser-${version}.${ext}',
+  productName: 'EZGames',
+  appId: 'org.emodyz.ezgames',
+  artifactName: 'ezgames-${version}.${ext}',
   directories: {
     output: 'build'
   },
