@@ -9,8 +9,7 @@ export default class Arma3 extends GameModule {
   version = '1.0.0';
 
   async findGamePath(): Promise<string | null> {
-    return '/Users/hubert_i/Downloads/test';
-    return await Sdk.findSteamAppByName(this.gameIdentifier);
+    return await Sdk.findSteamAppByAppId(107410);
   }
 
   prepareDownload(modpacks: Modpack[]): Downloader {
@@ -18,9 +17,14 @@ export default class Arma3 extends GameModule {
 
     modpacks.forEach(modpack => {
       const manifest = Object.values(modpack.manifest)
+      const modpackInstallPath = path.resolve(this.gamePath, modpack.name);
+
+      fs.mkdirSync(modpackInstallPath, {
+        recursive: true
+      }); //TODO: Do Downloader library able to do that @iWirk ?
 
       manifest.forEach(file => {
-        downloader.addFile(file.url, this.gamePath, null, file.sha256)
+        downloader.addFile(file.url, modpackInstallPath, null, file.sha256)
       })
     })
 
@@ -33,11 +37,19 @@ export default class Arma3 extends GameModule {
 
   protected validateGamePath(gamePath: string): boolean
   {
-    if (!fs.existsSync(path.resolve(gamePath, 'arma3.exe'))) {
-      return false;
-    }
+    const allowedGamesFiles = [
+      'arma3.exe',
+      'arma3battleye.exe',
+      'arma3.app'
+    ]
+    const files = fs.readdirSync(gamePath).map(file => file.toLowerCase());
 
-    return true;
+    for(const allowedFile of allowedGamesFiles) {
+      if (files.indexOf(allowedFile) !== -1) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

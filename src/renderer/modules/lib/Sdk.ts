@@ -6,9 +6,9 @@ export class Sdk {
     return createDownloader()
   }
 
-  public static  async findSteamAppByAppId (appId: string): Promise<string | null> {
+  public static  async findSteamAppByAppId (appId: number): Promise<string | null> {
     try {
-      return await findSteamAppById(570) || null;
+      return await findSteamAppById(appId) || null;
     } catch (e) {
       return Promise.resolve(null);
     }
