@@ -31,6 +31,7 @@
         </div>
         <ProgressBar :progress="progress" />
       </div>
+      {{installPath}}
       <div class="flex flex-row">
         <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="stopDownload">
           STOP
@@ -41,6 +42,15 @@
         <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="resumeDownload">
           RESUME
         </button>
+
+        <button v-if="!downloading" class=" m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="() => getInstallPath(true)">
+          SELECT INSTALL PATH
+        </button>
+
+        <label  v-if="!downloading" class="inline-flex items-center mt-3">
+          <input v-model="forceUpdate" checked class="form-checkbox h-5 w-5 text-blue-600" type="checkbox">
+        </label>
+
         <button v-if="!downloading" class=" m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="startDownload">
           DOWNLOAD
         </button>
@@ -50,7 +60,8 @@
 </template>
 
 <script>
-import {createDownloader, DownloaderState} from '@emodyz/node-downloader'
+import { DownloaderState } from '@emodyz/node-downloader'
+import { remote } from 'electron'
 import ProgressBar from '@/components/ProgressBar'
 
 export default {
@@ -59,13 +70,11 @@ export default {
   },
   transition: 'fade',
 
-  async asyncData ({ params }) {
-    const id = params.id
-    return { id }
-  },
-
   data () {
     return {
+      module: null,
+      installPath: null,
+      forceUpdate: false,
       downloading: false,
       downloader: null,
       speed: 0,
@@ -75,29 +84,98 @@ export default {
     }
   },
 
+  async asyncData ({ params }) {
+    const id = params.id
+    return { id }
+  },
+
+  async fetch() {
+    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data;
+    this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)();
+    this.installPath = await this.module.findGamePath();
+  },
+
   mounted () {
     this.downloader = this.$store.getters['downloaders/downloaderByServer'](this.id)
-    this.handleDownloaderEvents()
-    this.loadServer()
+    this.handleDownloaderEvents();
+    /** // TODO: Create route to fetch server status
+    this.loadServer();
     this.checkServerInterval = setInterval(() => {
       this.loadServer()
-    }, 30000)
+    }, 30000)*/
   },
 
   beforeDestroy () {
-    clearInterval(this.checkServerInterval)
-    this.downloader.off('progress', this.handleProgress)
-    this.downloader.off('end', this.handleDownloaderEnded)
+    //clearInterval(this.checkServerInterval) // TODO: Create route to fetch server status
+    if (this.downloader) {
+      this.downloader.off('progress', this.handleProgress)
+      this.downloader.off('end', this.handleDownloaderEnded)
+    }
   },
 
   methods: {
-    async loadServer () {
+    getInstallPath(forceReselect = false) {
+      if (!forceReselect && this.module.validateGamePath(this.installPath)) {
+        return this.installPath;
+      }
+
+      const installPath = remote.dialog.showOpenDialogSync({
+        properties: ['openDirectory']
+      })
+      if (installPath && installPath.length > 0) {
+        this.installPath = installPath.shift();
+      }
+      return this.installPath;
+    },
+
+    async startDownload (forceReselect = false) {
       try {
-        this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
+        this.module.gamePath = this.getInstallPath(forceReselect === true);
       } catch (e) {
-        console.error(e)
+        console.log('Game path not valid!');
+        await this.stopDownload(true);
+        return;
+      }
+
+      this.downloading = true;
+      this.progress = 0;
+
+      try {
+        const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data;
+        this.downloader = this.module.prepareDownload(modpacks);
+
+        this.$store.commit('downloaders/add', {
+          server: this.id,
+          downloader: this.downloader
+        })
+
+        this.handleDownloaderEvents()
+        this.$store.commit('downloaders/start', {
+          server: this.id,
+          forceDownload: this.forceUpdate
+        })
+      } catch (e) {
+        console.error(e);
       }
     },
+
+    pauseDownload () {
+      this.$store.commit('downloaders/pause', this.id)
+    },
+
+    resumeDownload () {
+      this.$store.commit('downloaders/resume', this.id)
+    },
+
+    stopDownload () {
+      this.$store.commit('downloaders/stop', this.id)
+      this.downloading = false
+      this.progress = 0
+    },
+
+    /**
+     * Utils part
+     */
 
     humanFileSize (bytes, si = false, dp = 1) {
       const thresh = si ? 1000 : 1024
@@ -142,49 +220,6 @@ export default {
 
       this.downloader.on('progress', this.handleProgress)
       this.downloader.on('end', this.handleDownloaderEnded)
-    },
-
-    startDownload () {
-      this.downloading = true
-      this.progress = 0
-      this.$axios.$get(`/servers/${this.id}/modpacks`)
-        .then(res => res.data)
-        .then(modpacks => {
-          this.downloader = createDownloader()
-
-          modpacks.forEach(modpack => {
-            const manifest = Object.values(modpack.manifest)
-
-            manifest.forEach(file => {
-              this.downloader.addFile(file.url, '/Users/hubert_i/Downloads/test', null, file.sha256)
-            })
-          })
-
-          this.$store.commit('downloaders/add', {
-            server: this.id,
-            downloader: this.downloader
-          })
-
-          this.handleDownloaderEvents()
-          this.$store.commit('downloaders/start', {
-            server: this.id,
-            forceDownload: false
-          })
-        }).catch(e => console.log(e))
-    },
-
-    pauseDownload () {
-      this.$store.commit('downloaders/pause', this.id)
-    },
-
-    resumeDownload () {
-      this.$store.commit('downloaders/resume', this.id)
-    },
-
-    stopDownload () {
-      this.$store.commit('downloaders/stop', this.id)
-      this.downloading = false
-      this.progress = 0
     }
   }
 
