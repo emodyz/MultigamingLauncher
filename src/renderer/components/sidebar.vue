@@ -1,6 +1,5 @@
 <template>
-  <div class="flex flex-row h-full bg-gray-200">
-    <nav class="bg-gray-900 w-20 justify-between flex flex-col slide">
+    <nav class="bg-gray-900 w-20 justify-between flex flex-col border-r border-acid-green">
       <div class="mt-10 mb-10">
         <a href="#" @click="goToPanel">
           <img
@@ -12,9 +11,8 @@
           <ul>
             <li class="mb-6">
               <NuxtLink to="/">
-                <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green-900 " fill="none"
-                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green" fill="none"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0
                     001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
@@ -25,15 +23,12 @@
             </li>
             <li class="mb-6">
               <NuxtLink to="/servers">
-                <span>
-                  <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-green-500" fill="none"
-                       viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green " fill="none"
+                       viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 6h16M4 10h16M4 14h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"
                           stroke-width="2"
                     />
                   </svg>
-                </span>
               </NuxtLink>
             </li>
           </ul>
@@ -43,8 +38,7 @@
         <a class="flex justify-center cursor-pointer mb-6">
           <div :class="{'loader': downloaders.size > 0}" class="w-8 h-7">
             <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green m-2" fill="none"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-            >
+                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
                     stroke-linejoin="round" stroke-width="2"
               />
@@ -77,10 +71,6 @@
         </a>
       </div>
     </nav>
-    <div class="px-16 py-4 text-gray-700 bg-gray-200 h-screen w-screen ml-20 relative">
-      <slot />
-    </div>
-  </div>
 </template>
 
 <script>
@@ -108,18 +98,23 @@ export default {
 }
 </script>
 
-<style scoped>
-.slide {
-  position: fixed;
-  left: -100px;
-  animation: slide 0.5s forwards;
+<style>
+.nuxt-link-active .stroke-current {
+  color: rgba(204,255,0,1);
+}
+
+.nav-shadow {
+  animation: slideShadown 1s forwards;
+  box-shadow: 10px 0px 20px 0px rgba(204,255,0,1);
+  width: 0;
+  left: 0;
   top: 0;
   bottom: 0;
 }
 
-@keyframes slide {
+@keyframes slideShadown {
   100% {
-    left: 0;
+    width: 5em;
   }
 }
 

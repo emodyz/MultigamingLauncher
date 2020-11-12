@@ -1,21 +1,12 @@
 <template>
-  <header class="main-header">
-    <nav>
-      <div>
-        <nuxt-link
-          to="/"
-          exact
-        >
-          System info
-        </nuxt-link>
-      </div>
-      <div>
-        <button @click="logout">
-          Logout
-        </button>
-      </div>
-    </nav>
-  </header>
+  <div class="flex flex-row h-40 bg-gray-900 fixed w-full" style="z-index: 10">
+    <div class="flex justify-center flex-col w-full pt-2">
+      <div class="border-t border-acid-green w-full"></div>
+    </div>
+    <span class="bg-gray-900 text-gray-900 font-bold tracking-widest page-title uppercase whitespace-no-wrap">
+      {{ $nuxt.$route.name }}
+    </span>
+  </div>
 </template>
 
 <script>
@@ -30,35 +21,9 @@ export default {
 </script>
 
 <style scoped>
-    .main-header {
-        height: 50px;
-        display: flex;
-        background-color: #364758;
-    }
+.page-title {
+  font-size: 7rem;
+  text-shadow: 2px 0 0 #CCFF00, -2px 0 0 #CCFF00, 0 2px 0 #CCFF00, 0 -2px 0 #CCFF00, 1px 1px #CCFF00, -1px -1px 0 #CCFF00, 1px -1px 0 #CCFF00, -1px 1px 0 #CCFF00;
+}
 
-    nav{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
-    nav div{
-        height: 100%;
-        margin: 0 20px;
-        display: flex;
-        align-items: center;
-    }
-
-    a {
-        font-family: Helvetica, sans-serif;
-        color: white;
-        font-size: 1rem;
-        font-weight: 100;
-        text-decoration: underline;
-        text-transform: uppercase;
-    }
-
-    a:hover{
-        opacity: 0.9;
-    }
 </style>

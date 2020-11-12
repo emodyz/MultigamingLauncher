@@ -22,16 +22,17 @@
     </div>
 
     <div class="flex items-center flex-col justify-center shadow-lg absolute bottom-0 left-0 right-0"
-         style="z-index: 1"
-    >
+         style="z-index: 1">
       <div v-if="downloading" class="w-full p-3">
         <div class="flex flex-col items-center justify-center content-center">
           <span>{{ speed }}</span>
-          <span v-if="downloader">{{ downloader.filesDownloaded }} / {{ downloader.filesToDownload }}</span>
+          <span v-if="downloader">{{ downloader.stats().fileDownloaded }} / {{ downloader.stats().files }}</span>
         </div>
-        <ProgressBar :progress="progress" />
+        <ProgressBar :progress="progress" class="mb-3" />
+        <ProgressBar :progress="progressDownload" class="mb-3" />
+        <ProgressBar :progress="progressCheck" class="mb-3" />
       </div>
-      {{installPath}}
+      {{ installPath }}
       <div class="flex flex-row">
         <button v-if="downloading" class="m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="stopDownload">
           STOP
@@ -43,11 +44,13 @@
           RESUME
         </button>
 
-        <button v-if="!downloading" class=" m-2 bg-blue-500 text-gray-300 rounded px-4 py-2" @click="() => getInstallPath(true)">
+        <button v-if="!downloading" class=" m-2 bg-blue-500 text-gray-300 rounded px-4 py-2"
+                @click="() => getInstallPath(true)"
+        >
           SELECT INSTALL PATH
         </button>
 
-        <label  v-if="!downloading" class="inline-flex items-center mt-3">
+        <label v-if="!downloading" class="inline-flex items-center mt-3">
           <input v-model="forceUpdate" checked class="form-checkbox h-5 w-5 text-blue-600" type="checkbox">
         </label>
 
@@ -69,6 +72,20 @@ export default {
     ProgressBar
   },
   transition: 'fade',
+  head: {
+    title: 'Server'
+  },
+
+  async fetch () {
+    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
+    this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
+    this.installPath = await this.module.findGamePath()
+  },
+
+  async asyncData ({ params }) {
+    const id = params.id
+    return { id }
+  },
 
   data () {
     return {
@@ -79,34 +96,25 @@ export default {
       downloader: null,
       speed: 0,
       progress: 0,
+      progressCheck: 0,
+      progressDownload: 0,
       checkServerInterval: null,
       server: null
     }
   },
 
-  async asyncData ({ params }) {
-    const id = params.id
-    return { id }
-  },
-
-  async fetch() {
-    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data;
-    this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)();
-    this.installPath = await this.module.findGamePath();
-  },
-
   mounted () {
     this.downloader = this.$store.getters['downloaders/downloaderByServer'](this.id)
-    this.handleDownloaderEvents();
+    this.handleDownloaderEvents()
     /** // TODO: Create route to fetch server status
     this.loadServer();
     this.checkServerInterval = setInterval(() => {
       this.loadServer()
-    }, 30000)*/
+    }, 30000) */
   },
 
   beforeDestroy () {
-    //clearInterval(this.checkServerInterval) // TODO: Create route to fetch server status
+    // clearInterval(this.checkServerInterval) // TODO: Create route to fetch server status
     if (this.downloader) {
       this.downloader.off('progress', this.handleProgress)
       this.downloader.off('end', this.handleDownloaderEnded)
@@ -114,35 +122,39 @@ export default {
   },
 
   methods: {
-    getInstallPath(forceReselect = false) {
+    getInstallPath (forceReselect = false) {
       if (!forceReselect && this.module.validateGamePath(this.installPath)) {
-        return this.installPath;
+        return this.installPath
       }
 
       const installPath = remote.dialog.showOpenDialogSync({
         properties: ['openDirectory']
       })
       if (installPath && installPath.length > 0) {
-        this.installPath = installPath.shift();
+        this.installPath = installPath.shift()
       }
-      return this.installPath;
+      return this.installPath
     },
 
     async startDownload (forceReselect = false) {
       try {
-        this.module.gamePath = this.getInstallPath(forceReselect === true);
+        this.module.gamePath = this.getInstallPath(forceReselect === true)
       } catch (e) {
-        console.log('Game path not valid!');
-        await this.stopDownload(true);
-        return;
+        console.log('Game path not valid!')
+        if (forceReselect !== true) {
+          await this.startDownload(true)
+        }
+        return
       }
 
       this.downloading = true;
       this.progress = 0;
+      this.progressDownload = 0;
+      this.progressCheck = 0;
 
       try {
-        const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data;
-        this.downloader = this.module.prepareDownload(modpacks);
+        const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
+        this.downloader = this.module.prepareDownload(modpacks)
 
         this.$store.commit('downloaders/add', {
           server: this.id,
@@ -155,7 +167,7 @@ export default {
           forceDownload: this.forceUpdate
         })
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     },
 
@@ -170,7 +182,9 @@ export default {
     stopDownload () {
       this.$store.commit('downloaders/stop', this.id)
       this.downloading = false
-      this.progress = 0
+      this.progress = 0;
+      this.progressDownload = 0;
+      this.progressCheck = 0;
     },
 
     /**
@@ -199,13 +213,17 @@ export default {
     },
 
     handleProgress (stats) {
+      this.progressDownload = stats.progressDownload
       this.progress = stats.progressTotal
+      this.progressCheck = stats.progressCheck
       this.speed = this.humanFileSize(stats.speed) + '/s'
     },
 
     handleDownloaderEnded () {
-      this.downloading = false
-      this.progress = 0
+      this.downloading = false;
+      this.progress = 0;
+      this.progressDownload = 0;
+      this.progressCheck = 0;
     },
 
     handleDownloaderEvents () {
@@ -216,6 +234,8 @@ export default {
       if (this.downloader.state !== DownloaderState.STAND_BY) {
         this.downloading = true
         this.progress = this.downloader.stats().progress
+        this.progressDownload = this.downloader.stats().progressDownload
+        this.progressCheck = this.downloader.stats().progressCheck
       }
 
       this.downloader.on('progress', this.handleProgress)

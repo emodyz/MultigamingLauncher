@@ -1,30 +1,37 @@
 <template>
-  <div class="flex justify-center md:flex-row flex-col">
-    <div v-for="server in servers"
-         :key="server.id"
-         class="flex flex-col items-center rounded overflow-hidden shadow-lg mt-4 w-full
-         p-4 md:w-1/2 lg:w-1/3 md:mt-0 md:m-2"
-    >
-      <div class="mb-2 flex flex-col items-center">
-        <span class="font-bold">{{ server.name }}</span>
-        <img :src="server.game.logo_url" class="rounded w-20">
-      </div>
-
-      <div v-if="server.status" class="flex items-center">
-        <span v-if="server.status.online"
-              class="flex rounded bg-green-500 uppercase px-2 py-1 text-xs text-white font-bold"
-        >Online</span>
-        <span v-if="!server.status.online"
-              class="flex rounded bg-red-500 uppercase px-2 py-1 text-xs text-white font-bold"
-        >Offline</span>
-      </div>
-
-      <div class="flex w-full mt-2">
-        <NuxtLink :to="'/servers/' + server.id"
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded w-full text-center"
-        >
-          JOIN
-        </NuxtLink>
+  <div class="flex justify-center flex-row flex-wrap">
+    <div
+      v-for="server in servers"
+      :key="server.id"
+      class="relative flex flex-row items-center rounded overflow-hidden border-2 bg-gray-900 border-gray-800 mt-4 w-full m-5 w-1/3" style="max-height: 250px; max-width: 400px">
+      <img class="w-2/5 h-full" src="https://cdn.cdkeys.com/media/catalog/product/a/r/arma_3_pc_apex_dlc_cover.jpg"/>
+      <span class="absolute top-0 right-0 w-3 h-3 m-4">
+        <div v-if="server.status && server.status.online" class="flex">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-acid-green opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-acid-green"></span>
+        </div>
+        <div v-if="server.status && !server.status.online" class="flex">
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+        </div>
+        <div v-if="!server.status" class="flex">
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-gray-700"></span>
+        </div>
+      </span>
+      <div class="relative flex flex-col items-center h-full w-full p-3">
+        <span class="text-acid-green font-bold m-5 tracking-widest">
+          {{server.name}}
+        </span>
+        <div class="text-white tracking-wider h-40">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in condimentum nibh.
+        </div>
+        <div class="flex justify-center absolute bottom-0 w-full">
+          <NuxtLink
+            :to="'/servers/' + server.id"
+            class="flex flex-col justify-center hover:bg-acid-green hover:text-gray-900 text-white font-bold
+            py-1 px-4 rounded text-center acid-button w-full m-3">
+            JOIN
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
@@ -59,5 +66,28 @@ export default {
 </script>
 
 <style scoped>
+
+.acid-button {
+  border: 2px #CCFF00 solid;
+  animation: morph 3s ease-in-out infinite;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  height: 40px;
+  transition: all 0.2s ease-in-out;
+  width: 50%;
+  z-index: 5;
+}
+
+@keyframes morph {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
 
 </style>
