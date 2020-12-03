@@ -8,7 +8,9 @@ module.exports = {
   ssr: false,
   head: {
     title: 'EZGames',
-    meta: [{ charset: 'utf-8' }]
+    meta: [
+      { charset: 'utf-8' }
+    ]
   },
   loading: false,
   css: [
@@ -20,7 +22,8 @@ module.exports = {
   ],
   buildModules: [
     '@nuxt/typescript-build',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/laravel-echo'
   ],
   modules: [
     '@nuxtjs/axios',
@@ -50,8 +53,19 @@ module.exports = {
     }
   },
   axios: {
-    baseURL: 'http://multigamingpanel.test/api'
+    baseURL: 'https://multigamingpanel.test/api'
   },
-  tailwindcss: {
-  }
+  echo: {
+    broadcaster: 'pusher',
+    authModule: true,
+    connectOnLogin: true,
+    disconnectOnLogout: true,
+    authEndpoint: 'https://multigamingpanel.test/broadcasting/auth',
+    key: 'app-key',
+    wsHost: 'multigamingpanel.test',
+    wsPort: 6001,
+    wssPort: 6001,
+    disableStats: true
+  },
+  tailwindcss: {}
 }

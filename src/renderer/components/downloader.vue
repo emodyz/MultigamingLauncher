@@ -1,32 +1,19 @@
 <template>
-  <div class="absolute bottom-0 right-0 m-4 w-1/6" style="z-index: 2">
+  <div class="absolute bottom-0 right-0 m-4 z-10">
     <div v-for="[serverId] of downloaders"
          :key="serverId"
-         class="bg-gray-200 max-w-sm rounded overflow-hidden shadow-md mt-3"
-         style="z-index: 2"
+         class="bg-gray-800 border-acid-green border text-white max-w-sm rounded overflow-hidden shadow-md mt-3  w-64"
     >
-      <div class="w-full flex flex-row justify-end">
-        <svg class="fill-current h-6 w-6 text-orange-400" role="button" viewBox="0 0 20 20"
-             xmlns="http://www.w3.org/2000/svg"
-        >
-          <title>Close</title>
-          <path
-            d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1
-            1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1
-            1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"
-          />
-        </svg>
-      </div>
-      <div class="p-2">
-        <ProgressBar :progress="progresses.get(serverId)" />
-        <div class="flex justify-center pt-1">
-          <NuxtLink :to="'/servers/' + serverId"
-                    class="bg-blue-500 hover:bg-blue-700 text-xs text-white font-bold rounded w-full text-center"
-          >
-            SEE
-          </NuxtLink>
+      <NuxtLink :to="'/servers/' + serverId">
+        <div class="flex flex-row h-full">
+          <div class="w-2/5 p-2 h-24 border-r border-gray-700">
+            <img class="rounded object-cover h-full" src="https://jeuxx-gratuit.fr/wp-content/uploads/2019/07/Arma-3-download.png">
+          </div>
+          <div class="w-full px-2 py-4 flex flex-col items-center justify-center">
+            <ProgressBar :progress="progresses.get(serverId)" class="w-full" />
+          </div>
         </div>
-      </div>
+      </NuxtLink>
     </div>
   </div>
 </template>

@@ -18,6 +18,9 @@ export default {
       return this.$store.state.auth.user
     }
   },
+  mounted () {
+    this.$store.commit('page/setTitle', 'HOME')
+  },
   methods: {
     openURL (url) {
       remote.shell.openExternal(url)

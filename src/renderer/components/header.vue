@@ -1,22 +1,22 @@
 <template>
-  <div class="flex flex-row h-40 bg-gray-900 fixed w-full" style="z-index: 10">
+  <div v-if="title"class="flex flex-row h-40 bg-gray-900 fixed w-full z-10">
     <div class="flex justify-center flex-col w-full pt-2">
-      <div class="border-t border-acid-green w-full"></div>
+      <div class="border-t border-acid-green w-full" />
     </div>
     <span class="bg-gray-900 text-gray-900 font-bold tracking-widest page-title uppercase whitespace-no-wrap">
-      {{ $nuxt.$route.name }}
+      {{ title }}
     </span>
   </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    async logout () {
-      await this.$auth.logout()
+  props: {
+    title: {
+      type: String,
+      default: null
     }
   }
-
 }
 </script>
 
