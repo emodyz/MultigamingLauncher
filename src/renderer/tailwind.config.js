@@ -14,5 +14,7 @@ module.exports = {
   variants: {
     outline: []
   },
-  plugins: []
+  plugins: [
+    require('@tailwindcss/typography')
+  ]
 }

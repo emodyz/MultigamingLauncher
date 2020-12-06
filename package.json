@@ -62,8 +62,10 @@
     "@emodyz/node-downloader": "^1.4.1",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.2",
+    "@tailwindcss/typography": "^0.3.1",
     "animejs": "^3.2.1",
     "find-steam-app": "^1.0.2",
+    "marked": "^1.2.5",
     "v-tooltip": "^2.0.3"
   }
 }
