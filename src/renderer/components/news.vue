@@ -11,7 +11,7 @@
         </span>
         <span v-if="subtitle" class="font-light block text-xl">
           {{ subtitle }}
-        </span>gl
+        </span>
       </div>
       <transition name="fade">
         <article v-if="opened && parsedContent" class="prose-sm text-white border-t border-acid-green border-opacity-50 pt-5" v-html="parsedContent" />
