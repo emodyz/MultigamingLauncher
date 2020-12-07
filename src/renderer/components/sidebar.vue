@@ -10,7 +10,7 @@
       <div class="mt-10">
         <ul>
           <li class="mb-6">
-            <NuxtLink to="/">
+            <NuxtLink to="/home">
               <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green" fill="none"
                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               >

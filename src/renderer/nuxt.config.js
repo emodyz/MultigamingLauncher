@@ -30,13 +30,18 @@ module.exports = {
     '@nuxtjs/auth'
   ],
   router: {
-    middleware: ['auth']
+    middleware: ['auth'],
+    extendRoutes(routes, resolve)  {
+      routes.push(
+        { path: '/', redirect: '/home' }
+      );
+    }
   },
   auth: {
     redirect: {
       login: '/auth/login',
       logout: '/auth/login',
-      home: '/'
+      home: '/home'
     },
     strategies: {
       local: {
