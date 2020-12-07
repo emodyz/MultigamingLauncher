@@ -1,6 +1,6 @@
-export const state = {
-  title: 'Default Title'
-}
+export const state = () => ({
+  title: null
+})
 
 export const mutations = {
   setTitle (state, title) {
