@@ -33,6 +33,13 @@
               </svg>
             </NuxtLink>
           </li>
+          <li v-for="favorite of favorites" class="mb-3">
+            <div :class="{'server-selected': $route.fullPath === '/servers/' + favorite.id}"
+                 class="relative"
+                  @click="goToServer(favorite)">
+              <img :src="favorite.game.logo_url" class="object-cover mx-auto w-3/5 server-picture">
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -77,23 +84,30 @@
 </template>
 
 <script>
-import { remote } from 'electron'
+import {remote} from 'electron'
 
 export default {
   name: 'Sidebar',
 
   computed: {
-    downloaders () {
+    downloaders() {
       return this.$store.state.downloaders.list
+    },
+    favorites() {
+      return this.$store.state.favorites.list
     }
   },
 
   methods: {
-    async logout () {
+    async logout() {
       await this.$auth.logout()
     },
 
-    goToPanel () {
+    goToServer(server) {
+      this.$router.push('/servers/' + server.id)
+    },
+
+    goToPanel() {
       const url = this.$axios.defaults.baseURL.replace('/api', '')
       remote.shell.openExternal(url)
     }
@@ -102,13 +116,68 @@ export default {
 </script>
 
 <style>
+
+.server-picture {
+  cursor: pointer;
+  transition: border-radius 0.5s;
+  border-radius: 100%;
+}
+
+.server-picture:hover {
+  animation-name: shakeit;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  border-radius: 30%;
+}
+
+.server-selected img {
+  border-radius: 30%;
+  animation: none;
+}
+
+.server-selected::before {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: 0;
+  bottom: 0;
+  width: 15px;
+  background: white;
+  border-radius: 20px;
+  animation: community-selected-animation 0.3s forwards;
+}
+
+@keyframes shakeit {
+  0% {
+    border-radius: 50%;
+  }
+  30% {
+    border-radius: 20%;
+  }
+  60% {
+    border-radius: 30%;
+  }
+  90% {
+    border-radius: 33%;
+  }
+  100% {
+    border-radius: 30%;
+  }
+}
+
+@keyframes community-selected-animation {
+  100% {
+    left: -10px;
+  }
+}
+
 .nuxt-link-active .stroke-current {
-  color: rgba(204,255,0,1);
+  color: rgba(204, 255, 0, 1);
 }
 
 .nav-shadow {
   animation: slideShadown 1s forwards;
-  box-shadow: 10px 0px 20px 0px rgba(204,255,0,1);
+  box-shadow: 10px 0px 20px 0px rgba(204, 255, 0, 1);
   width: 0;
   left: 0;
   top: 0;

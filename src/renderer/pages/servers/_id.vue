@@ -130,6 +130,7 @@ export default {
   },
 
   mounted () {
+    console.log(this.$route)
     this.$store.commit('page/setTitle', null)
     this.downloader = this.$store.getters['downloaders/downloaderByServer'](this.id)
     this.handleDownloaderEvents()
