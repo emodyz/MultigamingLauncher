@@ -33,19 +33,22 @@
               </svg>
             </NuxtLink>
           </li>
-          <li v-for="favorite of favorites" class="mb-3">
-            <div :class="{'server-selected': $route.fullPath === '/servers/' + favorite.id}"
-                 class="relative"
-                  @click="goToServer(favorite)">
-              <img :src="favorite.game.logo_url" class="object-cover mx-auto w-3/5 server-picture">
-            </div>
-          </li>
+          <transition-group name="pop">
+            <li v-for="favorite of favorites" :key="favorite.id" class="mb-3">
+              <div :class="{'server-selected': $route.fullPath === '/servers/' + favorite.id}"
+                   class="relative"
+                   @click="goToServer(favorite)"
+              >
+                <img :src="favorite.game.logo_url" class="object-cover mx-auto w-3/5 server-picture">
+              </div>
+            </li>
+          </transition-group>
         </ul>
       </div>
     </div>
     <div class="mb-4">
       <a class="flex justify-center cursor-pointer mb-6">
-        <div :class="{'loader': downloaders.size > 0}" class="w-8 h-7">
+        <div :class="{'loader': downloaders.length > 0}" class="w-8 h-7">
           <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green m-2" fill="none"
                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
           >
@@ -84,30 +87,30 @@
 </template>
 
 <script>
-import {remote} from 'electron'
+import { remote } from 'electron'
 
 export default {
   name: 'Sidebar',
 
   computed: {
-    downloaders() {
+    downloaders () {
       return this.$store.state.downloaders.list
     },
-    favorites() {
+    favorites () {
       return this.$store.state.favorites.list
     }
   },
 
   methods: {
-    async logout() {
+    async logout () {
       await this.$auth.logout()
     },
 
-    goToServer(server) {
+    goToServer (server) {
       this.$router.push('/servers/' + server.id)
     },
 
-    goToPanel() {
+    goToPanel () {
       const url = this.$axios.defaults.baseURL.replace('/api', '')
       remote.shell.openExternal(url)
     }

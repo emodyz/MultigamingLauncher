@@ -5,7 +5,7 @@ export const state = () => ({
 export const getters = {
   favorites: state => state.list,
   isFavorite: state => server => {
-    return state.list.map(server => server.id).indexOf(server.id) !== -1;
+    return state.list.map(server => server.id).includes(server.id);
   }
 }
 

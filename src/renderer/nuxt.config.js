@@ -18,6 +18,7 @@ module.exports = {
     '~/assets/transitions.scss'
   ],
   plugins: [
+    { src: '~/plugins/vuex-persist', ssr: false },
     '~/plugins/vue-tooltip.js'
   ],
   buildModules: [
@@ -31,10 +32,10 @@ module.exports = {
   ],
   router: {
     middleware: ['auth'],
-    extendRoutes(routes, resolve)  {
+    extendRoutes (routes, resolve) {
       routes.push(
         { path: '/', redirect: '/home' }
-      );
+      )
     }
   },
   auth: {

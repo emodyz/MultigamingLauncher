@@ -35,21 +35,7 @@
             <span class="relative inline-flex rounded-full h-3 w-3 bg-gray-700" />
           </div>
         </span>
-
       </div>
-
-      <!--<span class="absolute top-0 right-0 w-3 h-3 m-4">
-        <div v-if="server.status && server.status.online" class="flex">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-acid-green opacity-75" />
-          <span class="relative inline-flex rounded-full h-3 w-3 bg-acid-green" />
-        </div>
-        <div v-if="server.status && !server.status.online" class="flex">
-          <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500" />
-        </div>
-        <div v-if="!server.status" class="flex">
-          <span class="relative inline-flex rounded-full h-3 w-3 bg-gray-700" />
-        </div>
-      </span>-->
       <div class="relative flex flex-col items-center h-full w-full p-3">
         <span class="text-acid-green font-bold m-5 tracking-widest">
           {{ server.name }}
@@ -72,7 +58,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 const anime = require('animejs')
 
 export default {
@@ -80,7 +66,7 @@ export default {
   transition: 'fade',
 
   computed: {
-    ...mapGetters("favorites", [
+    ...mapGetters('favorites', [
       'isFavorite'
     ])
   },
@@ -119,13 +105,13 @@ export default {
       }, delay)
     },
 
-    favServer(server) {
+    favServer (server) {
       this.$store.commit('favorites/favServer', server)
     },
 
-    unfavServer(server) {
+    unfavServer (server) {
       this.$store.commit('favorites/unfavServer', server)
-    },
+    }
   }
 
 }
