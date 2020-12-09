@@ -59,7 +59,7 @@ module.exports = {
     }
   },
   axios: {
-    baseURL: 'https://multigamingpanel.test/api'
+    baseURL: 'http://multigamingpanel.test/api'
   },
   echo: {
     broadcaster: 'pusher',

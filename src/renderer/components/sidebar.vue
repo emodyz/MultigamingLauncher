@@ -25,10 +25,12 @@
           <li class="mb-6">
             <NuxtLink to="/servers">
               <svg class="stroke-current text-gray-300 h-8 w-8 mx-auto hover:text-acid-green " fill="none"
-                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+              >
                 <path d="M5 12h14M5 12a2 2 0 01-2-2V6a2
                  2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0
-                  00-2-2m-2-4h.01M17 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                  00-2-2m-2-4h.01M17 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                />
               </svg>
             </NuxtLink>
           </li>
@@ -36,7 +38,8 @@
             <li v-for="server of favorites" :key="server.id" class="mb-3">
               <div :class="{'server-selected': $route.fullPath === '/servers/' + server.id}"
                    class="relative"
-                   @click="goToServer(server)">
+                   @click="goToServer(server)"
+              >
                 <div class="relative mx-auto w-3/5">
                   <img :src="server.game.logo_url" class="object-cover  server-picture">
                   <div v-if="hasUpdate(server.id, server.update_hash)" class="absolute top-0 right-0 flex">
@@ -92,31 +95,31 @@
 
 <script>
 import { remote } from 'electron'
-import {mapGetters, mapMutations} from "vuex";
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'Sidebar',
 
   computed: {
-    ...mapGetters("updater", [
-      "hasUpdate"
+    ...mapGetters('updater', [
+      'hasUpdate'
     ]),
-    ...mapGetters("servers", [
-      "favorites"
+    ...mapGetters('servers', [
+      'favorites'
     ]),
     downloaders () {
-      return this.$store.state.downloaders.list;
-    },
+      return this.$store.state.downloaders.list
+    }
   },
 
-  async created() {
-    await this.$store.dispatch('servers/sync');
+  async created () {
+    await this.$store.dispatch('servers/sync')
   },
 
   methods: {
 
     async logout () {
-      await this.$auth.logout();
+      await this.$auth.logout()
     },
 
     goToServer (server) {

@@ -71,8 +71,8 @@ export default {
     ])
   },
 
-  async created() {
-    await this.$store.dispatch('servers/sync');
+  async created () {
+    await this.$store.dispatch('servers/sync')
   },
 
   mounted () {
