@@ -11,7 +11,7 @@
         <ul>
           <li class="mb-6">
             <NuxtLink to="/home">
-              <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green" fill="none"
+              <svg class="stroke-current text-gray-300 h-8 w-8 mx-auto hover:text-acid-green" fill="none"
                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -24,22 +24,26 @@
           </li>
           <li class="mb-6">
             <NuxtLink to="/servers">
-              <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green " fill="none"
-                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M4 6h16M4 10h16M4 14h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2"
-                />
+              <svg class="stroke-current text-gray-300 h-8 w-8 mx-auto hover:text-acid-green " fill="none"
+                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12h14M5 12a2 2 0 01-2-2V6a2
+                 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0
+                  00-2-2m-2-4h.01M17 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
               </svg>
             </NuxtLink>
           </li>
           <transition-group name="pop">
-            <li v-for="favorite of favorites" :key="favorite.id" class="mb-3">
-              <div :class="{'server-selected': $route.fullPath === '/servers/' + favorite.id}"
+            <li v-for="server of favorites" :key="server.id" class="mb-3">
+              <div :class="{'server-selected': $route.fullPath === '/servers/' + server.id}"
                    class="relative"
-                   @click="goToServer(favorite)"
-              >
-                <img :src="favorite.game.logo_url" class="object-cover mx-auto w-3/5 server-picture">
+                   @click="goToServer(server)">
+                <div class="relative mx-auto w-3/5">
+                  <img :src="server.game.logo_url" class="object-cover  server-picture">
+                  <div v-if="hasUpdate(server.id, server.update_hash)" class="absolute top-0 right-0 flex">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-700 opacity-75" />
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-700" />
+                  </div>
+                </div>
               </div>
             </li>
           </transition-group>
@@ -88,22 +92,31 @@
 
 <script>
 import { remote } from 'electron'
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   name: 'Sidebar',
 
   computed: {
+    ...mapGetters("updater", [
+      "hasUpdate"
+    ]),
+    ...mapGetters("servers", [
+      "favorites"
+    ]),
     downloaders () {
-      return this.$store.state.downloaders.list
+      return this.$store.state.downloaders.list;
     },
-    favorites () {
-      return this.$store.state.favorites.list
-    }
+  },
+
+  async created() {
+    await this.$store.dispatch('servers/sync');
   },
 
   methods: {
+
     async logout () {
-      await this.$auth.logout()
+      await this.$auth.logout();
     },
 
     goToServer (server) {

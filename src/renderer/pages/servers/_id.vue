@@ -22,6 +22,9 @@
       </span>
       <div class="container px-2 h-full">
         <div class="flex flex-col border border-gray-700 bg-gray-800 h-32 rounded mb-4 p-2">
+          <div v-if="server">
+            {{hasUpdate(id, server.update_hash)}}
+          </div>
           <div v-if="downloader">
             <ProgressBar :progress="downloader.progress" class="mb-3" />
             <div class="flex flex-row justify-between items-end">
@@ -69,8 +72,11 @@ export default {
     ...mapGetters('downloaders', [
       'downloaderByServer'
     ]),
+    ...mapGetters('updater', [
+      'hasUpdate'
+    ]),
     downloader () {
-      return this.downloaderByServer(this.id)
+      return this.downloaderByServer(this.id);
     }
   },
 
@@ -81,13 +87,13 @@ export default {
   },
 
   async fetch () {
-    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
+    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data;
     this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
     this.installPath = await this.module.findGamePath()
   },
 
   async asyncData ({ params }) {
-    const id = params.id
+    const id = params.id;
     return { id }
   },
 
@@ -132,8 +138,8 @@ export default {
       }
 
       try {
-        const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-        const downloader = this.module.prepareDownload(modpacks)
+        const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data;
+        const downloader = this.module.prepareDownload(modpacks);
 
         this.$store.commit('downloaders/add', {
           server: this.server,

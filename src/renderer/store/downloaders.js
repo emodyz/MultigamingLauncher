@@ -25,15 +25,30 @@ export const mutations = {
   },
 
   start (state, { serverId, forceDownload = false }) {
-    const downloader = findDownloader(state, serverId)
-    if (downloader) {
+    const downloader = findDownloader(state, serverId);
+    const server = findServer(state, serverId);
+
+    if (downloader && server) {
+      if (downloader.stats().files === 0) {
+        console.log('no files to download');
+        deleteDownloader(state, serverId);
+        return;
+      }
+
       downloader.on('progress', stats => {
         setDownloaderProgress(state, serverId, stats.progressTotal)
         console.log(stats.progressTotal)
-      })
+      });
+
       downloader.on('end', () => {
-        deleteDownloader(state, serverId)
-      })
+        this.commit('updater/add', server);
+        deleteDownloader(state, serverId);
+      });
+
+      downloader.on('stop', () => {
+        deleteDownloader(state, serverId);
+      });
+
       downloader.start(forceDownload)
     }
   },
@@ -86,7 +101,7 @@ function downloaderProgress (state, serverId) {
 function findDownloader (state, serverId) {
   const index = state.list.map(downloader => downloader.server.id).indexOf(serverId)
   if (index !== -1) {
-    return state.list[index].downloader
+    return state.list[index].downloader;
   }
   return null
 }
@@ -94,7 +109,7 @@ function findDownloader (state, serverId) {
 function findServer (state, serverId) {
   const index = state.list.map(downloader => downloader.server.id).indexOf(serverId)
   if (index !== -1) {
-    return state.list[index].server
+    return state.list[index].server;
   }
   return null
 }
