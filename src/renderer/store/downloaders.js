@@ -57,7 +57,6 @@ export const mutations = {
     const downloader = findDownloader(state, serverId)
     if (downloader) {
       downloader.stop()
-      deleteDownloader(state, serverId)
     }
   },
 
