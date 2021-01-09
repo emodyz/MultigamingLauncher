@@ -1,2 +1,5 @@
-*
-!.gitignore
+build
+dist
+node_modules
+src/renderer/.nuxt
+.idea
