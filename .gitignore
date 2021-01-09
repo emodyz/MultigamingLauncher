@@ -1,5 +1,7 @@
-build
+.nuxt
 dist
+build/*
+!build/icons
 node_modules
-src/renderer/.nuxt
-.idea
+/.idea/
+/.electron-nuxt/
