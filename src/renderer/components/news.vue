@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ 'background-image': 'url(' + img + ')' }"
+  <div :style="{ 'background-image': 'url(' + image + ')' }"
        class="bg-black shadow overflow-hidden relative bg-cover w-full h-full select-none"
   >
     <div
@@ -16,7 +16,7 @@
         </span>
       </div>
       <transition name="fade">
-        <article v-if="opened && parsedContent" class="prose-sm text-white border-t border-acid-green border-opacity-50 pt-5" v-html="parsedContent" />
+        <article v-if="opened" class="prose-sm text-white border-t border-acid-green border-opacity-50 pt-5" v-html="parsedContent" />
       </transition>
     </div>
   </div>
@@ -27,7 +27,7 @@ import marked from 'marked'
 
 export default {
   props: {
-    img: {
+    image: {
       type: String,
       default: null
     },
