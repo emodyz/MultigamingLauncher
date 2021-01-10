@@ -39,6 +39,7 @@
               <div :class="{'server-selected': $route.fullPath === '/servers/' + server.id}"
                    class="relative"
                    @click="goToServer(server)"
+                   v-tooltip.right="server.name"
               >
                 <div class="relative mx-auto w-3/5">
                   <img :src="server.game.logo_url" class="object-cover  server-picture">

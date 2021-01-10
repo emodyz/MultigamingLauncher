@@ -4,19 +4,19 @@
 }
 
 .tooltip .tooltip-inner {
-  background: black;
-  color: white;
-  border-radius: 16px;
+  @apply bg-gray-800 border border border-gray-700 text-gray-100 rounded-md;
+
   padding: 5px 10px 4px;
 }
 
 .tooltip .tooltip-arrow {
+  @apply border-gray-700;
+
   width: 0;
   height: 0;
   border-style: solid;
   position: absolute;
   margin: 5px;
-  border-color: black;
   z-index: 1;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .tooltip[x-placement^="right"] {
-  margin-left: 5px;
+  margin-left: -7px;
 }
 
 .tooltip[x-placement^="right"] .tooltip-arrow {
