@@ -5,7 +5,16 @@
         <news :content="item.content" :img="item.image" :subtitle="item.subtitle" :title="item.title" class="rounded-2xl" />
       </div>-->
       <slider :slides="news">
-
+        <template #empty>
+          <div class="flex flex-col justify-center items-center text-center w-full h-full">
+            <span class="text-white font-bold text-2xl">
+              No news.
+            </span>
+            <span class="text-white font-thin text-xl">
+              Is good news !
+            </span>
+          </div>
+        </template>
       </slider>
     </div>
     <div class="flex w-1/3  h-auto p-4">
@@ -63,6 +72,7 @@ export default {
 
     // MOCK
     const content = await fetch('https://raw.githubusercontent.com/emodyz/MultigamingLauncher/master/README.md').then(res => res.text())
+
     this.news.push({
       component: News,
       data: {
@@ -75,18 +85,18 @@ export default {
     this.news.push({
       component: News,
       data: {
-        title: "J'aime les brocolis 2",
-        subtitle: 'Oh oui miam !',
-        image: 'https://image.api.playstation.com/vulcan/img/cfn/11307x4B5WLoVoIUtdewG4uJ_YuDRTwBxQy0qP8ylgazLLc01PBxbsFG1pGOWmqhZsxnNkrU3GXbdXIowBAstzlrhtQ4LCI4.png',
+        title: "Oh god Arma4 est sortie !",
+        subtitle: 'Lien dans la description',
+        image: 'https://i.ytimg.com/vi/TeOShkJN9Xw/maxresdefault.jpg',
         content: content
       }
     })
     this.news.push({
       component: News,
       data: {
-        title: "J'aime les brocolis 3",
-        subtitle: 'Oh oui miam !',
-        image: 'https://image.api.playstation.com/vulcan/img/cfn/11307x4B5WLoVoIUtdewG4uJ_YuDRTwBxQy0qP8ylgazLLc01PBxbsFG1pGOWmqhZsxnNkrU3GXbdXIowBAstzlrhtQ4LCI4.png',
+        title: "GTA V. C'est vraiment une tuerie ! ",
+        subtitle: 'Tentez de gagner une PS5',
+        image: 'https://media.begeek.fr/2020/05/Epic-Games-Store-GTA-5-PC.jpg',
         content: content
       }
     })

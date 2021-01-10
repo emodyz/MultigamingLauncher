@@ -1,29 +1,48 @@
 <template>
-  <div class="w-full h-full bg-gray-800 rounded-md">
+  <div class="w-full h-full bg-gray-800 rounded-md" @mouseout="startAutoSlider" @mouseover="stopAutoSlider">
     <div class="relative flex justify-center w-full h-full overflow-hidden rounded-md">
+      <slot v-if="sliderSlides.length === 0" name="empty">
+
+      </slot>
       <div
+        v-else
         v-for="(slide, index) of sliderSlides"
         :ref="'slide-' + index"
         :class="{
-              'transition-all': doAnimation,
-              'duration-300': doAnimation
-            }"
+          'transition-all': doAnimation,
+          'duration-300': doAnimation
+        }"
         :style="{right: (-100 * (index - currentSlide)) + '%'}"
         class="absolute w-full h-full">
-        <component :is="slide.component" v-bind="slide.data" class="w-full h-full"></component>
+        <component
+          :is="slide.component"
+          v-bind="slide.data"
+          class="w-full h-full"
+          v-on:control="hideControl = $event"
+        />
       </div>
-      <div v-if="slides.length > 1">
-        <div class="absolute right-1 top-1/2">
-          <button class="font-bold bg-gray-800 text-white rounded-full p-2" @click="next">
-            <svg class="stroke-current text-white w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+      <div v-if="slides.length > 1 && !hideControl">
+        <div class="absolute flex bottom-0 right-1/2 text-white transform translate-x-1/2">
+            <div v-for="(slide, index) of slides"
+                 :class="{
+                    'bg-white': isCurrentSlide(index)
+                 }"
+                 class="w-2 h-2 border rounded-full m-2"
+            >
+
+            </div>
+        </div>
+        <div class="absolute right-1 top-1/2 transform -translate-y-1/2">
+          <button class="w-10 p-2 rounded-full font-bold bg-gray-800 text-white opacity-70 transition-opacity  hover:opacity-90 focus:outline-none" @click="next">
+            <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                  xmlns="http://www.w3.org/2000/svg">
               <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
             </svg>
           </button>
         </div>
-        <div class="absolute left-1 top-1/2">
-          <button class="font-bold bg-gray-800 text-white rounded-full p-2" @click="prev">
-            <svg class="stroke-current text-white w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        <div class="absolute left-1 top-1/2 transform -translate-y-1/2">
+          <button class="w-10 p-2 rounded-full font-bold bg-gray-800 text-white opacity-70 transition-opacity hover:opacity-90 focus:outline-none" @click="prev">
+            <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                  xmlns="http://www.w3.org/2000/svg">
               <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
             </svg>
@@ -61,11 +80,13 @@ export default {
 
   data() {
     return {
+      hideControl: false,
+
+      autoSlideInterval: null,
+
       currentSlide: 1,
 
       sliderSlides: [],
-
-      needToShift: false,
 
       animationInProgress: false,
       doAnimation: true,
@@ -73,6 +94,16 @@ export default {
   },
 
   methods: {
+    isCurrentSlide(index) {
+      if (
+        this.currentSlide === this.sliderSlides.length - 1 && index === 0 ||
+        this.currentSlide === 0 && index === this.sliderSlides.length - 3
+      ) {
+        return true;
+      }
+
+      return index === this.currentSlide - 1
+    },
 
     next() {
       if (this.animationInProgress) {
@@ -124,7 +155,27 @@ export default {
       this.doAnimation = true;
       this.animationInProgress = true;
       this.currentSlide--;
+    },
+    startAutoSlider() {
+      if (this.hideControl) {
+        return;
+      }
+
+      this.autoSlideInterval = setInterval(() => {
+        this.next();
+      }, 3000)
+    },
+    stopAutoSlider() {
+      if (this.autoSlideInterval) {
+        clearInterval(this.autoSlideInterval);
+      }
     }
+  },
+  mounted() {
+    this.startAutoSlider();
+  },
+  beforeDestroy() {
+    this.stopAutoSlider();
   }
 }
 </script>

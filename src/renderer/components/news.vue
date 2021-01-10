@@ -1,13 +1,13 @@
 <template>
   <div :style="{ 'background-image': 'url(' + image + ')' }"
-       class="bg-black shadow overflow-hidden relative bg-cover w-full h-full select-none"
+       class="bg-black shadow overflow-hidden relative bg-cover bg-center w-full h-full select-none"
   >
     <div
       :class="{'overlay-opened': opened}"
       :style="{'transform': 'translateY(-' + headerSize + 'px)'}"
       class="absolute w-full h-full p-4 shadow-xl overflow-scroll text-white overlay"
     >
-      <div id="news-header" ref="newsHeader" class="mb-2 cursor-pointer" @click="opened = !opened">
+      <div id="news-header" ref="newsHeader" class="mb-2 cursor-pointer" @click="openCloseNews">
         <span v-if="title" class="font-bold w-full block text-3xl mb-2">
           {{ title }}
         </span>
@@ -73,6 +73,15 @@ export default {
   methods: {
     resizeHeader () {
       this.headerSize = this.$refs.newsHeader.clientHeight + 30
+    },
+    openCloseNews() {
+      this.opened = !this.opened
+
+      if (this.opened) {
+        this.$emit('control', true);
+      } else {
+        this.$emit('control', false);
+      }
     }
   }
 
