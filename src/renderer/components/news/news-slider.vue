@@ -13,19 +13,21 @@
   </slider>
 </template>
 
-<script>
-import Slider from '@/components/slider'
-import Article from '@/components/news/article'
+<script lang="ts">
+import {Component, Vue} from 'vue-property-decorator'
 
-export default {
-  components: { Slider },
-  data () {
-    return {
-      news: []
-    }
-  },
+import Article from "~/components/news/article.vue";
+import Slider from "~/components/slider.vue";
 
-  async mounted () {
+@Component({
+  components: {
+    Slider
+  }
+})
+export default class NewsSlider extends Vue {
+  news: any[] = []
+
+  async mounted() {
     // MOCK
     const content = await fetch('https://raw.githubusercontent.com/emodyz/MultigamingLauncher/master/README.md').then(res => res.text())
 

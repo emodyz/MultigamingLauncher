@@ -22,69 +22,58 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {Component, Prop, Ref, Vue} from 'vue-property-decorator'
 import marked from 'marked'
 
-export default {
-  props: {
-    image: {
-      type: String,
-      default: null
-    },
-    title: {
-      type: String,
-      default: null
-    },
-    subtitle: {
-      type: String,
-      default: null
-    },
-    content: {
-      type: String,
-      default: null
-    }
-  },
+@Component
+export default class Article extends Vue {
 
-  data () {
-    return {
-      opened: false,
-      headerSize: 0
-    }
-  },
+  @Ref() readonly newsHeader: any;
 
-  computed: {
-    parsedContent () {
-      return marked(this.content)
-    }
-  },
+  @Prop({ type: String, required: true, default: null }) image!: string;
+  @Prop({ type: String, required: true, default: null }) title!: string;
+  @Prop({ type: String, required: true, default: null }) subtitle!: string;
+  @Prop({ type: String, required: true, default: null }) content!: string;
+
+  opened: boolean = false;
+  headerSize: number = 0;
+  resizeHeaderTimeout: any = null;
+
+  get parsedContent () {
+    return marked(this.content)
+  }
 
   created () {
     window.addEventListener('resize', this.resizeHeader)
-  },
-
-  destroyed () {
-    window.removeEventListener('resize', this.resizeHeader)
-  },
+  }
 
   mounted () {
     this.resizeHeader()
-  },
-
-  methods: {
-    resizeHeader () {
-      this.headerSize = this.$refs.newsHeader.clientHeight + 30
-    },
-    openCloseNews () {
-      this.opened = !this.opened
-
-      if (this.opened) {
-        this.$emit('control', true)
-      } else {
-        this.$emit('control', false)
-      }
-    }
   }
 
+  destroyed () {
+    window.removeEventListener('resize', this.resizeHeader)
+  }
+
+  resizeHeader () {
+    if (this.resizeHeaderTimeout) {
+      clearTimeout(this.resizeHeaderTimeout);
+    }
+    this.resizeHeaderTimeout = setTimeout(() => {
+      this.headerSize = this.newsHeader.clientHeight + 30;
+    }, 300)
+  }
+
+  openCloseNews () {
+    this.opened = !this.opened
+
+    if (this.opened) {
+      this.$emit('control', true)
+    } else {
+      this.$emit('control', false)
+    }
+  }
 }
 </script>
 

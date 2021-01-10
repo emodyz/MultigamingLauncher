@@ -9,14 +9,12 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    title: {
-      type: String,
-      default: null
-    }
-  }
+<script lang="ts">
+import {Component, Prop, Vue} from "vue-property-decorator";
+
+@Component
+export default class Header extends Vue {
+  @Prop({required: true, default: null}) title!: string | null;
 }
 </script>
 

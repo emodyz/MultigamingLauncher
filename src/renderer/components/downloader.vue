@@ -18,26 +18,22 @@
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import ProgressBar from '@/components/ProgressBar'
+<script lang="ts">
+import {Component, Vue} from 'vue-property-decorator'
+import ProgressBar from "~/components/ProgressBar.vue";
+import {downloadersStore} from "~/utils/store-accessor";
 
-export default {
-  name: 'Downloader',
-  components: {
-    ProgressBar
-  },
+@Component({
+  components: {ProgressBar}
+})
+export default class Downloader extends Vue {
 
-  computed: {
-    ...mapGetters('downloaders', [
-      'downloaders'
-    ])
-  },
+  get downloaders() {
+    return downloadersStore.downloaders
+  }
 
-  methods: {
-    close () {
-      // TODO: White method to hide downloader UI
-    }
+  close() {
+    // TODO: White method to hide downloader UI
   }
 }
 </script>

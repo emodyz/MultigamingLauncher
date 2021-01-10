@@ -1,7 +1,4 @@
 declare module '*.vue' {
-  import { VueConstructor } from 'vue'
-  const _default: VueConstructor
-  export default _default
+  import Vue from 'vue'
+  export default Vue
 }
-
-declare const __resources : string

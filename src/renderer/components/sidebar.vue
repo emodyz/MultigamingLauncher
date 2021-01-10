@@ -110,7 +110,7 @@ export default {
     ]),
     ...mapGetters('downloaders', [
       'downloaders'
-    ]),
+    ])
   },
 
   async created () {
@@ -135,7 +135,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .server-picture {
   cursor: pointer;

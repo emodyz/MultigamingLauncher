@@ -6,11 +6,10 @@ import {Module, Mutation, VuexModule} from 'vuex-module-decorators'
   namespaced: true
 })
 export default class Updater extends VuexModule {
-
   servers: any[] = [];
 
-  get hasUpdate() {
-    return (serverId, updateHash) => {
+  get hasUpdate () {
+    return (serverId: string, updateHash: string) => {
       const index = this.servers.map(server => server.id).indexOf(serverId)
       if (index !== -1) {
         return this.servers[index].hash !== updateHash
@@ -20,7 +19,7 @@ export default class Updater extends VuexModule {
   }
 
   @Mutation
-  add (server) {
+  add (server: any) {
     const index = this.servers.map(server => server.id).indexOf(server.id)
     if (index !== -1) {
       this.servers[index].hash = server.update_hash
@@ -31,5 +30,4 @@ export default class Updater extends VuexModule {
       })
     }
   }
-
 }

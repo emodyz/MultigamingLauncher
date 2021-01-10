@@ -1,6 +1,6 @@
 import {Module, Mutation, VuexModule} from 'vuex-module-decorators'
 
-import {downloadersStore, updaterStore} from "~/store";
+import {downloadersStore, updaterStore} from '~/store'
 
 interface Downloader {
   server: any,
@@ -15,20 +15,20 @@ interface Downloader {
   namespaced: true
 })
 export default class Downloaders extends VuexModule {
-
   list: Downloader[] = [];
 
   get downloaders () {
     return this.list
   }
 
-  get downloaderByServer() {
+  get downloaderByServer () {
     return (serverId: string) => {
       const index = this.list.map(downloader => downloader.server.id).indexOf(serverId)
       return this.list[index]?.downloader
     }
   }
-  get progressByServer() {
+
+  get progressByServer () {
     return (serverId: string) => {
       const index = this.list.map(downloader => downloader.server.id).indexOf(serverId)
       return this.list[index]?.progress || 0
@@ -66,10 +66,10 @@ export default class Downloaders extends VuexModule {
   }
 
   @Mutation
-  add({server, downloader}) {
+  add ({ server, downloader }: {server: any, downloader: any}) {
     this.list.push({
-      server: server,
-      downloader: downloader,
+      server,
+      downloader,
       hidden: false,
       progress: 0
     })
@@ -81,7 +81,7 @@ export default class Downloaders extends VuexModule {
   }
 
   @Mutation
-  start({serverId, forceDownload = false}) {
+  start ({ serverId, forceDownload = false }: {serverId: string, forceDownload: boolean }) {
     const downloader = downloadersStore.findDownloader(serverId)
 
     if (downloader) {
@@ -91,9 +91,9 @@ export default class Downloaders extends VuexModule {
         return
       }
 
-      downloader.downloader.on('progress', stats => {
+      downloader.downloader.on('progress', (stats: any) => {
         downloadersStore.setDownloaderProgress({
-          serverId: serverId,
+          serverId,
           progress: stats.progressTotal
         })
         console.log(stats.progressTotal)
@@ -113,7 +113,7 @@ export default class Downloaders extends VuexModule {
   }
 
   @Mutation
-  pause (serverId) {
+  pause (serverId: string) {
     const downloader = downloadersStore.findDownloaderInstance(serverId)
     if (downloader) {
       downloader.pause()
@@ -121,7 +121,7 @@ export default class Downloaders extends VuexModule {
   }
 
   @Mutation
-  stop (serverId) {
+  stop (serverId: string) {
     const downloader = downloadersStore.findDownloaderInstance(serverId)
     if (downloader) {
       downloader.stop()
@@ -129,7 +129,7 @@ export default class Downloaders extends VuexModule {
   }
 
   @Mutation
-  resume (serverId) {
+  resume (serverId: string) {
     const downloader = downloadersStore.findDownloaderInstance(serverId)
     if (downloader) {
       downloader.resume()
@@ -145,7 +145,7 @@ export default class Downloaders extends VuexModule {
   }
 
   @Mutation
-  setDownloaderProgress({serverId, progress}) {
+  setDownloaderProgress ({ serverId, progress }: {serverId: string, progress: number}) {
     const index = this.list.map(downloader => downloader.server.id).indexOf(serverId)
     if (index !== -1) {
       this.list[index].progress = progress

@@ -59,7 +59,7 @@ import { remote } from 'electron'
 import { mapGetters } from 'vuex'
 import ProgressBar from '@/components/ProgressBar'
 import NewsSlider from '@/components/news/news-slider'
-import {downloadersStore} from "~/store";
+import { downloadersStore } from '~/store'
 
 export default {
   transition: 'fade',
@@ -114,28 +114,28 @@ export default {
 
         downloadersStore.add({
           server: this.server,
-          downloader: downloader
-        });
+          downloader
+        })
 
         downloadersStore.start({
           serverId: this.id,
           forceDownload: this.forceUpdate
-        });
+        })
       } catch (e) {
         console.error(e)
       }
     },
 
     pauseDownload () {
-      downloadersStore.pause(this.id);
+      downloadersStore.pause(this.id)
     },
 
     resumeDownload () {
-      downloadersStore.resume(this.id);
+      downloadersStore.resume(this.id)
     },
 
     stopDownload () {
-      downloadersStore.stop(this.id);
+      downloadersStore.stop(this.id)
     }
 
   },

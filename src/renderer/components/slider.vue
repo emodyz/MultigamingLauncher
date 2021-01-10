@@ -21,7 +21,7 @@
         />
       </div>
       <transition name="fade">
-        <div v-if="slides.length > 1 && !hideControl">
+        <div v-if="sliderSlides.length > 1 && !hideControl">
           <div class="absolute flex top-2 right-1/2 text-acid-green blurred bg-black bg-opacity-20 rounded-full transform translate-x-1/2 ">
             <div v-for="(slide, index) of slides"
                  class="cursor-pointer p-2"
@@ -30,12 +30,12 @@
               <div
                 :class="{
                   'bg-white': isCurrentSlide(index)
-                }" class="w-2 h-2 border rounded-full"
+                }" class="w-4 h-1 border rounded-full"
               />
             </div>
           </div>
           <div class="absolute right-1 top-1/2 transform -translate-y-1/2">
-            <button class="w-10 p-2 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next">
+            <button class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next">
               <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                    xmlns="http://www.w3.org/2000/svg"
               >
@@ -44,7 +44,7 @@
             </button>
           </div>
           <div class="absolute left-1 top-1/2 transform -translate-y-1/2">
-            <button class="w-10 p-2 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="prev">
+            <button class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="prev">
               <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                    xmlns="http://www.w3.org/2000/svg"
               >
@@ -58,157 +58,152 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {Component, Prop, Vue} from 'vue-property-decorator'
 
-export default {
+@Component
+export default class Slider extends Vue {
+  @Prop({type: Array, required: true, default: []}) slides!: any[];
 
-  props: {
-    slides: {
-      type: Array,
-      default: []
-    }
-  },
+  hideControl: boolean = false;
+  currentSlide: number = 1;
 
-  data () {
-    return {
-      hideControl: false,
+  animationInProgress: boolean = false;
+  doAnimation: boolean = true;
 
-      autoSlideInterval: null,
+  autoSlideInterval: any = null;
 
-      currentSlide: 1,
+  get sliderSlides() {
+    const slides = [...this.slides]
 
-      sliderSlides: [],
+    const firstSlide = slides[0]
+    const lastSlide = slides[slides.length - 1]
 
-      animationInProgress: false,
-      doAnimation: true
-    }
-  },
-
-  watch: {
-    slides () {
-      const slides = [...this.slides]
-
-      const firstSlide = slides[0]
-      const lastSlide = slides[slides.length - 1]
-
+    if (lastSlide) {
       slides.unshift(lastSlide)
-      slides.push(firstSlide)
-
-      this.sliderSlides = slides
     }
-  },
+    if (firstSlide) {
+      slides.push(firstSlide)
+    }
+
+    return slides;
+  }
+
   mounted () {
     this.startAutoSlider()
-  },
+  }
+
   beforeDestroy () {
     this.stopAutoSlider()
-  },
+  }
 
-  methods: {
-    isCurrentSlide (index) {
-      if (
-        this.currentSlide === this.sliderSlides.length - 1 && index === 0 ||
-        this.currentSlide === 0 && index === this.sliderSlides.length - 3
-      ) {
-        return true
+  isCurrentSlide (index: number) {
+    if (
+      this.currentSlide === this.sliderSlides.length - 1 && index === 0 ||
+      this.currentSlide === 0 && index === this.sliderSlides.length - 3
+    ) {
+      return true
+    }
+
+    return index === this.currentSlide - 1
+  }
+
+  goToSlide (index: number) {
+    if (this.animationInProgress) {
+      return
+    }
+
+    const handleDone = this.handleShift()
+    let nextSlide = null
+
+    if (this.currentSlide === this.sliderSlides.length - 1 && index === 0) {
+      nextSlide = 1
+    } else if (this.currentSlide === 0 && index === this.sliderSlides.length - 3) {
+      nextSlide = this.sliderSlides.length - 3
+    } else {
+      nextSlide = index + 1
+    }
+
+    if (nextSlide === this.currentSlide) {
+      handleDone()
+      return
+    }
+
+    this.currentSlide = nextSlide
+  }
+
+  next () {
+    if (this.animationInProgress) {
+      return
+    }
+
+    this.handleShift()
+    this.currentSlide++
+  }
+
+  prev () {
+    if (this.animationInProgress) {
+      return
+    }
+
+    this.handleShift()
+    this.currentSlide--
+  }
+
+  startAutoSlider () {
+    if (this.hideControl) {
+      return
+    }
+
+    this.autoSlideInterval = setInterval(() => {
+      this.next()
+    }, 3000)
+  }
+
+  stopAutoSlider () {
+    if (this.autoSlideInterval) {
+      clearInterval(this.autoSlideInterval)
+    }
+  }
+
+  handleShift () {
+    const elementMinus = this.$refs['slide-' + (this.currentSlide - 1)]
+    const elementPlus = this.$refs['slide-' + (this.currentSlide + 1)]
+    const self = this
+
+    this.doAnimation = true
+    this.animationInProgress = true
+
+    function handleDone () {
+      self.animationInProgress = false
+
+      if (self.currentSlide >= self.sliderSlides.length - 1) {
+        self.doAnimation = false
+        self.currentSlide = 1
+      } else if (self.currentSlide <= 0) {
+        self.doAnimation = false
+        self.currentSlide = self.sliderSlides.length - 2
       }
 
-      return index === this.currentSlide - 1
-    },
-
-    goToSlide (index) {
-      if (this.animationInProgress) {
-        return
-      }
-
-      const handleDone = this.handleShift()
-      let nextSlide = null
-
-      if (this.currentSlide === this.sliderSlides.length - 1 && index === 0) {
-        nextSlide = 1
-      } else if (this.currentSlide === 0 && index === this.sliderSlides.length - 3) {
-        nextSlide = this.sliderSlides.length - 3
-      } else {
-        nextSlide = index + 1
-      }
-
-      if (nextSlide === this.currentSlide) {
-        handleDone()
-        return
-      }
-
-      this.currentSlide = nextSlide
-    },
-
-    next () {
-      if (this.animationInProgress) {
-        return
-      }
-
-      this.handleShift()
-      this.currentSlide++
-    },
-
-    prev () {
-      if (this.animationInProgress) {
-        return
-      }
-
-      this.handleShift()
-      this.currentSlide--
-    },
-
-    startAutoSlider () {
-      if (this.hideControl) {
-        return
-      }
-
-      this.autoSlideInterval = setInterval(() => {
-        this.next()
-      }, 3000)
-    },
-
-    stopAutoSlider () {
-      if (this.autoSlideInterval) {
-        clearInterval(this.autoSlideInterval)
-      }
-    },
-
-    handleShift () {
-      const elementMinus = this.$refs['slide-' + (this.currentSlide - 1)]
-      const elementPlus = this.$refs['slide-' + (this.currentSlide + 1)]
-      const self = this
-
-      this.doAnimation = true
-      this.animationInProgress = true
-
-      function handleDone () {
-        self.animationInProgress = false
-
-        if (self.currentSlide >= self.sliderSlides.length - 1) {
-          self.doAnimation = false
-          self.currentSlide = 1
-        } else if (self.currentSlide <= 0) {
-          self.doAnimation = false
-          self.currentSlide = self.sliderSlides.length - 2
-        }
-
-        if (elementMinus) {
-          elementMinus[0].removeEventListener('transitionend', handleDone)
-        }
-        if (elementPlus) {
-          elementPlus[0].removeEventListener('transitionend', handleDone)
-        }
-      }
       if (elementMinus) {
-        elementMinus[0].addEventListener('transitionend', handleDone)
+        // @ts-ignore
+        elementMinus[0].removeEventListener('transitionend', handleDone)
       }
       if (elementPlus) {
-        elementPlus[0].addEventListener('transitionend', handleDone)
+        // @ts-ignore
+        elementPlus[0].removeEventListener('transitionend', handleDone)
       }
-
-      return handleDone
     }
+    if (elementMinus) {
+      // @ts-ignore
+      elementMinus[0].addEventListener('transitionend', handleDone)
+    }
+    if (elementPlus) {
+      // @ts-ignore
+      elementPlus[0].addEventListener('transitionend', handleDone)
+    }
+
+    return handleDone
   }
 }
 </script>

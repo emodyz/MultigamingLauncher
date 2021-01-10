@@ -15,7 +15,7 @@
 import Sidebar from '@/components/sidebar'
 import Downloader from '@/components/downloader'
 import Header from '@/components/header'
-import {pageStore} from "~/store";
+import { pageStore } from '~/store'
 
 export default {
   components: {
