@@ -15,6 +15,7 @@
 import Sidebar from '@/components/sidebar'
 import Downloader from '@/components/downloader'
 import Header from '@/components/header'
+import {pageStore} from "~/store";
 
 export default {
   components: {
@@ -22,9 +23,10 @@ export default {
     Downloader,
     Sidebar
   },
+
   computed: {
     title () {
-      return this.$store.state.page.title
+      return pageStore.title
     }
   },
   mounted () {

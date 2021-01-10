@@ -36,7 +36,7 @@ export default class Minecraft extends GameModule {
 
   protected validateGamePath (gamePath: string): boolean {
     const allowedGamesFiles = [
-      'minecraft.exe',
+      'minecraft.exe'
     ]
     const files = fs.readdirSync(gamePath).map(file => file.toLowerCase())
 

@@ -36,10 +36,10 @@
           </li>
           <transition-group name="pop">
             <li v-for="server of favorites" :key="server.id" class="mb-3">
-              <div :class="{'server-selected': $route.fullPath === '/servers/' + server.id}"
+              <div v-tooltip.right="server.name"
+                   :class="{'server-selected': $route.fullPath === '/servers/' + server.id}"
                    class="relative"
                    @click="goToServer(server)"
-                   v-tooltip.right="server.name"
               >
                 <div class="relative mx-auto w-3/5">
                   <img :src="server.game.logo_url" class="object-cover server-picture">
@@ -56,7 +56,7 @@
     </div>
     <div class="mb-4">
       <a class="flex justify-center cursor-pointer mb-6">
-        <div :class="{'loader': downloaders.length > 0}" class="w-8 h-7">
+        <div :class="{'loader': downloaders.length > 0}" class="w-8 h-10">
           <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green m-2" fill="none"
                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
           >
@@ -96,7 +96,7 @@
 
 <script>
 import { remote } from 'electron'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Sidebar',
@@ -108,9 +108,9 @@ export default {
     ...mapGetters('servers', [
       'favorites'
     ]),
-    downloaders () {
-      return this.$store.state.downloaders.list
-    }
+    ...mapGetters('downloaders', [
+      'downloaders'
+    ]),
   },
 
   async created () {
@@ -224,6 +224,8 @@ export default {
 }
 
 .loader::before {
+  @apply bg-gradient-to-br from-gray-900 via-acid-green to-acid-green;
+
   content: "";
   position: absolute;
   z-index: -2;
@@ -233,13 +235,12 @@ export default {
   height: 200%;
   background-repeat: no-repeat;
   background-size: 50% 50%, 50% 50%;
-  background-position: 0 0, 100% 0, 100% 100%, 0 100%;
-  background-image: linear-gradient(#1a202c, #1a202c), linear-gradient(#CCFF00, #CCFF00),
-  linear-gradient(#CCFF00, #CCFF00), linear-gradient(#CCFF00, #CCFF00);
   animation: rotate 1s linear infinite;
 }
 
 .loader::after {
+  @apply bg-gray-900;
+
   content: "";
   position: absolute;
   z-index: -1;
@@ -247,7 +248,6 @@ export default {
   top: 2px;
   width: calc(100% - 4px);
   height: calc(100% - 4px);
-  background: #1a202c;
   border-radius: 40%;
 }
 

@@ -5,7 +5,7 @@
         News
       </span>
       <div class="w-full h-full mt-5">
-        <news-slider/>
+        <news-slider />
       </div>
     </div>
     <div class="w-1/3">
@@ -48,7 +48,6 @@
             <span class="text-white block font-thin">Slots: {{ server.status.players_max }}</span>
             <span class="text-white block font-thin">Online: {{ server.status.players_online }}</span>
           </div>
-
         </div>
       </div>
     </div>
@@ -59,7 +58,8 @@
 import { remote } from 'electron'
 import { mapGetters } from 'vuex'
 import ProgressBar from '@/components/ProgressBar'
-import NewsSlider from "@/components/news/news-slider";
+import NewsSlider from '@/components/news/news-slider'
+import {downloadersStore} from "~/store";
 
 export default {
   transition: 'fade',
@@ -70,14 +70,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters('downloaders', [
-      'downloaderByServer'
-    ]),
     ...mapGetters('updater', [
       'hasUpdate'
     ]),
     downloader () {
-      return this.downloaderByServer(this.id)
+      return downloadersStore.downloaderByServer(this.id)
     }
   },
 
@@ -115,30 +112,30 @@ export default {
         const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
         const downloader = this.module.prepareDownload(modpacks)
 
-        this.$store.commit('downloaders/add', {
+        downloadersStore.add({
           server: this.server,
-          downloader
-        })
+          downloader: downloader
+        });
 
-        this.$store.commit('downloaders/start', {
+        downloadersStore.start({
           serverId: this.id,
           forceDownload: this.forceUpdate
-        })
+        });
       } catch (e) {
         console.error(e)
       }
     },
 
     pauseDownload () {
-      this.$store.commit('downloaders/pause', this.id)
+      downloadersStore.pause(this.id);
     },
 
     resumeDownload () {
-      this.$store.commit('downloaders/resume', this.id)
+      downloadersStore.resume(this.id);
     },
 
     stopDownload () {
-      this.$store.commit('downloaders/stop', this.id)
+      downloadersStore.stop(this.id);
     }
 
   },

@@ -1,53 +1,58 @@
 <template>
   <div class="w-full h-full bg-gray-800 rounded-md" @mouseout="startAutoSlider" @mouseover="stopAutoSlider">
     <div class="relative flex justify-center w-full h-full overflow-hidden rounded-md">
-      <slot v-if="sliderSlides.length === 0" name="empty"/>
+      <slot v-if="sliderSlides.length === 0" name="empty" />
       <div
-        v-else
         v-for="(slide, index) of sliderSlides"
+        v-else
         :ref="'slide-' + index"
         :class="{
           'transition-all': doAnimation,
           'duration-300': doAnimation
         }"
         :style="{right: (-100 * (index - currentSlide)) + '%'}"
-        class="absolute w-full h-full">
+        class="absolute w-full h-full"
+      >
         <component
           :is="slide.component"
           v-bind="slide.data"
           class="w-full h-full"
-          v-on:control="hideControl = $event"
+          @control="hideControl = $event"
         />
       </div>
       <transition name="fade">
         <div v-if="slides.length > 1 && !hideControl">
-        <div class="absolute flex top-2 right-1/2 text-acid-green blurred bg-black bg-opacity-20 rounded-full transform translate-x-1/2 " >
+          <div class="absolute flex top-2 right-1/2 text-acid-green blurred bg-black bg-opacity-20 rounded-full transform translate-x-1/2 ">
             <div v-for="(slide, index) of slides"
                  class="cursor-pointer p-2"
-                 @click="goToSlide(index)">
-                 <div
-                   :class="{
-                    'bg-white': isCurrentSlide(index)
-                 }" class="w-2 h-2 border rounded-full"/>
+                 @click="goToSlide(index)"
+            >
+              <div
+                :class="{
+                  'bg-white': isCurrentSlide(index)
+                }" class="w-2 h-2 border rounded-full"
+              />
             </div>
+          </div>
+          <div class="absolute right-1 top-1/2 transform -translate-y-1/2">
+            <button class="w-10 p-2 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next">
+              <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                   xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </svg>
+            </button>
+          </div>
+          <div class="absolute left-1 top-1/2 transform -translate-y-1/2">
+            <button class="w-10 p-2 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="prev">
+              <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                   xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <div class="absolute right-1 top-1/2 transform -translate-y-1/2">
-          <button class="w-10 p-2 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next">
-            <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-          </button>
-        </div>
-        <div class="absolute left-1 top-1/2 transform -translate-y-1/2">
-          <button class="w-10 p-2 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="prev">
-            <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-          </button>
-        </div>
-      </div>
       </transition>
     </div>
   </div>
@@ -64,21 +69,7 @@ export default {
     }
   },
 
-  watch: {
-    slides() {
-      const slides = [...this.slides];
-
-      const firstSlide = slides[0];
-      const lastSlide = slides[slides.length - 1];
-
-      slides.unshift(lastSlide);
-      slides.push(firstSlide);
-
-      this.sliderSlides = slides;
-    }
-  },
-
-  data() {
+  data () {
     return {
       hideControl: false,
 
@@ -89,121 +80,135 @@ export default {
       sliderSlides: [],
 
       animationInProgress: false,
-      doAnimation: true,
+      doAnimation: true
     }
   },
 
+  watch: {
+    slides () {
+      const slides = [...this.slides]
+
+      const firstSlide = slides[0]
+      const lastSlide = slides[slides.length - 1]
+
+      slides.unshift(lastSlide)
+      slides.push(firstSlide)
+
+      this.sliderSlides = slides
+    }
+  },
+  mounted () {
+    this.startAutoSlider()
+  },
+  beforeDestroy () {
+    this.stopAutoSlider()
+  },
+
   methods: {
-    isCurrentSlide(index) {
+    isCurrentSlide (index) {
       if (
         this.currentSlide === this.sliderSlides.length - 1 && index === 0 ||
         this.currentSlide === 0 && index === this.sliderSlides.length - 3
       ) {
-        return true;
+        return true
       }
 
       return index === this.currentSlide - 1
     },
 
-    goToSlide(index) {
+    goToSlide (index) {
       if (this.animationInProgress) {
-        return;
+        return
       }
 
-      const handleDone = this.handleShift();
-      let nextSlide = null;
+      const handleDone = this.handleShift()
+      let nextSlide = null
 
       if (this.currentSlide === this.sliderSlides.length - 1 && index === 0) {
         nextSlide = 1
       } else if (this.currentSlide === 0 && index === this.sliderSlides.length - 3) {
-        nextSlide = this.sliderSlides.length - 3;
+        nextSlide = this.sliderSlides.length - 3
       } else {
-        nextSlide = index + 1;
+        nextSlide = index + 1
       }
 
       if (nextSlide === this.currentSlide) {
-        handleDone();
-        return;
+        handleDone()
+        return
       }
 
-      this.currentSlide = nextSlide;
+      this.currentSlide = nextSlide
     },
 
-    next() {
+    next () {
       if (this.animationInProgress) {
-        return;
+        return
       }
 
-      this.handleShift();
-      this.currentSlide++;
+      this.handleShift()
+      this.currentSlide++
     },
 
-    prev() {
+    prev () {
       if (this.animationInProgress) {
-        return;
+        return
       }
 
-      this.handleShift();
-      this.currentSlide--;
+      this.handleShift()
+      this.currentSlide--
     },
 
-    startAutoSlider() {
+    startAutoSlider () {
       if (this.hideControl) {
-        return;
+        return
       }
 
       this.autoSlideInterval = setInterval(() => {
-        this.next();
+        this.next()
       }, 3000)
     },
 
-    stopAutoSlider() {
+    stopAutoSlider () {
       if (this.autoSlideInterval) {
-        clearInterval(this.autoSlideInterval);
+        clearInterval(this.autoSlideInterval)
       }
     },
 
-    handleShift() {
-      const elementMinus = this.$refs['slide-' + (this.currentSlide - 1)];
-      const elementPlus= this.$refs['slide-' + (this.currentSlide + 1)];
-      const self = this;
+    handleShift () {
+      const elementMinus = this.$refs['slide-' + (this.currentSlide - 1)]
+      const elementPlus = this.$refs['slide-' + (this.currentSlide + 1)]
+      const self = this
 
-      this.doAnimation = true;
-      this.animationInProgress = true;
+      this.doAnimation = true
+      this.animationInProgress = true
 
-      function handleDone() {
-        self.animationInProgress = false;
+      function handleDone () {
+        self.animationInProgress = false
 
         if (self.currentSlide >= self.sliderSlides.length - 1) {
-          self.doAnimation = false;
-          self.currentSlide = 1;
-        } else  if (self.currentSlide <= 0) {
-          self.doAnimation = false;
-          self.currentSlide = self.sliderSlides.length - 2;
+          self.doAnimation = false
+          self.currentSlide = 1
+        } else if (self.currentSlide <= 0) {
+          self.doAnimation = false
+          self.currentSlide = self.sliderSlides.length - 2
         }
 
         if (elementMinus) {
-          elementMinus[0].removeEventListener('transitionend', handleDone);
+          elementMinus[0].removeEventListener('transitionend', handleDone)
         }
         if (elementPlus) {
-          elementPlus[0].removeEventListener('transitionend', handleDone);
+          elementPlus[0].removeEventListener('transitionend', handleDone)
         }
       }
       if (elementMinus) {
-        elementMinus[0].addEventListener('transitionend', handleDone);
+        elementMinus[0].addEventListener('transitionend', handleDone)
       }
       if (elementPlus) {
-        elementPlus[0].addEventListener('transitionend', handleDone);
+        elementPlus[0].addEventListener('transitionend', handleDone)
       }
 
-      return handleDone;
-    },
-  },
-  mounted() {
-    this.startAutoSlider();
-  },
-  beforeDestroy() {
-    this.stopAutoSlider();
+      return handleDone
+    }
   }
 }
 </script>

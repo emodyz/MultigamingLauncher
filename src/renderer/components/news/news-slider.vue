@@ -14,18 +14,18 @@
 </template>
 
 <script>
-import Slider from "@/components/slider";
-import Article from "@/components/news/article";
+import Slider from '@/components/slider'
+import Article from '@/components/news/article'
 
 export default {
-  components: {Slider},
-  data() {
+  components: { Slider },
+  data () {
     return {
       news: []
     }
   },
 
-  async mounted() {
+  async mounted () {
     // MOCK
     const content = await fetch('https://raw.githubusercontent.com/emodyz/MultigamingLauncher/master/README.md').then(res => res.text())
 
@@ -35,16 +35,16 @@ export default {
         title: "J'aime les brocolis",
         subtitle: 'Oh oui miam !',
         image: 'https://image.api.playstation.com/vulcan/img/cfn/11307x4B5WLoVoIUtdewG4uJ_YuDRTwBxQy0qP8ylgazLLc01PBxbsFG1pGOWmqhZsxnNkrU3GXbdXIowBAstzlrhtQ4LCI4.png',
-        content: content
+        content
       }
     })
     this.news.push({
       component: Article,
       data: {
-        title: "Oh god Arma4 est sortie !",
+        title: 'Oh god Arma4 est sortie !',
         subtitle: 'Lien dans la description',
         image: 'https://i.ytimg.com/vi/TeOShkJN9Xw/maxresdefault.jpg',
-        content: content
+        content
       }
     })
     this.news.push({
@@ -53,7 +53,7 @@ export default {
         title: "GTA V. C'est vraiment une tuerie ! ",
         subtitle: 'Tentez de gagner une PS5',
         image: 'https://media.begeek.fr/2020/05/Epic-Games-Store-GTA-5-PC.jpg',
-        content: content
+        content
       }
     })
   }
@@ -94,6 +94,5 @@ export default {
     border-right-color: transparent;
   }
 }
-
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row h-full ">
     <div class="flex w-2/3 h-auto p-4">
-        <news-slider/>
+      <news-slider />
     </div>
     <div class="flex w-1/3  h-auto p-4">
       <iframe
@@ -24,7 +24,7 @@
 
 <script>
 import { remote } from 'electron'
-import NewsSlider from "@/components/news/news-slider";
+import NewsSlider from '@/components/news/news-slider'
 
 export default {
   transition: 'fade',

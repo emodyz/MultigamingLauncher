@@ -74,13 +74,13 @@ export default {
     resizeHeader () {
       this.headerSize = this.$refs.newsHeader.clientHeight + 30
     },
-    openCloseNews() {
+    openCloseNews () {
       this.opened = !this.opened
 
       if (this.opened) {
-        this.$emit('control', true);
+        this.$emit('control', true)
       } else {
-        this.$emit('control', false);
+        this.$emit('control', false)
       }
     }
   }
