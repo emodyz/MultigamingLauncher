@@ -2,7 +2,10 @@
   <div class="bg-gray-900">
     <Sidebar class="slide-animation" />
     <Header :title="title" class="pl-20 slide-animation" />
-    <div :class="{'pt-24': title}" class="text-gray-700 bg-gray-900 h-screen w-screen pl-20 overflow-y-scroll slide-animation">
+    <div
+      class="text-gray-700 bg-gray-900 h-screen w-screen pl-20 overflow-y-scroll slide-animation"
+      :class="{'pt-24': title}"
+    >
       <div class="relative w-full h-full">
         <nuxt />
       </div>

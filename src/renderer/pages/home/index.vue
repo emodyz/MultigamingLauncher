@@ -15,7 +15,9 @@
       <div v-if="voice.type === 'teamspeak'" class="flex flex-col w-full justify-center items-center">
         <img class="w-32" src="https://upload.wikimedia.org/wikipedia/commons/e/ec/TeamSpeak_logo_renovado.png">
         <div class="mt-4 w-full">
-          <button class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2 w-full ">JOIN</button>
+          <button class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2 w-full">
+            JOIN
+          </button>
         </div>
       </div>
     </div>

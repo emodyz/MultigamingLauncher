@@ -43,7 +43,10 @@
               >
                 <div class="relative mx-auto w-3/5">
                   <img :src="server.game.logo_url" class="object-cover server-picture">
-                  <div v-if="hasUpdate(server.id, server.update_hash)" class="absolute top-0 right-0 flex  cursor-pointer">
+                  <div
+                    v-if="hasUpdate(server.id, server.update_hash)"
+                    class="absolute top-0 right-0 flex cursor-pointer"
+                  >
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
                   </div>

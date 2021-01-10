@@ -32,7 +32,7 @@ module.exports = {
   ],
   router: {
     middleware: ['auth'],
-    extendRoutes (routes, resolve) {
+    extendRoutes (routes) {
       routes.push(
         { path: '/', redirect: '/home' }
       )

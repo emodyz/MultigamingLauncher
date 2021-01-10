@@ -5,6 +5,7 @@
       <div
         v-for="(slide, index) of sliderSlides"
         v-else
+        :key="index"
         :ref="'slide-' + index"
         :class="{
           'transition-all': doAnimation,
@@ -22,8 +23,12 @@
       </div>
       <transition name="fade">
         <div v-if="sliderSlides.length > 1 && !hideControl">
-          <div class="absolute flex top-2 right-1/2 text-acid-green blurred bg-black bg-opacity-20 rounded-full transform translate-x-1/2 ">
+          <div
+            class="absolute flex top-2 right-1/2 text-acid-green blurred bg-black bg-opacity-20
+            rounded-full transform translate-x-1/2 "
+          >
             <div v-for="(slide, index) of slides"
+                 :key="index"
                  class="cursor-pointer p-2"
                  @click="goToSlide(index)"
             >
@@ -35,7 +40,9 @@
             </div>
           </div>
           <div class="absolute right-1 top-1/2 transform -translate-y-1/2">
-            <button class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next">
+            <button class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white
+            transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next"
+            >
               <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                    xmlns="http://www.w3.org/2000/svg"
               >
@@ -44,7 +51,9 @@
             </button>
           </div>
           <div class="absolute left-1 top-1/2 transform -translate-y-1/2">
-            <button class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="prev">
+            <button class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors
+             blurred hover:bg-opacity-50 focus:outline-none" @click="prev"
+            >
               <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                    xmlns="http://www.w3.org/2000/svg"
               >
@@ -63,7 +72,7 @@ import {Component, Prop, Vue} from 'vue-property-decorator'
 
 @Component
 export default class Slider extends Vue {
-  @Prop({type: Array, required: true, default: []}) slides!: any[];
+  @Prop({ type: Array, required: true, default: [] }) slides!: any[];
 
   hideControl: boolean = false;
   currentSlide: number = 1;
@@ -73,7 +82,7 @@ export default class Slider extends Vue {
 
   autoSlideInterval: any = null;
 
-  get sliderSlides() {
+  get sliderSlides () {
     const slides = [...this.slides]
 
     const firstSlide = slides[0]
@@ -86,7 +95,7 @@ export default class Slider extends Vue {
       slides.push(firstSlide)
     }
 
-    return slides;
+    return slides
   }
 
   mounted () {
@@ -98,10 +107,9 @@ export default class Slider extends Vue {
   }
 
   isCurrentSlide (index: number) {
-    if (
-      this.currentSlide === this.sliderSlides.length - 1 && index === 0 ||
-      this.currentSlide === 0 && index === this.sliderSlides.length - 3
-    ) {
+    if (this.currentSlide === this.sliderSlides.length - 1 && index === 0) {
+      return true
+    } else if (this.currentSlide === 0 && index === this.sliderSlides.length - 3) {
       return true
     }
 

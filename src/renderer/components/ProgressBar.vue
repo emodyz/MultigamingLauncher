@@ -10,13 +10,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from "vue-property-decorator";
+import {Component, Prop, Vue} from 'vue-property-decorator'
 
 @Component
 export default class ProgressBar extends Vue {
-
-  @Prop({type: Number, required: true, default: 0}) progress!: number;
-
+  @Prop({ type: Number, required: true, default: 0 }) progress!: number;
 }
 </script>
 

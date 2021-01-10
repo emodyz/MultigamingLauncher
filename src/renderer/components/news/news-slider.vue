@@ -16,8 +16,8 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
 
-import Article from "~/components/news/article.vue";
-import Slider from "~/components/slider.vue";
+import Article from '~/components/news/article.vue'
+import Slider from '~/components/slider.vue'
 
 @Component({
   components: {
@@ -27,16 +27,17 @@ import Slider from "~/components/slider.vue";
 export default class NewsSlider extends Vue {
   news: any[] = []
 
-  async mounted() {
+  async mounted () {
     // MOCK
-    const content = await fetch('https://raw.githubusercontent.com/emodyz/MultigamingLauncher/master/README.md').then(res => res.text())
+    const content = await fetch('https://raw.githubusercontent.com/emodyz/MultigamingLauncher/master/README.md')
+      .then(res => res.text())
 
     this.news.push({
       component: Article,
       data: {
         title: "J'aime les brocolis",
         subtitle: 'Oh oui miam !',
-        image: 'https://image.api.playstation.com/vulcan/img/cfn/11307x4B5WLoVoIUtdewG4uJ_YuDRTwBxQy0qP8ylgazLLc01PBxbsFG1pGOWmqhZsxnNkrU3GXbdXIowBAstzlrhtQ4LCI4.png',
+        image: 'https://www.pedagojeux.fr/wp-content/uploads/2019/11/1280x720_Minecraft.jpg',
         content
       }
     })

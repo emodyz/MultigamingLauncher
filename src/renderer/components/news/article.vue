@@ -16,7 +16,10 @@
         </span>
       </div>
       <transition name="fade">
-        <article v-if="opened" class="prose-sm text-white border-t border-acid-green border-opacity-50 pt-5" v-html="parsedContent" />
+        <article
+          v-if="opened" class="prose-sm text-white border-t border-acid-green border-opacity-50 pt-5"
+          v-html="parsedContent"
+        />
       </transition>
     </div>
   </div>
@@ -28,7 +31,6 @@ import marked from 'marked'
 
 @Component
 export default class Article extends Vue {
-
   @Ref() readonly newsHeader: any;
 
   @Prop({ type: String, required: true, default: null }) image!: string;
@@ -58,10 +60,10 @@ export default class Article extends Vue {
 
   resizeHeader () {
     if (this.resizeHeaderTimeout) {
-      clearTimeout(this.resizeHeaderTimeout);
+      clearTimeout(this.resizeHeaderTimeout)
     }
     this.resizeHeaderTimeout = setTimeout(() => {
-      this.headerSize = this.newsHeader.clientHeight + 30;
+      this.headerSize = this.newsHeader.clientHeight + 30
     }, 300)
   }
 

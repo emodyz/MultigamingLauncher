@@ -20,13 +20,22 @@
           <div v-if="downloader">
             <ProgressBar :progress="downloader.progress" class="mb-3" />
             <div class="flex flex-row justify-between items-end">
-              <button class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2" @click="stopDownload">
+              <button
+                class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
+                @click="stopDownload"
+              >
                 STOP
               </button>
-              <button class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2" @click="pauseDownload">
+              <button
+                class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
+                @click="pauseDownload"
+              >
                 PAUSE
               </button>
-              <button class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2" @click="resumeDownload">
+              <button
+                class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
+                @click="resumeDownload"
+              >
                 RESUME
               </button>
             </div>
@@ -67,6 +76,28 @@ export default {
   components: {
     NewsSlider,
     ProgressBar
+  },
+
+  async fetch () {
+    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
+    // eslint-disable-next-line new-cap
+    this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
+    this.installPath = await this.module.findGamePath()
+  },
+
+  async asyncData ({ params }) {
+    const id = params.id
+    return { id }
+  },
+
+  data () {
+    return {
+      module: null,
+      installPath: null,
+      forceUpdate: false,
+      checkServerInterval: null,
+      server: null
+    }
   },
 
   computed: {
@@ -143,27 +174,6 @@ export default {
   head () {
     return {
       title: `Server - ${this.server?.name || ''}`
-    }
-  },
-
-  async fetch () {
-    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
-    this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
-    this.installPath = await this.module.findGamePath()
-  },
-
-  async asyncData ({ params }) {
-    const id = params.id
-    return { id }
-  },
-
-  data () {
-    return {
-      module: null,
-      installPath: null,
-      forceUpdate: false,
-      checkServerInterval: null,
-      server: null
     }
   }
 }
