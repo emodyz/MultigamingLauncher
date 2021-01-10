@@ -1,26 +1,18 @@
 <template>
   <div class="flex flex-row h-auto w-full p-4">
-    <div class="w-3/4 pb-10">
+    <div class="w-3/4 pr-5">
       <span class="text-4xl font-bold text-white pl-3">
         News
       </span>
-      <div class="container overflow-auto h-auto px-2">
-        <div class="border border-gray-700 bg-gray-800 h-64 rounded mb-4 p-2">
-          News 1
-        </div>
-        <div class="border border-gray-700 bg-gray-800 h-64 rounded mb-4 p-2">
-          News 2
-        </div>
-        <div class="border border-gray-700 bg-gray-800 h-64 rounded mb-4 p-2">
-          News 3
-        </div>
+      <div class="w-full h-full mt-5">
+        <news-slider/>
       </div>
     </div>
     <div class="w-1/3">
       <span class="text-4xl font-bold text-white pl-3">
         Play
       </span>
-      <div class="container px-2 h-full">
+      <div class="mt-5 px-2 h-full">
         <div class="flex flex-col border border-gray-700 bg-gray-800 h-32 rounded mb-4 p-2">
           <div v-if="server">
             {{ hasUpdate(id, server.update_hash) }}
@@ -50,7 +42,14 @@
             </button>
           </div>
         </div>
-        <div class="border border-gray-700 bg-gray-800 h-64 rounded" />
+        <div class="border border-gray-700 bg-gray-800 h-64 rounded p-3">
+          <div v-if="server && server.status">
+            <span class="text-white block font-bold">Is online: {{ server.status.online }}</span>
+            <span class="text-white block font-thin">Slots: {{ server.status.players_max }}</span>
+            <span class="text-white block font-thin">Online: {{ server.status.players_online }}</span>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -60,11 +59,13 @@
 import { remote } from 'electron'
 import { mapGetters } from 'vuex'
 import ProgressBar from '@/components/ProgressBar'
+import NewsSlider from "@/components/news/news-slider";
 
 export default {
   transition: 'fade',
 
   components: {
+    NewsSlider,
     ProgressBar
   },
 

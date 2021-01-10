@@ -1,9 +1,7 @@
 <template>
   <div class="w-full h-full bg-gray-800 rounded-md" @mouseout="startAutoSlider" @mouseover="stopAutoSlider">
     <div class="relative flex justify-center w-full h-full overflow-hidden rounded-md">
-      <slot v-if="sliderSlides.length === 0" name="empty">
-
-      </slot>
+      <slot v-if="sliderSlides.length === 0" name="empty"/>
       <div
         v-else
         v-for="(slide, index) of sliderSlides"
@@ -21,19 +19,20 @@
           v-on:control="hideControl = $event"
         />
       </div>
-      <div v-if="slides.length > 1 && !hideControl">
-        <div class="absolute flex bottom-0 right-1/2 text-white transform translate-x-1/2">
+      <transition name="fade">
+        <div v-if="slides.length > 1 && !hideControl">
+        <div class="absolute flex top-2 right-1/2 text-acid-green blurred bg-black bg-opacity-20 rounded-full transform translate-x-1/2 " >
             <div v-for="(slide, index) of slides"
-                 :class="{
+                 class="cursor-pointer p-2"
+                 @click="goToSlide(index)">
+                 <div
+                   :class="{
                     'bg-white': isCurrentSlide(index)
-                 }"
-                 class="w-2 h-2 border rounded-full m-2"
-            >
-
+                 }" class="w-2 h-2 border rounded-full"/>
             </div>
         </div>
         <div class="absolute right-1 top-1/2 transform -translate-y-1/2">
-          <button class="w-10 p-2 rounded-full font-bold bg-gray-800 text-white opacity-70 transition-opacity  hover:opacity-90 focus:outline-none" @click="next">
+          <button class="w-10 p-2 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next">
             <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                  xmlns="http://www.w3.org/2000/svg">
               <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -41,7 +40,7 @@
           </button>
         </div>
         <div class="absolute left-1 top-1/2 transform -translate-y-1/2">
-          <button class="w-10 p-2 rounded-full font-bold bg-gray-800 text-white opacity-70 transition-opacity hover:opacity-90 focus:outline-none" @click="prev">
+          <button class="w-10 p-2 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="prev">
             <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                  xmlns="http://www.w3.org/2000/svg">
               <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -49,6 +48,7 @@
           </button>
         </div>
       </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -105,29 +105,36 @@ export default {
       return index === this.currentSlide - 1
     },
 
+    goToSlide(index) {
+      if (this.animationInProgress) {
+        return;
+      }
+
+      const handleDone = this.handleShift();
+      let nextSlide = null;
+
+      if (this.currentSlide === this.sliderSlides.length - 1 && index === 0) {
+        nextSlide = 1
+      } else if (this.currentSlide === 0 && index === this.sliderSlides.length - 3) {
+        nextSlide = this.sliderSlides.length - 3;
+      } else {
+        nextSlide = index + 1;
+      }
+
+      if (nextSlide === this.currentSlide) {
+        handleDone();
+        return;
+      }
+
+      this.currentSlide = nextSlide;
+    },
+
     next() {
       if (this.animationInProgress) {
         return;
       }
 
-      const element = this.$refs['slide-' + (this.currentSlide - 1)][0];
-      const self = this;
-
-      function handleDone() {
-        self.animationInProgress = false;
-
-        if (self.currentSlide >= self.sliderSlides.length - 1) {
-          self.doAnimation = false;
-          self.currentSlide = 1;
-        }
-
-        element.removeEventListener('transitionend', handleDone);
-      }
-
-      element.addEventListener('transitionend', handleDone);
-
-      this.doAnimation = true;
-      this.animationInProgress = true;
+      this.handleShift();
       this.currentSlide++;
     },
 
@@ -136,26 +143,10 @@ export default {
         return;
       }
 
-      const element = this.$refs['slide-' + (this.currentSlide + 1)][0];
-      const self = this;
-
-      function handleDone() {
-        self.animationInProgress = false;
-
-        if (self.currentSlide <= 0) {
-          self.doAnimation = false;
-          self.currentSlide = self.sliderSlides.length - 2;
-        }
-
-        element.removeEventListener('transitionend', handleDone);
-      }
-
-      element.addEventListener('transitionend', handleDone);
-
-      this.doAnimation = true;
-      this.animationInProgress = true;
+      this.handleShift();
       this.currentSlide--;
     },
+
     startAutoSlider() {
       if (this.hideControl) {
         return;
@@ -165,11 +156,48 @@ export default {
         this.next();
       }, 3000)
     },
+
     stopAutoSlider() {
       if (this.autoSlideInterval) {
         clearInterval(this.autoSlideInterval);
       }
-    }
+    },
+
+    handleShift() {
+      const elementMinus = this.$refs['slide-' + (this.currentSlide - 1)];
+      const elementPlus= this.$refs['slide-' + (this.currentSlide + 1)];
+      const self = this;
+
+      this.doAnimation = true;
+      this.animationInProgress = true;
+
+      function handleDone() {
+        self.animationInProgress = false;
+
+        if (self.currentSlide >= self.sliderSlides.length - 1) {
+          self.doAnimation = false;
+          self.currentSlide = 1;
+        } else  if (self.currentSlide <= 0) {
+          self.doAnimation = false;
+          self.currentSlide = self.sliderSlides.length - 2;
+        }
+
+        if (elementMinus) {
+          elementMinus[0].removeEventListener('transitionend', handleDone);
+        }
+        if (elementPlus) {
+          elementPlus[0].removeEventListener('transitionend', handleDone);
+        }
+      }
+      if (elementMinus) {
+        elementMinus[0].addEventListener('transitionend', handleDone);
+      }
+      if (elementPlus) {
+        elementPlus[0].addEventListener('transitionend', handleDone);
+      }
+
+      return handleDone;
+    },
   },
   mounted() {
     this.startAutoSlider();
@@ -181,6 +209,8 @@ export default {
 </script>
 
 <style scoped>
-
+.blurred {
+  backdrop-filter: blur(4px);
+}
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="title"class="flex flex-row h-24 fixed w-full z-10 bg-gray-900">
+  <div v-if="title"class="fixed z-40 flex flex-row h-24 w-full bg-gray-900">
     <div class="flex justify-center flex-col w-full pt-2">
       <div class="border-t border-acid-green w-full" />
     </div>

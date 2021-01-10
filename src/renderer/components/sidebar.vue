@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-gray-900 w-20 justify-between flex flex-col border-r border-acid-green">
+  <nav class="fixed flex flex-col justify-between h-full w-20 z-50 bg-gray-900 border-r border-acid-green">
     <div class="mt-10 mb-10">
       <a href="#" @click="goToPanel">
         <img
@@ -42,10 +42,10 @@
                    v-tooltip.right="server.name"
               >
                 <div class="relative mx-auto w-3/5">
-                  <img :src="server.game.logo_url" class="object-cover  server-picture">
-                  <div v-if="hasUpdate(server.id, server.update_hash)" class="absolute top-0 right-0 flex">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-700 opacity-75" />
-                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-700" />
+                  <img :src="server.game.logo_url" class="object-cover server-picture">
+                  <div v-if="hasUpdate(server.id, server.update_hash)" class="absolute top-0 right-0 flex  cursor-pointer">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
                   </div>
                 </div>
               </div>
