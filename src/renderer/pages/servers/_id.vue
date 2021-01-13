@@ -63,26 +63,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { remote } from 'electron'
-import { mapGetters } from 'vuex'
+import { Component, Vue } from 'vue-property-decorator'
 import ProgressBar from '@/components/ProgressBar'
 import NewsSlider from '@/components/news/news-slider'
-import { downloadersStore } from '~/store'
+import { downloadersStore, updaterStore, pageStore } from '~/store'
 
-export default {
+@Component({
   transition: 'fade',
-
   components: {
     NewsSlider,
     ProgressBar
   },
 
-  async fetch () {
-    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
-    // eslint-disable-next-line new-cap
-    this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
-    this.installPath = await this.module.findGamePath()
+  head () {
+    return {
+      title: `Server - ${this.server?.name || ''}`
+    }
   },
 
   async asyncData ({ params }) {
@@ -90,91 +88,90 @@ export default {
     return { id }
   },
 
-  data () {
-    return {
-      module: null,
-      installPath: null,
-      forceUpdate: false,
-      checkServerInterval: null,
-      server: null
-    }
-  },
+  async fetch () {
+    this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
+    // eslint-disable-next-line new-cap
+    this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
+    this.installPath = await this.module.findGamePath()
+  }
+})
+export default class Server extends Vue {
+  module = null;
+  installPath = null;
+  forceUpdate = false;
+  checkServerInterval = null;
+  server = null;
 
-  computed: {
-    ...mapGetters('updater', [
-      'hasUpdate'
-    ]),
-    downloader () {
-      return downloadersStore.downloaderByServer(this.id)
-    }
-  },
+  get hasUpdate () {
+    return updaterStore.hasUpdate
+  }
+
+  get downloader () {
+    return downloadersStore.downloaderByServer(this.id)
+  }
 
   mounted () {
-    this.$store.commit('page/setTitle', null)
-  },
+    console.log(this.id)
+    pageStore.setTitle(null)
+  }
 
-  methods: {
-    getInstallPath (forceReselect = false) {
-      if (!forceReselect && this.module.validateGamePath(this.installPath)) {
-        return this.installPath
-      }
-
-      const installPath = remote.dialog.showOpenDialogSync({
-        properties: ['openDirectory']
-      })
-      if (installPath && installPath.length > 0) {
-        this.installPath = installPath.shift()
-      }
+  getInstallPath (forceReselect = false) {
+    if (!forceReselect && this.module.validateGamePath(this.installPath)) {
       return this.installPath
-    },
-
-    async startDownload (forceReselect = false) {
-      try {
-        this.module.gamePath = this.getInstallPath(forceReselect === true)
-      } catch (e) {
-        console.log('Game path not valid!')
-        if (forceReselect !== true) {
-          await this.startDownload(true)
-        }
-        return
-      }
-
-      try {
-        const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-        const downloader = this.module.prepareDownload(modpacks)
-
-        downloadersStore.add({
-          server: this.server,
-          downloader
-        })
-
-        downloadersStore.start({
-          serverId: this.id,
-          forceDownload: this.forceUpdate
-        })
-      } catch (e) {
-        console.error(e)
-      }
-    },
-
-    pauseDownload () {
-      downloadersStore.pause(this.id)
-    },
-
-    resumeDownload () {
-      downloadersStore.resume(this.id)
-    },
-
-    stopDownload () {
-      downloadersStore.stop(this.id)
     }
 
-  },
-
-  head () {
-    return {
-      title: `Server - ${this.server?.name || ''}`
+    const installPath = remote.dialog.showOpenDialogSync({
+      properties: ['openDirectory']
+    })
+    if (installPath && installPath.length > 0) {
+      this.installPath = installPath.shift()
     }
+    return this.installPath
+  }
+
+  async startDownload (forceReselect = false) {
+    try {
+      this.module.gamePath = this.getInstallPath(forceReselect)
+    } catch (e) {
+      console.log('Game path not valid!')
+      if (!forceReselect) {
+        await this.startDownload(true)
+      }
+      return
+    }
+
+    try {
+      const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
+      const downloader = this.module.prepareDownload(modpacks)
+
+      if (this.forceUpdate) {
+        updaterStore.remove(this.id)
+      }
+
+      downloadersStore.add({
+        server: this.server,
+        downloader
+      })
+
+      downloadersStore.start({
+        serverId: this.id,
+        forceDownload: this.forceUpdate
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  pauseDownload () {
+    downloadersStore.pause(this.id)
+  }
+
+  resumeDownload () {
+    downloadersStore.resume(this.id)
+  }
+
+  stopDownload () {
+    downloadersStore.stop(this.id)
   }
 }
 </script>

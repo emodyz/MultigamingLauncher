@@ -4,9 +4,8 @@
     name="pop"
   >
     <div
-      v-for="(server, index) in servers"
+      v-for="(server) in servers"
       :key="server.id"
-      :data-index="index"
       class="relative flex flex-row items-center rounded overflow-hidden border-2 bg-gray-900 border-gray-800
       mt-4 w-full m-5 w-1/3"
       style="max-height: 250px; max-width: 400px;"
@@ -77,64 +76,45 @@
   </transition-group>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 import { serverStore, pageStore } from '~/store'
-const anime = require('animejs')
 
-export default {
-  name: 'Index',
-  transition: 'fade',
+@Component({
+  transition: 'fade'
+})
+export default class Servers extends Vue {
+  get servers () {
+    return serverStore.servers
+  }
 
-  computed: {
-    servers () {
-      return serverStore.servers
-    },
-    isFavorite () {
-      return serverStore.isFavorite
-    }
-  },
+  get isFavorite () {
+    return serverStore.isFavorite
+  }
 
   async created () {
     await serverStore.sync()
-  },
+  }
 
   mounted () {
     pageStore.setTitle('SERVERS')
-  },
-
-  methods: {
-    enter (el, done) {
-      console.log('cce')
-      const delay = el.dataset.index * 150
-      setTimeout(function () {
-        anime({
-          targets: el,
-          opacity: 1,
-          scale: [
-            { value: 1 }
-          ],
-          duration: 500,
-          complete: done
-        })
-      }, delay)
-    },
-
-    favServer (server) {
-      this.$store.commit('servers/favServer', server.id)
-    },
-
-    unfavServer (server) {
-      this.$store.commit('servers/unfavServer', server.id)
-    }
   }
 
+  favServer (server) {
+    serverStore.favServer(server.id)
+  }
+
+  unfavServer (server) {
+    serverStore.unfavServer(server.id)
+  }
 }
 </script>
 
 <style scoped>
 
 .acid-button {
-  border: 2px #CCFF00 solid;
+  @apply border-2 border-acid-green;
+
   animation: morph 3s ease-in-out infinite;
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   height: 40px;

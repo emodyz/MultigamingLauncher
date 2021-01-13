@@ -24,48 +24,36 @@
   </div>
 </template>
 
-<script>
-import { remote } from 'electron'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 import NewsSlider from '@/components/news/news-slider'
 import { pageStore } from '@/store'
 
-export default {
+@Component({
   transition: 'fade',
-
   components: {
     NewsSlider
-  },
-
-  data () {
-    return {
-      news: [],
-      voice: {
-        type: 'discord',
-        server: {
-          id: '137612119536304128'
-        }
-      }
+  }
+})
+export default class Home extends Vue {
+  news = [];
+  voice = {
+    type: 'discord',
+    server: {
+      id: '137612119536304128'
     }
-  },
+  };
 
-  computed: {
-    user () {
-      return this.$store.state.auth.user
-    }
-  },
+  get user () {
+    return this.$store.state.auth.user
+  }
 
-  async mounted () {
+  mounted () {
     pageStore.setTitle('HOME')
-  },
-
-  methods: {
-    openURL (url) {
-      remote.shell.openExternal(url)
-    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

@@ -55,7 +55,7 @@ import { $axios } from '~/utils/api'
   transition: 'fade',
   layout: 'auth'
 })
-export default class extends Vue {
+export default class Forgot extends Vue {
   loading = false;
   message = null;
   email = '';
@@ -79,43 +79,6 @@ export default class extends Vue {
   }
 }
 </script>
-
-<!--<script>
-export default {
-  name: 'Forgot',
-  auth: 'guest',
-  layout: 'auth',
-
-  data () {
-    return {
-      loading: false,
-      message: null,
-      email: '',
-      errors: []
-    }
-  },
-
-  methods: {
-    async sendForgotRequest (event) {
-      event.preventDefault()
-      this.errors = []
-      this.loading = true
-      this.message = null
-
-      try {
-        const response = await this.$axios.post('/auth/password/forgot', {
-          email: this.email
-        })
-        this.message = response?.message || null
-      } catch (err) {
-        this.errors = err?.response?.data?.errors || []
-        this.message = err?.response?.message || null
-      }
-      this.loading = false
-    }
-  }
-}
-</script>-->
 
 <style scoped>
 

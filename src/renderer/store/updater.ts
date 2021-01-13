@@ -31,4 +31,12 @@ export default class Updater extends VuexModule {
       })
     }
   }
+
+  @Mutation
+  remove (serverId: string) {
+    const index = this.servers.map(server => server.id).indexOf(serverId)
+    if (index !== -1) {
+      this.servers.splice(index, 1)
+    }
+  }
 }
