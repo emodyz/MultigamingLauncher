@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
-import {app, Menu, MenuItem} from 'electron'
+import { app, Menu, MenuItem } from 'electron'
 import electronDebug from 'electron-debug'
 import vueDevtools from 'vue-devtools'
-import {ELECTRON_RELAUNCH_CODE} from '../../.electron-nuxt/config'
+import { ELECTRON_RELAUNCH_CODE } from '../../.electron-nuxt/config'
 import mainWinHandler from './mainWindow'
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'

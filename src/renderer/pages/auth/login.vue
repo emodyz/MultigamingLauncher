@@ -1,5 +1,5 @@
 <template>
-  <form @submit="login">
+  <form @submit.prevent="login">
     <div class="mb-4">
       <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
         Email
@@ -42,40 +42,36 @@
   </form>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+
+@Component({
+  // @ts-ignore
   auth: 'guest',
-  name: 'Login',
   layout: 'auth',
-  transition: 'fade',
+  transition: 'fade'
+})
+export default class Login extends Vue {
+  loading = false;
+  email = '';
+  password = '';
+  errors = [];
 
-  data () {
-    return {
-      loading: false,
-      email: '',
-      password: '',
-      errors: []
+  async login () {
+    this.errors = []
+    this.loading = true
+    try {
+      await this.$auth.loginWith('local', {
+        data: {
+          email: this.email,
+          password: this.password,
+          device_name: 'Launcher'
+        }
+      })
+    } catch (err) {
+      this.errors = err?.response?.data?.errors || []
     }
-  },
-
-  methods: {
-    async login (event) {
-      event.preventDefault()
-      this.errors = []
-      this.loading = true
-      try {
-        await this.$auth.loginWith('local', {
-          data: {
-            email: this.email,
-            password: this.password,
-            device_name: 'Launcher'
-          }
-        })
-      } catch (err) {
-        this.errors = err?.response?.data?.errors || []
-      }
-      this.loading = false
-    }
+    this.loading = false
   }
 }
 </script>

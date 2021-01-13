@@ -1,5 +1,5 @@
 <template>
-  <form @submit="sendForgotRequest">
+  <form @submit.prevent="sendForgotRequest">
     <div v-if="message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-3"
          role="alert"
     >
@@ -45,12 +45,46 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { $axios } from '~/utils/api'
+
+@Component({
+  // @ts-ignore
+  auth: 'guest',
+  transition: 'fade',
+  layout: 'auth'
+})
+export default class extends Vue {
+  loading = false;
+  message = null;
+  email = '';
+  errors = [];
+
+  async sendForgotRequest () {
+    this.errors = []
+    this.loading = true
+    this.message = null
+
+    try {
+      const response = await $axios.post('/auth/password/forgot', {
+        email: this.email
+      }) as any
+      this.message = response?.message || null
+    } catch (err) {
+      this.errors = err?.response?.data?.errors || []
+      this.message = err?.response?.message || null
+    }
+    this.loading = false
+  }
+}
+</script>
+
+<!--<script>
 export default {
   name: 'Forgot',
   auth: 'guest',
   layout: 'auth',
-  transition: 'fade',
 
   data () {
     return {
@@ -81,7 +115,7 @@ export default {
     }
   }
 }
-</script>
+</script>-->
 
 <style scoped>
 
