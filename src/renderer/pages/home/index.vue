@@ -26,8 +26,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import NewsSlider from '@/components/news/news-slider'
 import { pageStore } from '@/store'
+import NewsSlider from '@/components/news/news-slider.vue'
 
 @Component({
   transition: 'fade',

@@ -61,6 +61,7 @@ export default class Login extends Vue {
     this.errors = []
     this.loading = true
     try {
+      // @ts-ignore
       await this.$auth.loginWith('local', {
         data: {
           email: this.email,

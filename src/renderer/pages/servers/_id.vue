@@ -66,9 +66,9 @@
 <script lang="ts">
 import { remote } from 'electron'
 import { Component, Vue } from 'vue-property-decorator'
-import ProgressBar from '@/components/ProgressBar'
-import NewsSlider from '@/components/news/news-slider'
-import { downloadersStore, updaterStore, pageStore } from '~/store'
+import ProgressBar from '@/components/ProgressBar.vue'
+import { downloadersStore, updaterStore, pageStore } from '@/store'
+import NewsSlider from '@/components/news/news-slider.vue'
 
 @Component({
   transition: 'fade',
@@ -79,6 +79,7 @@ import { downloadersStore, updaterStore, pageStore } from '~/store'
 
   head () {
     return {
+      // @ts-ignore
       title: `Server - ${this.server?.name || ''}`
     }
   },
@@ -89,18 +90,24 @@ import { downloadersStore, updaterStore, pageStore } from '~/store'
   },
 
   async fetch () {
+    // @ts-ignore
     this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
+    // @ts-ignore
     // eslint-disable-next-line new-cap
     this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
+    // @ts-ignore
     this.installPath = await this.module.findGamePath()
   }
 })
 export default class Server extends Vue {
-  module = null;
-  installPath = null;
+  module: any = null;
+  installPath: string | null = null;
   forceUpdate = false;
   checkServerInterval = null;
   server = null;
+
+  // @ts-ignore
+  id: string;
 
   get hasUpdate () {
     return updaterStore.hasUpdate
@@ -124,7 +131,7 @@ export default class Server extends Vue {
       properties: ['openDirectory']
     })
     if (installPath && installPath.length > 0) {
-      this.installPath = installPath.shift()
+      this.installPath = installPath.shift() || null
     }
     return this.installPath
   }

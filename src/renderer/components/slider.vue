@@ -122,7 +122,7 @@ export default class Slider extends Vue {
     }
 
     const handleDone = this.handleShift()
-    let nextSlide = null
+    let nextSlide: number
 
     if (this.currentSlide === this.sliderSlides.length - 1 && index === 0) {
       nextSlide = 1

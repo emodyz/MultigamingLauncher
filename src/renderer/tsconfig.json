@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-      "experimentalDecorators": true,
-    "target": "ES2018",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "experimentalDecorators": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
     "lib": [
-      "ESNext",
-      "ESNext.AsyncIterable",
-      "DOM"
+      "esnext",
+      "esnext.asynciterable",
+      "dom"
     ],
+    "noImplicitAny": false,
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
@@ -27,8 +28,5 @@
       "@types/node",
       "@nuxt/types"
     ]
-  },
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }
