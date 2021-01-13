@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Ref, Vue} from 'vue-property-decorator'
+import { Component, Prop, Ref, Vue } from 'vue-property-decorator'
 import marked from 'marked'
 
 @Component
@@ -46,16 +46,22 @@ export default class Article extends Vue {
     return marked(this.content)
   }
 
-  created () {
-    window.addEventListener('resize', this.resizeHeader)
-  }
-
   mounted () {
     this.resizeHeader()
   }
 
+  created () {
+    window.addEventListener('resize', this.resizeHeader)
+  }
+
   destroyed () {
     window.removeEventListener('resize', this.resizeHeader)
+  }
+
+  beforeDestroy () {
+    if (this.resizeHeaderTimeout) {
+      clearTimeout(this.resizeHeaderTimeout)
+    }
   }
 
   resizeHeader () {

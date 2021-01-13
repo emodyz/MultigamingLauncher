@@ -1,6 +1,6 @@
 import * as path from 'path'
 import * as fs from 'fs'
-import {Downloader, GameModule, Modpack, Sdk} from '~/modules/lib/Sdk'
+import { Downloader, GameModule, Modpack, Sdk } from '~/modules/lib/Sdk'
 
 // @ts-ignore
 export default class Minecraft extends GameModule {

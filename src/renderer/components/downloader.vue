@@ -22,9 +22,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import ProgressBar from '~/components/ProgressBar.vue'
-import {downloadersStore} from '~/utils/store-accessor'
+import { downloadersStore } from '~/utils/store-accessor'
 
 @Component({
   components: { ProgressBar }

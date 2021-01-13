@@ -19,7 +19,8 @@ module.exports = {
   ],
   plugins: [
     { src: '~/plugins/vuex-persist', ssr: false },
-    '~/plugins/vue-tooltip.js'
+    '~/plugins/vue-tooltip.js',
+    '~/plugins/axios-accessor.ts'
   ],
   buildModules: [
     '@nuxt/typescript-build',

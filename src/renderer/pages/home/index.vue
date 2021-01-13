@@ -27,6 +27,7 @@
 <script>
 import { remote } from 'electron'
 import NewsSlider from '@/components/news/news-slider'
+import { pageStore } from '@/store'
 
 export default {
   transition: 'fade',
@@ -54,7 +55,7 @@ export default {
   },
 
   async mounted () {
-    this.$store.commit('page/setTitle', 'HOME')
+    pageStore.setTitle('HOME')
   },
 
   methods: {

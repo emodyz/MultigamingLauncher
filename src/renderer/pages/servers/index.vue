@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { serverStore, pageStore } from '~/store'
 const anime = require('animejs')
 
 export default {
@@ -86,18 +86,20 @@ export default {
   transition: 'fade',
 
   computed: {
-    ...mapGetters('servers', [
-      'isFavorite',
-      'servers'
-    ])
+    servers () {
+      return serverStore.servers
+    },
+    isFavorite () {
+      return serverStore.isFavorite
+    }
   },
 
   async created () {
-    await this.$store.dispatch('servers/sync')
+    await serverStore.sync()
   },
 
   mounted () {
-    this.$store.commit('page/setTitle', 'SERVERS')
+    pageStore.setTitle('SERVERS')
   },
 
   methods: {

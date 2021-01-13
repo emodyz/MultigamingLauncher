@@ -1,4 +1,4 @@
-import {Downloader} from '@emodyz/node-downloader'
+import { Downloader } from '@emodyz/node-downloader'
 
 export interface FileManifest {
   url: string;
@@ -29,7 +29,7 @@ export abstract class GameModule {
     this._gamePath = gamePath
   }
 
-  public abstract findGamePath(): Promise<string|null>;
+  public abstract findGamePath(): Promise<string | null>;
 
   public abstract validateGamePath(gamePath: string): boolean;
 

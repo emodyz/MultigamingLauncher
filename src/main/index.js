@@ -1,5 +1,5 @@
 /* globals INCLUDE_RESOURCES_PATH */
-import {app} from 'electron'
+import { app } from 'electron'
 
 /**
  * Set `__resources` path to resources files in renderer process

@@ -1,4 +1,4 @@
-import {Module, Mutation, VuexModule} from 'vuex-module-decorators'
+import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 
 @Module({
   name: 'page',
@@ -9,7 +9,7 @@ export default class Page extends VuexModule {
   title: string | null = null;
 
   @Mutation
-  setTitle (title: string) {
+  setTitle (title: string | null) {
     this.title = title
   }
 }

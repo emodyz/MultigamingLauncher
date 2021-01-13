@@ -1,9 +1,10 @@
-import {Module, Mutation, VuexModule} from 'vuex-module-decorators'
+import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 
 @Module({
   name: 'updater',
   stateFactory: true,
-  namespaced: true
+  namespaced: true,
+  preserveState: true
 })
 export default class Updater extends VuexModule {
   servers: any[] = [];

@@ -1,6 +1,6 @@
-import {Module, Mutation, VuexModule} from 'vuex-module-decorators'
+import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 
-import {downloadersStore, updaterStore} from '~/store'
+import { downloadersStore, updaterStore } from '~/store'
 
 interface Downloader {
   server: any,
