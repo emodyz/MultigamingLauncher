@@ -1,3 +1,4 @@
+// @ts-ignore TODO: Fix that !
 import { Downloader } from '@emodyz/node-downloader'
 
 export interface FileManifest {

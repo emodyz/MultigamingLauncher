@@ -1,5 +1,6 @@
 import * as path from 'path'
 import * as fs from 'fs'
+// @ts-ignore TODO: Fix that !
 import { Downloader, GameModule, Modpack, Sdk } from '~/modules/lib/Sdk'
 
 // @ts-ignore

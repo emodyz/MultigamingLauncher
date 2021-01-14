@@ -1,3 +1,4 @@
+// @ts-ignore TODO: Fix that !
 import { createDownloader, Downloader } from '@emodyz/node-downloader'
 import { findSteamAppById, findSteamAppByName, findSteamLibraries } from 'find-steam-app'
 
