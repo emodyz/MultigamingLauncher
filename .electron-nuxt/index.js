@@ -23,7 +23,7 @@ function hasConfigArgument (array) {
   return false
 }
 const argumentsArray = process.argv.slice(2)
-if (!hasConfigArgument(argumentsArray)) argumentsArray.push('--config', 'builder.config.js')
+if (!hasConfigArgument(argumentsArray)) argumentsArray.push('--config', 'builder.config.js' , '--publish', 'onTag')
 
 const builder = new ElectronBuilder({
   processArgv: argumentsArray
