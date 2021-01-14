@@ -22,7 +22,7 @@
         />
       </div>
       <transition name="fade">
-        <div v-if="sliderSlides.length > 1 && !hideControl">
+        <div v-if="sliderSlides.length - 2 > 1 && !hideControl">
           <div
             class="absolute flex top-2 right-1/2 text-acid-green blurred bg-black bg-opacity-20
             rounded-full transform translate-x-1/2 "
@@ -34,8 +34,8 @@
             >
               <div
                 :class="{
-                  'bg-white': isCurrentSlide(index)
-                }" class="w-4 h-1 border rounded-full"
+                  'opacity-100': isCurrentSlide(index)
+                }" class="w-4 h-0 border opacity-30 rounded-full"
               />
             </div>
           </div>
@@ -159,7 +159,7 @@ export default class Slider extends Vue {
   }
 
   startAutoSlider () {
-    if (this.hideControl) {
+    if (this.hideControl || this.sliderSlides.length - 2 === 1) {
       return
     }
 

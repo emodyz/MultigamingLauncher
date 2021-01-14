@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 import Article from '~/components/news/article.vue'
 import Slider from '~/components/slider.vue'
@@ -27,37 +27,26 @@ import Slider from '~/components/slider.vue'
 export default class NewsSlider extends Vue {
   news: any[] = []
 
-  async mounted () {
-    // MOCK
-    const content = await fetch('https://raw.githubusercontent.com/emodyz/MultigamingLauncher/master/README.md')
-      .then(res => res.text())
+  @Prop({ type: String, default: null }) serverId!: string | null;
 
-    this.news.push({
-      component: Article,
-      data: {
-        title: "J'aime les brocolis",
-        subtitle: 'Oh oui miam !',
-        image: 'https://www.pedagojeux.fr/wp-content/uploads/2019/11/1280x720_Minecraft.jpg',
-        content
-      }
-    })
-    this.news.push({
-      component: Article,
-      data: {
-        title: 'Oh god Arma4 est sortie !',
-        subtitle: 'Lien dans la description',
-        image: 'https://i.ytimg.com/vi/TeOShkJN9Xw/maxresdefault.jpg',
-        content
-      }
-    })
-    this.news.push({
-      component: Article,
-      data: {
-        title: "GTA V. C'est vraiment une tuerie ! ",
-        subtitle: 'Tentez de gagner une PS5',
-        image: 'https://media.begeek.fr/2020/05/Epic-Games-Store-GTA-5-PC.jpg',
-        content
-      }
+  async mounted () {
+    let news
+    if (this.serverId) {
+      news = (await this.$axios.get(`/servers/${this.serverId}/articles`)).data
+    } else {
+      news = (await this.$axios.get('/articles/latest/7')).data
+    }
+
+    news.forEach((article: any) => {
+      this.news.push({
+        component: Article,
+        data: {
+          title: article.title,
+          subtitle: article.subTitle,
+          image: article.cover_image_url,
+          content: article.content
+        }
+      })
     })
   }
 }

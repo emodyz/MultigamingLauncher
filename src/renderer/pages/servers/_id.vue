@@ -5,7 +5,7 @@
         News
       </span>
       <div class="w-full h-full mt-5">
-        <news-slider />
+        <news-slider :server-id="id" />
       </div>
     </div>
     <div class="w-1/3">
@@ -118,7 +118,6 @@ export default class Server extends Vue {
   }
 
   mounted () {
-    console.log(this.id)
     pageStore.setTitle(null)
   }
 

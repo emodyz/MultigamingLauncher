@@ -35,7 +35,7 @@ export default class Article extends Vue {
 
   @Prop({ type: String, required: true, default: null }) image!: string;
   @Prop({ type: String, required: true, default: null }) title!: string;
-  @Prop({ type: String, required: true, default: null }) subtitle!: string;
+  @Prop({ type: String, default: null }) subtitle!: string | null;
   @Prop({ type: String, required: true, default: null }) content!: string;
 
   opened: boolean = false;
