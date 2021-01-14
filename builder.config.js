@@ -42,6 +42,7 @@ const macOS = {
 }
 
 module.exports = {
+  publish: 'never',
   asar: false,
   productName: 'EZGames',
   appId: 'org.emodyz.ezgames',
