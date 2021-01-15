@@ -27,14 +27,16 @@ import Slider from '~/components/slider.vue'
 export default class NewsSlider extends Vue {
   news: any[] = []
 
+  maxNews: number = 7
+
   @Prop({ type: String, default: null }) serverId!: string | null;
 
   async mounted () {
     let news
     if (this.serverId) {
-      news = (await this.$axios.get(`/servers/${this.serverId}/articles`)).data
+      news = (await this.$axios.get(`/servers/${this.serverId}/articles/latest/${this.maxNews}`)).data
     } else {
-      news = (await this.$axios.get('/articles/latest/7')).data
+      news = (await this.$axios.get(`/articles/latest/${this.maxNews}`)).data
     }
 
     news.forEach((article: any) => {
