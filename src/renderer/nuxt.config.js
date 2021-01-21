@@ -67,7 +67,7 @@ module.exports = {
     authModule: true,
     connectOnLogin: true,
     disconnectOnLogout: true,
-    authEndpoint: 'https://multigamingpanel.test/broadcasting/auth',
+    authEndpoint: 'http://multigamingpanel.test/broadcasting/auth',
     key: 'app-key',
     wsHost: 'multigamingpanel.test',
     wsPort: 6001,
