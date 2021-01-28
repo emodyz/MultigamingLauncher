@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute bottom-0 right-0 m-4 z-10">
+  <div class="absolute top-0 right-0 m-4 z-10">
     <div v-for="downloader of downloaders"
          :key="downloader.server.id"
          class="bg-gray-800 border-acid-green border text-white max-w-sm rounded overflow-hidden shadow-md mt-3 w-64"

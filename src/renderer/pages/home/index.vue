@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row h-full ">
-    <div class="flex  h-auto p-4"
+    <div class="flex h-auto p-4"
          :class="{
            'w-full': voiceSettings.type === null,
            'w-2/3': voiceSettings.type !== null

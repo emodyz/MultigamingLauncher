@@ -10,7 +10,9 @@
       mt-4 w-full m-5 w-1/3"
       style="max-height: 250px; max-width: 400px;"
     >
-      <img :src="server.game.logo_url" class="w-2/5 h-full object-cover">
+      <div class="w-3/5 h-full">
+        <img :src="server.logo_url" class="w-full h-full object-cover">
+      </div>
 
       <div class="flex items-center justify-center absolute top-0 right-0 m-3 z-10 select-none">
         <div class="cursor-pointer h-5 w-5">
