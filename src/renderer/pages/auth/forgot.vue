@@ -1,81 +1,102 @@
 <template>
-  <form @submit.prevent="sendForgotRequest">
-    <div v-if="message" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-3"
-         role="alert"
-    >
-      <strong class="font-bold">Holy smokes!</strong>
-      <span class="block sm:inline">{{ message }}</span>
-      <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-        <svg class="fill-current h-6 w-6 text-green-500" role="button" viewBox="0 0 20 20"
-             xmlns="http://www.w3.org/2000/svg"
-        ><title>Close</title><path
-          d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1
-          1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1
-          1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"
-        /></svg>
-      </span>
+  <jet-authentication-card>
+    <template #logo>
+      <jet-authentication-card-logo />
+    </template>
+
+    <div class="mb-4 text-sm text-gray-600 dark:text-gray-100">
+      Forgot your password? No problem. Just let us know your email address and we will email you a password reset
+      link that will allow you to choose a new one.
     </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-        Email
-      </label>
-      <input
-        id="email"
-        v-model="email" :class="errors.email ? 'border-red-500' : ''"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-        focus:outline-none focus:shadow-outline"
-        placeholder="Email" type="email"
-      >
-      <p v-if="errors.email" class="text-red-500 text-xs italic">{{ errors.email[0] }}</p>
+
+    <div v-if="message" class="mb-4 font-medium text-sm text-green-600 dark:text-green-500">
+      <span v-if="message.type === 'success'" class="text-green-600 dark:text-green-500">{{ message.value }}</span>
+      <span v-if="message.type === 'error'" class="text-red-600 dark:text-red-500">{{ message.value }}</span>
     </div>
-    <div class="flex items-center justify-between">
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
-        focus:outline-none focus:shadow-outline"
-        type="submit"
-      >
-        Send
-      </button>
-      <NuxtLink class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                to="/auth/login"
-      >
-        Need to login?
-      </NuxtLink>
-    </div>
-  </form>
+
+    <form class="mt-7" @submit.prevent="submit">
+      <div>
+        <jet-label for="email" value="Email" />
+        <jet-input id="email" v-model="email" type="email" class="mt-1 block w-full p-2" required autofocus />
+        <jet-input-error :message="errors.email" />
+      </div>
+
+      <div class="flex items-center justify-end mt-4">
+        <NuxtLink to="/auth/login"
+                  class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-100
+                  dark:hover:text-gray-200"
+        >
+          Want to login?
+        </NuxtLink>
+
+        <jet-button class="ml-4" :class="{ 'opacity-25': processing }" :disabled="processing">
+          Email Password Reset Link
+        </jet-button>
+      </div>
+    </form>
+  </jet-authentication-card>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { $axios } from '~/utils/api'
+import JetAuthenticationCard from '~/components/JetStream/AuthenticationCard.vue'
+import JetAuthenticationCardLogo from '~/components/JetStream/AuthenticationCardLogo.vue'
+import JetLabel from '~/components/JetStream/Label.vue'
+import JetInput from '~/components/JetStream/Input.vue'
+import JetInputError from '~/components/JetStream/InputError.vue'
+import JetButton from '~/components/JetStream/Button.vue'
 
 @Component({
   // @ts-ignore
   auth: 'guest',
   transition: 'fade',
-  layout: 'auth'
+  layout: 'auth',
+  components: {
+    JetAuthenticationCardLogo,
+    JetAuthenticationCard,
+    JetLabel,
+    JetInput,
+    JetInputError,
+    JetButton
+  }
 })
 export default class Forgot extends Vue {
-  loading = false;
-  message = null;
-  email = '';
-  errors = [];
+  processing = false;
+  message: {
+    type: string,
+    value: string
+  } | null = null;
 
-  async sendForgotRequest () {
+  email = '';
+  errors = {};
+
+  async submit () {
     this.errors = []
-    this.loading = true
+    this.processing = true
     this.message = null
 
     try {
       const response = await $axios.post('/auth/password/forgot', {
         email: this.email
       }) as any
-      this.message = response?.message || null
+      if (response?.data?.message) {
+        this.message = {
+          type: 'success',
+          value: response?.data?.message
+        }
+      }
     } catch (err) {
-      this.errors = err?.response?.data?.errors || []
-      this.message = err?.response?.message || null
+      this.errors = err?.response?.data?.errors || {}
+
+      if (Object.values(this.errors).length === 0 && err?.response?.data?.message) {
+        this.message = {
+          type: 'error',
+          value: err?.response?.data?.message
+        }
+      }
     }
-    this.loading = false
+    this.processing = false
   }
 }
 </script>

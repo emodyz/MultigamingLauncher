@@ -24,7 +24,7 @@
       <transition name="fade">
         <div v-if="sliderSlides.length - 2 > 1 && !hideControl">
           <div
-            class="absolute flex top-2 right-1/2 text-acid-green blurred bg-black bg-opacity-20
+            class="absolute flex top-2 right-1/2 text-indigo-400 blurred bg-black bg-opacity-20
             rounded-full transform translate-x-1/2 "
           >
             <div v-for="(slide, index) of slides"

@@ -2,7 +2,7 @@
   <div class="absolute top-0 right-0 m-4 z-10">
     <div v-for="downloader of downloaders"
          :key="downloader.server.id"
-         class="bg-gray-800 border-acid-green border text-white max-w-sm rounded overflow-hidden shadow-md mt-3 w-64"
+         class="bg-gray-800 border-indigo-400 border text-white max-w-sm rounded overflow-hidden shadow-md mt-3 w-64"
     >
       <NuxtLink :to="'/servers/' + downloader.server.id">
         <div class="flex flex-row h-full">

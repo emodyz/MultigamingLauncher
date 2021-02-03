@@ -14,6 +14,7 @@ module.exports = {
   },
   loading: false,
   css: [
+    '~/assets/global.scss',
     '~/assets/tooltip.css',
     '~/assets/transitions.scss'
   ],

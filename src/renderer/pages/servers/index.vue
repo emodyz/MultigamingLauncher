@@ -46,31 +46,41 @@
 
         <span class="w-3 h-3 ml-1">
           <div v-if="server.status && server.status.online" class="flex relative">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-acid-green opacity-75" />
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-acid-green" />
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
           </div>
-          <div v-if="server.status && !server.status.online" class="flex">
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500" />
+          <div v-else-if="server.status && !server.status.online" class="flex relative">
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
           </div>
-          <div v-if="!server.status" class="flex">
+          <div v-else class="flex">
             <span class="relative inline-flex rounded-full h-3 w-3 bg-gray-700" />
           </div>
         </span>
       </div>
       <div class="relative flex flex-col items-center h-full w-full p-3">
-        <span class="text-acid-green font-bold m-5 tracking-widest">
+        <span class="text-gray-100 font-bold m-5 tracking-widest">
           {{ server.name }}
         </span>
-        <div class="text-white tracking-wider h-40">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in condimentum nibh.
+        <div class="text-white tracking-wider h-40 w-full">
+          <div class="flex items-center border border-gray-700 rounded-md p-2 w-full">
+            <img :src="server.game.logo_url" class="rounded-md h-10 w-10">
+            <div class="flex flex-col ml-2">
+              <span class="font-semibold">
+                {{ server.game.name }}
+              </span>
+              <span class="text-sm font-light text-gray-200">
+                v1.0.0
+              </span>
+            </div>
+          </div>
         </div>
         <div class="flex justify-center absolute bottom-0 w-full">
           <NuxtLink
             :to="'/servers/' + server.id"
-            class="flex flex-col justify-center hover:bg-acid-green hover:text-gray-900 text-white font-bold
-            py-1 px-4 rounded text-center acid-button w-full m-3"
           >
-            JOIN
+            <jet-button>
+              JOIN
+            </jet-button>
           </NuxtLink>
         </div>
       </div>
@@ -81,8 +91,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { serverStore, pageStore } from '~/store'
+import JetButton from '~/components/JetStream/Button.vue'
 
 @Component({
+  components: {
+    JetButton
+  },
   transition: 'fade'
 })
 export default class Servers extends Vue {
@@ -111,30 +125,3 @@ export default class Servers extends Vue {
   }
 }
 </script>
-
-<style scoped>
-
-.acid-button {
-  @apply border-2 border-acid-green;
-
-  animation: morph 3s ease-in-out infinite;
-  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  height: 40px;
-  transition: all 0.2s ease-in-out;
-  width: 50%;
-  z-index: 5;
-}
-
-@keyframes morph {
-  0% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
-  50% {
-    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-  }
-  100% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
-}
-
-</style>

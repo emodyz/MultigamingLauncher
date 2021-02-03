@@ -2,8 +2,8 @@
 .fade-enter, .fade-leave-active { opacity: 0; }
 
 .pop-enter-active, .pop-leave-active {
-  transition: transform .1s;
+  transition: transform .2s;
 }
 .pop-enter, .pop-leave-active {
-  transform: scale(0.7);
+  transform: scale(0);
 }

@@ -17,7 +17,7 @@
       </div>
       <transition name="fade">
         <article
-          v-if="opened" class="prose-sm text-white border-t border-acid-green border-opacity-50 pt-5"
+          v-if="opened" class="prose-sm text-white border-t border-indigo-400 border-opacity-50 pt-5"
           v-html="parsedContent"
         />
       </transition>

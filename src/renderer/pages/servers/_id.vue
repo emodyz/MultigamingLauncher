@@ -21,19 +21,19 @@
             <ProgressBar :progress="downloader.progress" class="mb-3" />
             <div class="flex flex-row justify-between items-end">
               <button
-                class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
+                class="rounded border border-indigo-400 text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
                 @click="stopDownload"
               >
                 STOP
               </button>
               <button
-                class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
+                class="rounded border border-indigo-400 text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
                 @click="pauseDownload"
               >
                 PAUSE
               </button>
               <button
-                class="rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
+                class="rounded border border-indigo-400 text-gray-400 bg-gray-900 hover:bg-gray-800 px-2 mx-2"
                 @click="resumeDownload"
               >
                 RESUME
@@ -42,9 +42,9 @@
           </div>
           <div v-if="!downloader">
             <label class="inline-flex items-center mt-3">
-              <input v-model="forceUpdate" checked class="form-checkbox h-5 w-5 text-blue-600" type="checkbox">
+              <input v-model="forceUpdate" checked class="form-checkbox h-5 w-5 text-indigo-600" type="checkbox">
             </label>
-            <button class="w-full rounded border border-acid-green text-gray-400 bg-gray-900 hover:bg-gray-800"
+            <button class="w-full rounded border border-indigo-400 text-gray-400 bg-gray-900 hover:bg-gray-800"
                     @click="startDownload"
             >
               Download
@@ -91,14 +91,14 @@
       <div class="flex items-center w-1/4 p-2">
         <!-- Download Button --->
         <button v-if="server && hasUpdate(id, server.update_hash)" class="w-full h-full font-light uppercase
-        text-3xl rounded-md bg-gray-800 text-acid-green border-2
+        text-3xl rounded-md bg-gray-800 text-indigo-400 border-2
         border-gray-700 hover:bg-gray-700 focus:outline-none" @click="startDownload"
         >
           Download
         </button>
         <!--- Play Button --->
         <button v-else class="w-full h-full font-light uppercase text-3xl rounded-md bg-gray-800
-        text-acid-green border-2 border-gray-700 hover:bg-gray-700 focus:outline-none" @click="startDownload"
+        text-indigo-400 border-2 border-gray-700 hover:bg-gray-700 focus:outline-none" @click="startDownload"
         >
           Play
         </button>
@@ -109,7 +109,7 @@
 
           <!-- Pause Button -->
           <button v-if="downloader.state === 0" class="ml-2 w-7 h-7 bg-gray-600
-          rounded-md text-acid-green hover:text-green-200
+          rounded-md text-indigo-400 hover:text-green-200
           hover:bg-gray-700 focus:outline-none" @click="pauseDownload"
           >
             <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -120,7 +120,7 @@
           </button>
           <!-- Resume Button -->
           <button v-else-if="downloader.state === 1" class="ml-2 w-7 h-7 bg-gray-600
-          rounded-md text-acid-green hover:text-green-200
+          rounded-md text-indigo-400 hover:text-green-200
           hover:bg-gray-700 focus:outline-none" @click="resumeDownload"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="4 4 16 16" stroke="currentColor">
@@ -131,7 +131,7 @@
           </button>
 
           <!-- Stop Button -->
-          <button class="ml-2 w-7 h-7 p-1 bg-gray-600 rounded-md text-acid-green hover:text-green-200
+          <button class="ml-2 w-7 h-7 p-1 bg-gray-600 rounded-md text-indigo-400 hover:text-green-200
           hover:bg-gray-700 focus:outline-none" @click="stopDownload"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

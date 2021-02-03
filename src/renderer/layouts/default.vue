@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-gray-900">
+  <div class="bg-gray-50 dark:bg-gray-900 subpixel-antialiased">
     <Sidebar class="slide-animation" />
     <Header :title="title" class="pl-20 slide-animation" />
     <div
-      class="text-gray-700 bg-gray-900 h-screen w-screen pl-20 overflow-y-scroll slide-animation"
+      class="pl-20 h-screen w-screen overflow-y-scroll slide-animation"
       :class="{'pt-24': title}"
     >
       <div class="relative w-full h-full">

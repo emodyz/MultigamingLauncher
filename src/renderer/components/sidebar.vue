@@ -1,5 +1,5 @@
 <template>
-  <nav class="fixed flex flex-col justify-between h-full w-20 z-50 bg-gray-900 border-r border-acid-green">
+  <nav class="fixed flex flex-col justify-between h-full w-20 z-50 border-r border-gray-300 bg-gray-100 dark:bg-gray-800 dark:border-gray-600">
     <div class="mt-10 mb-10">
       <a href="#" @click="goToPanel">
         <img
@@ -11,8 +11,8 @@
         <ul>
           <li class="mb-6">
             <NuxtLink to="/home">
-              <svg class="stroke-current text-gray-300 h-8 w-8 mx-auto hover:text-acid-green" fill="none"
-                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+              <svg class="stroke-current text-gray-400 h-8 w-8 mx-auto hover:text-indigo-400 dark:text-gray-300"
+                   fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0
@@ -24,8 +24,8 @@
           </li>
           <li class="mb-6">
             <NuxtLink to="/servers">
-              <svg class="stroke-current text-gray-300 h-8 w-8 mx-auto hover:text-acid-green " fill="none"
-                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+              <svg class="stroke-current text-gray-400 h-8 w-8 mx-auto hover:text-indigo-400 dark:text-gray-300"
+                   fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M5 12h14M5 12a2 2 0 01-2-2V6a2
                  2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0
@@ -42,7 +42,7 @@
                    @click="goToServer(server)"
               >
                 <div class="relative mx-auto w-3/5">
-                  <img :src="server.logo_url" class="object-cover server-picture">
+                  <img :src="server.logo_url" class="shadow-md object-cover server-picture">
                   <div
                     v-if="hasUpdate(server.id, server.update_hash)"
                     class="absolute top-0 right-0 flex cursor-pointer transform transition transition-all"
@@ -60,16 +60,12 @@
           </transition-group>
         </ul>
       </div>
-      </li>
-      </transition-group>
-      </ul>
-    </div>
     </div>
     <div class="mb-4">
       <a class="flex justify-center cursor-pointer mb-6">
         <div :class="{'loader': downloaders.length > 0}" class="w-8 h-10">
-          <svg class="stroke-current text-gray-300 h-5 w-5 mx-auto hover:text-acid-green m-2" fill="none"
-               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+          <svg class="stroke-current text-gray-400 h-5 w-5 m-2 mx-auto hover:text-indigo-500 dark:text-gray-300
+           dark:hover:text-indigo-400" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
                   stroke-linejoin="round" stroke-width="2"
@@ -80,7 +76,8 @@
       <a class="cursor-pointer" @click="logout">
         <span>
           <svg
-            class="fill-current h-5 w-5 text-gray-300 mx-auto hover:text-red-500"
+            class="fill-current h-5 w-5 text-gray-400 mx-auto hover:text-red-600
+             dark:text-gray-300 dark:hover:text-red-500"
             fill="none"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -167,13 +164,14 @@ export default {
 }
 
 .server-selected::before {
+  @apply bg-indigo-400 dark:bg-white;
+
   content: '';
   position: absolute;
   left: -15px;
   top: 0;
   bottom: 0;
   width: 15px;
-  background: white;
   border-radius: 20px;
   animation: community-selected-animation 0.3s forwards;
 }
@@ -203,12 +201,12 @@ export default {
 }
 
 .nuxt-link-active .stroke-current {
-  color: rgba(204, 255, 0, 1);
+  @apply text-indigo-400 hover:text-indigo-500
 }
 
 .nav-shadow {
   animation: slideShadown 1s forwards;
-  box-shadow: 10px 0px 20px 0px rgba(204, 255, 0, 1);
+  box-shadow: 10px 0px 20px 0px theme("colors.indigo.400");
   width: 0;
   left: 0;
   top: 0;
@@ -235,7 +233,7 @@ export default {
 }
 
 .loader::before {
-  @apply bg-gradient-to-br from-gray-900 via-acid-green to-acid-green;
+  @apply bg-gradient-to-br from-gray-900 via-indigo-400 to-indigo-400;
 
   content: "";
   position: absolute;
@@ -250,7 +248,7 @@ export default {
 }
 
 .loader::after {
-  @apply bg-gray-900;
+  @apply bg-gray-100 dark:bg-gray-900;
 
   content: "";
   position: absolute;

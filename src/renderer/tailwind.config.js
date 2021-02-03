@@ -1,4 +1,7 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
+  darkMode: 'media',
   future: {
     // removeDeprecatedGapUtilities: true,
     // purgeLayersByDefault: true,
@@ -7,7 +10,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'acid-green': '#CCFF00'
+        gray: colors.gray,
+        emerald: colors.emerald,
+        orange: colors.orange
       }
     }
   },
