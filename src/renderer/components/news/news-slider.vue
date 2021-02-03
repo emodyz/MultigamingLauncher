@@ -1,11 +1,11 @@
 <template>
   <slider :slides="news">
     <template #empty>
-      <div class="flex flex-col justify-center items-center text-center w-full h-full">
-        <span class="line-1 anim-typewriter text-white font-bold text-2xl">
+      <div class="flex flex-col justify-center items-center text-center w-full h-full text-gray-900 dark:text-white">
+        <span class="line-1 anim-typewriter font-bold text-2xl">
           No news.
         </span>
-        <span class="text-white font-thin text-xl">
+        <span class="font-thin text-xl">
           Good news !
         </span>
       </div>
@@ -57,8 +57,9 @@ export default class NewsSlider extends Vue {
 <style scoped>
 
 .line-1 {
+  @apply border-r-2 border-gray-900 dark:border-white border-opacity-75;
+
   margin: 0 auto;
-  border-right: 2px solid rgba(255, 255, 255, .75);
   font-size: 180%;
   text-align: center;
   white-space: nowrap;
@@ -82,7 +83,7 @@ export default class NewsSlider extends Vue {
 
 @keyframes blinkTextCursor {
   from {
-    border-right-color: rgba(255, 255, 255, .75);
+    @apply border-gray-500;
   }
   to {
     border-right-color: transparent;

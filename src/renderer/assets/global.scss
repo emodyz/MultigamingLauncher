@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;300;400;500;600;700&display=swap');
+
 @layer components {
   @variants dark {
     .form-input {
@@ -5,4 +7,9 @@
       dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 dark:placeholder-gray-600;
     }
   }
+}
+
+
+.blurred {
+  backdrop-filter: blur(4px);
 }

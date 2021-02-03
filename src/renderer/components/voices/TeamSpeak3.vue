@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center w-full">
+  <div class="flex flex-col items-center justify-center w-full p-2">
     <img class="w-64" src="https://teamspeak.com/user/themes/teamspeak/images/logo_inverse.svg">
     <div class="px-4 mt-4 w-full">
       <jet-button class="w-full justify-center h-10" @click="join">
@@ -22,6 +22,12 @@
             <div class="relative mt-1 flex w-full flex-wrap items-stretch mb-3">
               <jet-input v-model="host" class="w-full p-2" readonly type="text" placeholder="Teamspeak server host" />
               <div
+                v-tooltip="{
+                  content: 'Copied.',
+                  show: copied,
+                  placement: 'bottom',
+                  trigger: 'manual'
+                }"
                 class="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-300
               cursor-pointer hover:text-green-400" @click="copy"
               >
@@ -59,7 +65,7 @@ export default class TeamSpeak3 extends Vue {
 
   message: string | null = null;
 
-  copied = 'Copy';
+  copied = false;
 
   get host () {
     return `${this.settings.payload.ip}:${this.settings.payload.port}`
@@ -75,12 +81,12 @@ export default class TeamSpeak3 extends Vue {
   }
 
   copy () {
-    this.copied = 'Copied.'
+    this.copied = true
 
     clipboard.writeText(this.host)
 
     setTimeout(() => {
-      this.copied = 'Copy'
+      this.copied = false
     }, 1000)
   }
 }

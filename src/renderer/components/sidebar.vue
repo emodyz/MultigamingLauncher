@@ -250,7 +250,7 @@ export default {
 }
 
 .loader::after {
-  @apply bg-gray-100 dark:bg-gray-900;
+  @apply bg-gray-100 dark:bg-gray-800;
 
   content: "";
   position: absolute;

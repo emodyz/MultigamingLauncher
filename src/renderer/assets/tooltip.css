@@ -4,13 +4,14 @@
 }
 
 .tooltip .tooltip-inner {
-  @apply bg-gray-800 border border border-gray-700 text-gray-100 rounded-md;
+  @apply rounded-md border border-gray-200 bg-gray-50 text-gray-900
+  dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700;
 
   padding: 5px 10px 4px;
 }
 
 .tooltip .tooltip-arrow {
-  @apply border-gray-700;
+  @apply dark:border-gray-700;
 
   width: 0;
   height: 0;

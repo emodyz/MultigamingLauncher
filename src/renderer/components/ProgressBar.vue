@@ -1,9 +1,9 @@
 <template>
-  <div class="relative">
-    <div class="overflow-hidden h-7 text-xs flex rounded bg-gray-700">
+  <div class="relative h-3">
+    <div class="overflow-hidden text-xs h-full flex rounded bg-gray-200 dark:bg-gray-700">
       <div :style="'width: ' + progress + '%'"
            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center
-           bg-gray-600 progress-animation"
+            progress-animation bg-indigo-400 dark:bg-indigo-500"
       />
     </div>
   </div>

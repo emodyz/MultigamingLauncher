@@ -1,5 +1,9 @@
 <template>
-  <div class="w-full h-full bg-gray-800 rounded-md" @mouseout="startAutoSlider" @mouseover="stopAutoSlider">
+  <div class="w-full h-full shadow-md border border-gray-200 bg-gray-100 rounded-md
+  dark:bg-gray-800 dark:border-transparent"
+       @mouseout="startAutoSlider"
+       @mouseover="stopAutoSlider"
+  >
     <div class="relative flex justify-center w-full h-full overflow-hidden rounded-md">
       <slot v-if="sliderSlides.length === 0" name="empty" />
       <div

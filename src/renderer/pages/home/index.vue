@@ -6,7 +6,7 @@
            'w-2/3': voiceSettings.type !== null
          }"
     >
-      <news-slider class="shadow-md border border-gray-200 dark:border-transparent" />
+      <news-slider />
     </div>
     <div v-if="voiceComponent()" class="flex w-1/3  h-auto p-4">
       <component :is="voiceComponent()" class="shadow-md border border-gray-200 rounded-md dark:border-transparent"

@@ -14,6 +14,9 @@ module.exports = {
         emerald: colors.emerald,
         orange: colors.orange
       }
+    },
+    fontFamily: {
+      sans: ['Josefin Sans']
     }
   },
   variants: {
