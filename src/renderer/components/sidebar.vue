@@ -1,5 +1,7 @@
 <template>
-  <nav class="fixed flex flex-col justify-between h-full w-20 z-50 border-r border-gray-300 bg-gray-100 dark:bg-gray-800 dark:border-gray-600">
+  <nav class="fixed flex flex-col justify-between h-full w-20 z-50 border-r border-gray-300 bg-gray-100
+   dark:bg-gray-800 dark:border-gray-600"
+  >
     <div class="mt-10 mb-10">
       <a href="#" @click="goToPanel">
         <img

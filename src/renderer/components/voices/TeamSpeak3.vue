@@ -8,7 +8,9 @@
     </div>
     <transition name="fade">
       <div v-if="message" class="mt-5 w-full p-2">
-        <div class="rounded-md p-4 mt-2 bg-gray-100 shadow-md border border-gray-200 dark:bg-gray-800 dark:border-transparent">
+        <div class="rounded-md p-4 mt-2 bg-gray-100 shadow-md border border-gray-200
+        dark:bg-gray-800 dark:border-transparent"
+        >
           <div class="bg-red-500 rounded-md p-2 text-center dark:bg-red-800">
             <span class="text-red-50 font-semibold">
               {{ message }}
@@ -19,9 +21,17 @@
 
             <div class="relative mt-1 flex w-full flex-wrap items-stretch mb-3">
               <jet-input v-model="host" class="w-full p-2" readonly type="text" placeholder="Teamspeak server host" />
-              <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-300 cursor-pointer hover:text-green-400" @click="copy">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="stroke-current w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+              <div
+                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-300
+              cursor-pointer hover:text-green-400" @click="copy"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" class="stroke-current w-6 h-6"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0
+                         012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                  />
                 </svg>
               </div>
             </div>
