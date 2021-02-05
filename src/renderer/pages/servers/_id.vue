@@ -18,20 +18,22 @@
         <news-slider :server-id="id" />
       </div>
       <div class="h-full w-1/3 ml-2">
-        <div class="w-full h-full bg-gray-100 shadow-md text-gray-900 rounded-md p-4 uppercase flex items-center
-        justify-center border border-gray-200 dark:border-transparent dark:bg-gray-800 dark:text-gray-50"
+        <div class="w-full h-full bg-gray-100 shadow-md text-gray-900 rounded-md uppercase
+        border border-gray-200 dark:border-transparent dark:bg-gray-800 dark:text-gray-50"
         >
-          Plugins available soon.
+          <server-status :server="server" />
         </div>
       </div>
     </div>
     <div class="flex h-44 w-full p-2">
       <div class="flex items-center w-1/4 p-2">
         <!-- Download Button --->
-        <jet-button v-if="server && hasUpdate(id, server.update_hash)" :disabled="downloader" class="w-full h-full font-light uppercase
-         text-xl lg:text-2xl xl:text-3xl" @click="startDownload"
+        <jet-button v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloader"
+                    class="w-full h-full font-light uppercase
+                    text-base lg:text-xl xl:text-2xl 2xl:text-3xl" @click="startDownload"
         >
-          Download
+          <span v-if="!downloader">Download</span>
+          <span v-else>Downloading...</span>
         </jet-button>
         <!--- Play Button --->
         <jet-button v-else class="w-full h-full font-light uppercase text-3xl" @click="startDownload">
@@ -45,7 +47,8 @@
           <!-- Pause Button -->
           <button v-if="downloader.state === 0" class="ml-2 w-7 h-7 bg-gray-200
           rounded-md text-gray-500 hover:text-gray-900
-          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300" @click="pauseDownload"
+          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                  @click="pauseDownload"
           >
             <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor"
@@ -56,7 +59,8 @@
           <!-- Resume Button -->
           <button v-else-if="downloader.state === 1" class="ml-2 w-7 h-7 bg-gray-200
           rounded-md text-gray-500 hover:text-gray-900
-          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300" @click="resumeDownload"
+          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                  @click="resumeDownload"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="4 4 16 16" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M14.752 11.168l-3.197-2.132A1
@@ -67,7 +71,8 @@
 
           <!-- Stop Button -->
           <button class="ml-2 w-7 h-7 p-1 bg-gray-200 rounded-md text-gray-500 hover:text-gray-900
-          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300" @click="stopDownload"
+          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                  @click="stopDownload"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0
@@ -75,6 +80,12 @@
               />
             </svg>
           </button>
+        </div>
+        <div v-else-if="!downloader && (server && !hasUpdate(id, server.update_hash))">
+          <span class="text-gray-900 dark:text-gray-100 flex justify-center items-center">
+            <jet-checkbox v-model="forceUpdate" class="mr-2" />
+            Force download.
+          </span>
         </div>
       </div>
     </div>
@@ -88,10 +99,14 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import { downloadersStore, updaterStore, pageStore } from '@/store'
 import NewsSlider from '@/components/news/news-slider.vue'
 import JetButton from '~/components/JetStream/Button.vue'
+import JetCheckbox from '~/components/JetStream/Checkbox.vue'
+import ServerStatus from '~/components/plugins/ServerStatus.vue'
 
 @Component({
   transition: 'fade',
   components: {
+    ServerStatus,
+    JetCheckbox,
     NewsSlider,
     ProgressBar,
     JetButton
@@ -122,7 +137,7 @@ import JetButton from '~/components/JetStream/Button.vue'
 export default class Server extends Vue {
   module: any = null;
   installPath: string | null = null;
-  forceUpdate = true;
+  forceUpdate = false;
   checkServerInterval = null;
   server = null;
 

@@ -16,10 +16,14 @@ module.exports = {
       }
     },
     fontFamily: {
-      sans: ['Josefin Sans']
+      sans: ['Mulish']
     }
   },
   variants: {
+    extend: {
+      backgroundColor: ['checked'],
+      borderColor: ['checked']
+    }
   },
   plugins: [
     require('@tailwindcss/typography')

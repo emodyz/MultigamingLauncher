@@ -14,7 +14,9 @@
         />
 
         <div class="relative w-72 h-24 bg-white -mt-10 shadow-lg rounded-lg p-2 dark:bg-gray-800">
-          <img :src="server.game.logo_url" class="absolute ring-4 ring-white rounded-md -top-5 left-5 z-20 w-10 h-10 dark:ring-gray-800">
+          <img :src="server.game.logo_url" class="absolute ring-4 ring-white rounded-md -top-5 left-5
+          z-20 w-10 h-10 dark:ring-gray-800"
+          >
 
           <div class="overflow-hidden pt-5">
             <div class="flex items-center justify-center absolute top-2 right-2 z-10 select-none">
