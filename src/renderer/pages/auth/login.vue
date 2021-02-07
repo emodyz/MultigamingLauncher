@@ -4,10 +4,10 @@
       <jet-authentication-card-logo />
     </template>
 
-    <form @submit.prevent="submit">
+    <form v-if="!showTwoFactor" @submit.prevent="submit">
       <div>
         <jet-label for="email" value="Email" />
-        <jet-input id="email" v-model="email" type="email"
+        <jet-input id="email" v-model="form.email" type="email"
                    class="mt-1 p-2 block w-full"
                    required autofocus
         />
@@ -16,7 +16,7 @@
 
       <div class="mt-4">
         <jet-label for="password" value="Password" />
-        <jet-input id="password" v-model="password" type="password"
+        <jet-input id="password" v-model="form.password" type="password"
                    class="mt-1 p-2 block w-full"
                    required autocomplete="current-password"
         />
@@ -35,6 +35,18 @@
         </jet-button>
       </div>
     </form>
+
+    <TwoFactor
+      v-if="showTwoFactor"
+      :code="form.two_factor_code"
+      :processing="processing"
+      :errors="errors"
+      :recovery_code="form.two_factor_code"
+      @update:code="form.two_factor_code = $event"
+      @update:recovery_code="form.two_factor_recovery_code = $event"
+      @submit="submit"
+      @cancel-login="reset"
+    />
   </jet-authentication-card>
 </template>
 
@@ -46,6 +58,7 @@ import JetLabel from '~/components/JetStream/Label.vue'
 import JetInput from '~/components/JetStream/Input.vue'
 import JetInputError from '~/components/JetStream/InputError.vue'
 import JetButton from '~/components/JetStream/Button.vue'
+import TwoFactor from '~/pages/auth/TwoFactor.vue'
 
 @Component({
   // @ts-ignore
@@ -53,6 +66,7 @@ import JetButton from '~/components/JetStream/Button.vue'
   layout: 'auth',
   transition: 'fade',
   components: {
+    TwoFactor,
     JetAuthenticationCardLogo,
     JetAuthenticationCard,
     JetLabel,
@@ -65,11 +79,29 @@ import JetButton from '~/components/JetStream/Button.vue'
 export default class Login extends Vue {
   processing = false;
 
-  email = '';
-  password = '';
-  remember = false;
+  form = {
+    email: '',
+    password: '',
+    two_factor_code: undefined,
+    two_factor_recovery_code: undefined
+  }
+
+  showTwoFactor = false
 
   errors = {};
+
+  reset () {
+    this.showTwoFactor = false
+
+    this.errors = {}
+
+    this.form = {
+      email: '',
+      password: '',
+      two_factor_code: undefined,
+      two_factor_recovery_code: undefined
+    }
+  }
 
   async submit () {
     this.errors = []
@@ -78,13 +110,22 @@ export default class Login extends Vue {
       // @ts-ignore
       await this.$auth.loginWith('local', {
         data: {
-          email: this.email,
-          password: this.password,
+          email: this.form.email,
+          password: this.form.password,
+          two_factor_code: this.form.two_factor_code,
+          two_factor_recovery_code: this.form.two_factor_recovery_code,
           device_name: 'Launcher'
         }
       })
     } catch (err) {
-      this.errors = err?.response?.data?.errors || {}
+      if (err.response.status === 400) {
+        this.form.two_factor_code = ''
+        this.form.two_factor_recovery_code = ''
+
+        this.showTwoFactor = true
+      } else {
+        this.errors = err?.response?.data?.errors || {}
+      }
     }
     this.processing = false
   }
