@@ -75,7 +75,6 @@ import JetInputError from '~/components/JetStream/InputError.vue'
     JetButton,
     JetAuthenticationCard,
     JetAuthenticationCardLogo,
-    JetButton,
     JetInput,
     JetLabel
   }
@@ -90,12 +89,10 @@ export default class TwoFactor extends Vue {
 
   @Emit()
   submit () {
-
   }
 
   @Emit()
   cancelLogin () {
-
   }
 
   toggleRecovery () {
@@ -114,40 +111,4 @@ export default class TwoFactor extends Vue {
     })
   }
 }
-
-/**
- export default {
-  components: {
-    JetAuthenticationCard,
-    JetAuthenticationCardLogo,
-    JetButton,
-    JetInput,
-    JetLabel
-  },
-  data () {
-    return {
-      recovery: false,
-      form: {
-
-      }
-    }
-  },
-  methods: {
-    toggleRecovery () {
-      this.recovery ^= true
-      this.$nextTick(() => {
-        if (this.recovery) {
-          this.$refs.recovery_code.focus()
-          this.form.code = ''
-        } else {
-          this.$refs.code.focus()
-          this.form.recovery_code = ''
-        }
-      })
-    },
-    submit () {
-      this.form.post(this.route('two-factor.login'))
-    }
-  }
-} */
 </script>

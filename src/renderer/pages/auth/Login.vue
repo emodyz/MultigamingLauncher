@@ -82,8 +82,8 @@ export default class Login extends Vue {
   form = {
     email: '',
     password: '',
-    two_factor_code: undefined,
-    two_factor_recovery_code: undefined
+    two_factor_code: undefined as string|undefined,
+    two_factor_recovery_code: undefined as string|undefined
   }
 
   showTwoFactor = false
