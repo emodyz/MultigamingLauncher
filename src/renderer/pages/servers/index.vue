@@ -1,10 +1,20 @@
 <template>
   <transition-group
-    class="flex justify-center flex-row flex-wrap"
+    class="flex justify-center flex-row flex-wrap h-full"
+    :class="{'items-center': servers.length === 0}"
     name="fade"
   >
+    <div v-if="servers.length === 0" :key="0"
+         class="flex justify-center items-center"
+    >
+      <span class="text-6xl font-thin text-gray-400 dark:text-gray-100 transform -translate-y-1/2">
+        No servers.
+      </span>
+    </div>
+
     <div
       v-for="(server) in servers"
+      v-else
       :key="server.id"
       style="width: 350px;"
     >

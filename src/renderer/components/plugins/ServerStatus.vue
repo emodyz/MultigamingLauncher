@@ -20,7 +20,7 @@
           {{ server.status.players_online }}
         </span>
         <span>
-          |
+          /
         </span>
         <span>
           {{ server.status.players_max }}
