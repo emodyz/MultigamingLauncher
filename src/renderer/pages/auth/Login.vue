@@ -30,6 +30,12 @@
           Forgot your password?
         </NuxtLink>
 
+        <NuxtLink to="/auth/register">
+          <jet-secondary-button class="ml-4" :class="{ 'opacity-25': processing }" :disabled="processing">
+            Register
+          </jet-secondary-button>
+        </NuxtLink>
+
         <jet-button class="ml-4" :class="{ 'opacity-25': processing }" :disabled="processing">
           Login
         </jet-button>
@@ -58,6 +64,7 @@ import JetLabel from '~/components/JetStream/Label.vue'
 import JetInput from '~/components/JetStream/Input.vue'
 import JetInputError from '~/components/JetStream/InputError.vue'
 import JetButton from '~/components/JetStream/Button.vue'
+import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
 import TwoFactor from '~/pages/auth/TwoFactor.vue'
 
 @Component({
@@ -72,7 +79,8 @@ import TwoFactor from '~/pages/auth/TwoFactor.vue'
     JetLabel,
     JetInput,
     JetInputError,
-    JetButton
+    JetButton,
+    JetSecondaryButton
   }
 
 })
@@ -104,7 +112,7 @@ export default class Login extends Vue {
   }
 
   async submit () {
-    this.errors = []
+    this.errors = {}
     this.processing = true
     try {
       // @ts-ignore
@@ -118,7 +126,7 @@ export default class Login extends Vue {
         }
       })
     } catch (err) {
-      if (err.response.status === 400) {
+      if (err.response.status === 418) {
         this.form.two_factor_code = ''
         this.form.two_factor_recovery_code = ''
 
