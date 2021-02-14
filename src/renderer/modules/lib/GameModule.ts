@@ -8,7 +8,7 @@ export interface FileManifest {
   sha256: string;
 }
 
-export interface Modpack {
+export interface ModPack {
   name: string;
   manifest: FileManifest[];
 }
@@ -34,7 +34,9 @@ export abstract class GameModule {
 
   public abstract validateGamePath(gamePath: string): boolean;
 
-  public abstract prepareDownload(modpacks: Modpack[]): Downloader;
+  public abstract prepareDownload(modPacks: ModPack[]): Downloader;
 
   public abstract install(): void;
+
+  public abstract play(): void;
 }

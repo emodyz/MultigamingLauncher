@@ -26,18 +26,29 @@
       </div>
     </div>
     <div class="flex h-44 w-full p-2">
-      <div class="flex items-center w-1/4 p-2">
+      <div class="flex items-center w-50 p-2">
         <!-- Download Button --->
         <jet-button v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloadInProgress"
                     class="w-full h-full font-light uppercase
-                    text-base lg:text-xl xl:text-2xl 2xl:text-3xl" @click="startDownload(false)"
+                    text-base lg:text-xl xl:text-2xl 2xl:text-3xl" @click="startDownload()"
         >
-          <span v-if="!downloadInProgress">Download</span>
+          <span v-if="!downloadInProgress" class="flex">
+            Download
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 ml-2 lg:w-6 xl:w-7 2xl:w-8">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </span>
           <span v-else>Downloading...</span>
         </jet-button>
         <!--- Play Button --->
-        <jet-button v-else class="w-full h-full font-light uppercase text-3xl" @click="startDownload(false)">
-          Play
+        <jet-button v-else class=" w-full h-full font-light uppercase text-3xl" @click="startGame">
+          <span class="flex">
+            Play
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-7 ml-2 lg:w-6 xl:w-7 2xl:w-8">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
         </jet-button>
       </div>
       <div class="flex items-center w-3/4 p-2">
@@ -89,11 +100,17 @@
         </div>
       </div>
     </div>
+    <GamePathSelector
+      v-if="server"
+      :game="server.game"
+      :module="module"
+      :opened="openGamePathSelector"
+      @closed="openGamePathSelector = false"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { remote } from 'electron'
 import { Component, Vue } from 'vue-property-decorator'
 import ProgressBar from '@/components/ProgressBar.vue'
 import { downloadersStore, updaterStore, pageStore } from '@/store'
@@ -101,10 +118,12 @@ import NewsSlider from '@/components/news/news-slider.vue'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetCheckbox from '~/components/JetStream/Checkbox.vue'
 import ServerStatus from '~/components/plugins/ServerStatus.vue'
+import GamePathSelector from '~/pages/servers/components/GamePathSelector.vue'
 
 @Component({
   transition: 'fade',
   components: {
+    GamePathSelector,
     ServerStatus,
     JetCheckbox,
     NewsSlider,
@@ -115,7 +134,7 @@ import ServerStatus from '~/components/plugins/ServerStatus.vue'
   head () {
     return {
       // @ts-ignore
-      title: `Server - ${this.server?.name || ''}`
+      title: `${this.server?.game?.name || ''} - ${this.server?.name || ''}`
     }
   },
 
@@ -130,13 +149,12 @@ import ServerStatus from '~/components/plugins/ServerStatus.vue'
     // @ts-ignore
     // eslint-disable-next-line new-cap
     this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
-    // @ts-ignore
-    this.installPath = await this.module.findGamePath()
   }
 })
 export default class Server extends Vue {
+  openGamePathSelector: boolean = false;
+
   module: any = null;
-  installPath: string | null = null;
   forceUpdate = false;
   checkServerInterval = null;
   server = null;
@@ -160,34 +178,17 @@ export default class Server extends Vue {
     pageStore.setTitle(null)
   }
 
-  getInstallPath (forceReselect = false) {
-    if (!forceReselect && this.module.validateGamePath(this.installPath)) {
-      return this.installPath
-    }
-
-    const installPath = remote.dialog.showOpenDialogSync({
-      properties: ['openDirectory']
-    })
-    if (installPath && installPath.length > 0) {
-      this.installPath = installPath.shift() || null
-    }
-    return this.installPath
-  }
-
-  async startDownload (forceReselect = false) {
-    try {
-      this.module.gamePath = this.getInstallPath(forceReselect)
-    } catch (e) {
-      console.log('Game path not valid!')
-      if (!forceReselect) {
-        await this.startDownload(true)
-      }
+  async startDownload (installPath: string|null = null) {
+    if (!installPath) {
+      this.openGamePathSelector = true
       return
     }
 
+    this.module.gamePath = installPath
+
     try {
-      const modpacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-      const downloader = this.module.prepareDownload(modpacks)
+      const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
+      const downloader = this.module.prepareDownload(modPacks)
 
       if (this.forceUpdate) {
         updaterStore.remove(this.id)
@@ -202,6 +203,8 @@ export default class Server extends Vue {
         serverId: this.id,
         forceDownload: this.forceUpdate
       })
+
+      this.forceUpdate = false
     } catch (e) {
       console.error(e)
     }
@@ -217,6 +220,10 @@ export default class Server extends Vue {
 
   stopDownload () {
     downloadersStore.stop(this.id)
+  }
+
+  startGame () {
+    console.log('Game stated')
   }
 }
 </script>

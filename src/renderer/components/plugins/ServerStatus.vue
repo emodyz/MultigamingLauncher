@@ -1,12 +1,12 @@
 <template>
   <div v-if="server" class="p-2 relative rounded-md h-full">
-    <div v-if="server.status.online" class="absolute rounded-tr-md rounded-bl-md top-0 right-0 px-1 py-0.5 text-xs
-     bg-green-400 text-green-50 dark:text-green-900 dark:bg-green-300"
+    <div v-if="server.status.online" class="absolute rounded-tr-md rounded-bl-md top-0 right-0 px-2 py-1 text-xs
+     bg-green-100 text-green-800 dark:text-emerald-300 dark:bg-emerald-900"
     >
       Online
     </div>
-    <div v-else-if="!server.status.online" class="absolute rounded-tr-md rounded-bl-md top-0 right-0 px-1 py-0.5
-    text-xs bg-red-400 text-red-50 dark:text-red-900 dark:bg-red-300"
+    <div v-else-if="!server.status.online" class="absolute rounded-tr-md rounded-bl-md top-0 right-0 px-2 py-1
+    text-xs bg-red-500 text-white dark:text-gray-300 dark:bg-red-900 "
     >
       Offline
     </div>

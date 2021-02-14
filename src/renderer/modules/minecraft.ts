@@ -1,7 +1,7 @@
 import * as path from 'path'
 import * as fs from 'fs'
 // @ts-ignore TODO: Fix that !
-import { Downloader, GameModule, Modpack, Sdk } from '~/modules/lib/Sdk'
+import { Downloader, GameModule, ModPack, Sdk } from '~/modules/lib/Sdk'
 
 // @ts-ignore
 export default class Minecraft extends GameModule {
@@ -9,22 +9,22 @@ export default class Minecraft extends GameModule {
   version = '1.0.0';
 
   async findGamePath (): Promise<string | null> {
-    return await Sdk.findSteamAppByAppId(107410)
+    return await Sdk.findSteamAppByName('minecraft')
   }
 
-  prepareDownload (modpacks: Modpack[]): Downloader {
+  prepareDownload (modPacks: ModPack[]): Downloader {
     const downloader = Sdk.createDownloader()
 
-    modpacks.forEach(modpack => {
-      const manifest = Object.values(modpack.manifest)
-      const modpackInstallPath = path.resolve(this.gamePath, modpack.name)
+    modPacks.forEach(modPack => {
+      const manifest = Object.values(modPack.manifest)
+      const modPackInstallPath = path.resolve(this.gamePath, modPack.name)
 
-      fs.mkdirSync(modpackInstallPath, {
+      fs.mkdirSync(modPackInstallPath, {
         recursive: true
       }) // TODO: Do Downloader library able to do that @iWirk ?
 
       manifest.forEach(file => {
-        downloader.addFile(file.url, modpackInstallPath, null, file.sha256)
+        downloader.addFile(file.url, modPackInstallPath, null, file.sha256)
       })
     })
 
