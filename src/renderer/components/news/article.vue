@@ -5,7 +5,7 @@
     <div
       :class="{'overlay-opened': opened}"
       :style="{'transform': 'translateY(-' + headerSize + 'px)'}"
-      class="absolute w-full h-full p-4 shadow-xl overflow-scroll text-white overlay"
+      class="absolute w-full h-full p-4 shadow-xl overflow-y-scroll text-white overlay"
     >
       <div id="news-header" ref="newsHeader" class="mb-2 cursor-pointer" @click="openCloseNews">
         <span v-if="title" class="font-bold w-full block text-3xl mb-2">

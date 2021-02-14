@@ -18,7 +18,7 @@
 import Sidebar from '@/components/sidebar'
 import Downloader from '@/components/downloader'
 import Header from '@/components/header'
-import { pageStore } from '~/store'
+import { pageStore, themeStore } from '~/store'
 
 export default {
   components: {
@@ -31,6 +31,9 @@ export default {
     title () {
       return pageStore.title
     }
+  },
+  beforeCreate () {
+    themeStore.syncTheme()
   },
   mounted () {
     console.log(this.$echo)

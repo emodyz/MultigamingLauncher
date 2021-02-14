@@ -2,9 +2,17 @@
   <nuxt />
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { themeStore } from '~/store'
 
-export default {
+@Component({
+
+})
+export default class AuthLayout extends Vue {
+  beforeCreate () {
+    themeStore.syncTheme()
+  }
 }
 </script>
 

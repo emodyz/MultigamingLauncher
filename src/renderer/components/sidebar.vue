@@ -3,12 +3,14 @@
    dark:bg-gray-800 dark:border-gray-600"
   >
     <div class="mt-10 mb-10">
-      <a href="#" @click="goToPanel">
-        <img
-          :src="$auth.user.profile_photo_url"
-          class="rounded-full w-10 h-10 mb-3 mx-auto"
-        >
-      </a>
+      <div v-tooltip.right="'Settings'">
+        <a href="#" @click="goToPanel">
+          <img
+            :src="$auth.user.profile_photo_url"
+            class="shadow-md rounded-full w-10 h-10 mb-3 mx-auto"
+          >
+        </a>
+      </div>
       <div class="mt-10">
         <ul>
           <li class="mb-6">
@@ -105,7 +107,6 @@
 </template>
 
 <script>
-import { remote } from 'electron'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -138,8 +139,7 @@ export default {
     },
 
     goToPanel () {
-      const url = this.$axios.defaults.baseURL.replace('/api', '')
-      remote.shell.openExternal(url)
+      this.$router.push('/settings')
     }
   }
 }

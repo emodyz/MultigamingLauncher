@@ -4,7 +4,8 @@ export default ({ store }) => {
   new VuexPersistence({
     modules: [
       'servers',
-      'updater'
+      'updater',
+      'theme'
     ]
   }).plugin(store)
 }

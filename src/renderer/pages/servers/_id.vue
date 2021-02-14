@@ -28,20 +28,20 @@
     <div class="flex h-44 w-full p-2">
       <div class="flex items-center w-1/4 p-2">
         <!-- Download Button --->
-        <jet-button v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloader"
+        <jet-button v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloadInProgress"
                     class="w-full h-full font-light uppercase
-                    text-base lg:text-xl xl:text-2xl 2xl:text-3xl" @click="startDownload"
+                    text-base lg:text-xl xl:text-2xl 2xl:text-3xl" @click="startDownload(false)"
         >
-          <span v-if="!downloader">Download</span>
+          <span v-if="!downloadInProgress">Download</span>
           <span v-else>Downloading...</span>
         </jet-button>
         <!--- Play Button --->
-        <jet-button v-else class="w-full h-full font-light uppercase text-3xl" @click="startDownload">
+        <jet-button v-else class="w-full h-full font-light uppercase text-3xl" @click="startDownload(false)">
           Play
         </jet-button>
       </div>
       <div class="flex items-center w-3/4 p-2">
-        <div v-if="downloader" class="flex w-full">
+        <div v-if="downloadInProgress" class="flex w-full">
           <progress-bar :progress="downloader.progress" class="w-full h-7" />
 
           <!-- Pause Button -->
@@ -150,6 +150,10 @@ export default class Server extends Vue {
 
   get downloader () {
     return downloadersStore.downloaderByServer(this.id)
+  }
+
+  get downloadInProgress () {
+    return this.downloader !== undefined
   }
 
   mounted () {
