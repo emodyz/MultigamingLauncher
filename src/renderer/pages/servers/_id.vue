@@ -161,7 +161,7 @@ export default class Server extends Vue {
   module: GameModule | null = null;
   forceUpdate = false;
   checkServerInterval = null;
-  server = null;
+  server: any = null;
 
   // @ts-ignore
   id: string;
@@ -187,12 +187,17 @@ export default class Server extends Vue {
   }
 
   async startDownload (installPath: string | null = null) {
+    if (!this.module) {
+      console.error('Game module not found.')
+      return
+    }
+
     if (!this.savedGamePath && !installPath) {
       this.openGamePathSelector = true
       return
     }
 
-    if (!this.module.validateGamePath(installPath || this.savedGamePath)) {
+    if (!this.module.validateGamePath(installPath || this.savedGamePath || '')) {
       this.openGamePathSelector = true
       return
     }
@@ -205,7 +210,7 @@ export default class Server extends Vue {
       })
     }
 
-    this.module.gamePath = installPath || this.savedGamePath
+    this.module.gamePath = installPath || this.savedGamePath || ''
 
     try {
       const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
@@ -244,7 +249,12 @@ export default class Server extends Vue {
   }
 
   async startGame () {
-    if (!this.module.validateGamePath(this.savedGamePath)) {
+    if (!this.module) {
+      console.error('Game module not found.')
+      return
+    }
+
+    if (!this.module.validateGamePath(this.savedGamePath || '')) {
       this.openGamePathSelector = true
     }
     console.log('Play')
