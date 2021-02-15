@@ -5,7 +5,8 @@ export default ({ store }) => {
     modules: [
       'servers',
       'updater',
-      'theme'
+      'theme',
+      'games'
     ]
   }).plugin(store)
 }

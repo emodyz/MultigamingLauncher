@@ -34,9 +34,7 @@
         >
           <span v-if="!downloadInProgress" class="flex">
             Download
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 ml-2 lg:w-6 xl:w-7 2xl:w-8">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
+            <DownloadIcon class="w-5 ml-2 lg:w-6 xl:w-7 2xl:w-8" />
           </span>
           <span v-else>Downloading...</span>
         </jet-button>
@@ -44,10 +42,7 @@
         <jet-button v-else class=" w-full h-full font-light uppercase text-3xl" @click="startGame">
           <span class="flex">
             Play
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-7 ml-2 lg:w-6 xl:w-7 2xl:w-8">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <PlayIcon class="w-7 ml-2 lg:w-6 xl:w-7 2xl:w-8" />
           </span>
         </jet-button>
       </div>
@@ -61,11 +56,7 @@
           hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                   @click="pauseDownload"
           >
-            <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 7v10m5-10v10m5-1a9 0z" />
-            </svg>
+            <PauseIcon />
           </button>
           <!-- Resume Button -->
           <button v-else-if="downloader.state === 1" class="ml-2 w-7 h-7 bg-gray-200
@@ -73,11 +64,7 @@
           hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                   @click="resumeDownload"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="4 4 16 16" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M14.752 11.168l-3.197-2.132A1
-              1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-              />
-            </svg>
+            <PlayIcon />
           </button>
 
           <!-- Stop Button -->
@@ -85,18 +72,24 @@
           hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                   @click="stopDownload"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0
-              005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-              />
-            </svg>
+            <StopIcon />
           </button>
         </div>
-        <div v-else-if="!downloader && (server && !hasUpdate(id, server.update_hash))">
-          <span class="text-gray-900 dark:text-gray-100 flex justify-center items-center">
-            <jet-checkbox v-model="forceUpdate" class="mr-2" />
-            Force download.
-          </span>
+        <div v-if="!downloader" class="flex h-full flex-col justify-end">
+          <div v-if="server && !hasUpdate(id, server.update_hash)" class="self-start">
+            <span class="text-gray-900 dark:text-gray-100 flex justify-center items-center">
+              <jet-checkbox v-model="forceUpdate" class="mr-2" />
+              Force download.
+            </span>
+          </div>
+          <div class="mt-2">
+            <a class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-indigo-400
+                 dark:hover:text-indigo-500"
+               @click="openGamePathSelector = true"
+            >
+              Open game path installer
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -105,6 +98,8 @@
       :game="server.game"
       :module="module"
       :opened="openGamePathSelector"
+      :saved-game-path="savedGamePath"
+      @confirmed="startDownload"
       @closed="openGamePathSelector = false"
     />
   </div>
@@ -113,16 +108,25 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import ProgressBar from '@/components/ProgressBar.vue'
-import { downloadersStore, updaterStore, pageStore } from '@/store'
+import { downloadersStore, updaterStore, pageStore, gamesStore } from '@/store'
 import NewsSlider from '@/components/news/news-slider.vue'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetCheckbox from '~/components/JetStream/Checkbox.vue'
 import ServerStatus from '~/components/plugins/ServerStatus.vue'
 import GamePathSelector from '~/pages/servers/components/GamePathSelector.vue'
+import PlayIcon from '~/components/icons/PlayIcon.vue'
+import DownloadIcon from '~/components/icons/DownloadIcon.vue'
+import StopIcon from '~/components/icons/StopIcon.vue'
+import { GameModule } from '~/modules/lib/GameModule'
+import PauseIcon from '~/components/icons/PauseIcon.vue'
 
 @Component({
   transition: 'fade',
   components: {
+    PauseIcon,
+    StopIcon,
+    DownloadIcon,
+    PlayIcon,
     GamePathSelector,
     ServerStatus,
     JetCheckbox,
@@ -154,7 +158,7 @@ import GamePathSelector from '~/pages/servers/components/GamePathSelector.vue'
 export default class Server extends Vue {
   openGamePathSelector: boolean = false;
 
-  module: any = null;
+  module: GameModule | null = null;
   forceUpdate = false;
   checkServerInterval = null;
   server = null;
@@ -170,6 +174,10 @@ export default class Server extends Vue {
     return downloadersStore.downloaderByServer(this.id)
   }
 
+  get savedGamePath () {
+    return gamesStore.gamePathByServerAndGameId(this.server.id)
+  }
+
   get downloadInProgress () {
     return this.downloader !== undefined
   }
@@ -178,13 +186,26 @@ export default class Server extends Vue {
     pageStore.setTitle(null)
   }
 
-  async startDownload (installPath: string|null = null) {
-    if (!installPath) {
+  async startDownload (installPath: string | null = null) {
+    if (!this.savedGamePath && !installPath) {
       this.openGamePathSelector = true
       return
     }
 
-    this.module.gamePath = installPath
+    if (!this.module.validateGamePath(installPath || this.savedGamePath)) {
+      this.openGamePathSelector = true
+      return
+    }
+
+    if (installPath) {
+      gamesStore.add({
+        serverId: this.server.id,
+        gameId: this.server.game.identifier,
+        gamePath: installPath
+      })
+    }
+
+    this.module.gamePath = installPath || this.savedGamePath
 
     try {
       const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
@@ -222,8 +243,11 @@ export default class Server extends Vue {
     downloadersStore.stop(this.id)
   }
 
-  startGame () {
-    console.log('Game stated')
+  async startGame () {
+    if (!this.module.validateGamePath(this.savedGamePath)) {
+      this.openGamePathSelector = true
+    }
+    console.log('Play')
   }
 }
 </script>

@@ -96,8 +96,9 @@ import SectionBorder from '~/components/JetStream/SectionBorder.vue'
 })
 export default class GamePathSelector extends Vue {
   @PropSync('opened', { required: true, default: false }) syncedOpened!: boolean;
-  @Prop() module!: GameModule
-  @Prop() game!: any;
+  @Prop() readonly module!: GameModule
+  @Prop() readonly game!: any;
+  @Prop() readonly savedGamePath!: string | null;
 
   installPath: string | null = null;
 
@@ -106,14 +107,26 @@ export default class GamePathSelector extends Vue {
     this.syncedOpened = false
   }
 
+  @Emit('confirmed')
+  confirm () {
+    this.close()
+    return this.installPath
+  }
+
   @Watch('module')
   async onModuleChange () {
-    await this.autoDetectPath()
+    if (!this.savedGamePath) {
+      await this.autoDetectPath()
+    }
   }
 
   @Watch('opened')
   async onOpenedModal () {
-    await this.autoDetectPath()
+    if (this.savedGamePath) {
+      this.installPath = this.savedGamePath
+    } else {
+      await this.autoDetectPath()
+    }
   }
 
   get isValidPath () {
@@ -136,10 +149,6 @@ export default class GamePathSelector extends Vue {
     if (installPath && installPath.length > 0) {
       this.installPath = installPath.shift() || null
     }
-  }
-
-  confirm () {
-    this.close()
   }
 }
 </script>

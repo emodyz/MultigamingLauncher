@@ -7,7 +7,7 @@ import { themeStore } from '~/utils/store-accessor'
   stateFactory: true,
   namespaced: true
 })
-export default class Page extends VuexModule {
+export default class Theme extends VuexModule {
   uuid: string = ''
   themeSource: 'system' | 'dark' | 'light' = 'system';
 
