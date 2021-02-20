@@ -50,7 +50,7 @@
     "eslint-loader": "4.0.2",
     "native-ext-loader": "2.3.0",
     "node-sass": "4.14.1",
-    "nuxt": "2.14.5",
+    "nuxt": "^2.15.0",
     "postcss": "^7",
     "pusher-js": "^7.0.1",
     "require-extension-hooks": "0.3.3",
