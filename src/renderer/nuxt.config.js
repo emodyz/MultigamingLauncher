@@ -25,8 +25,7 @@ module.exports = {
   ],
   buildModules: [
     '@nuxt/typescript-build',
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/laravel-echo'
+    '@nuxtjs/tailwindcss'
   ],
   modules: [
     '@nuxtjs/axios',
@@ -62,18 +61,6 @@ module.exports = {
   },
   axios: {
     baseURL: 'http://51.15.239.102/api'
-  },
-  echo: {
-    broadcaster: 'pusher',
-    authModule: true,
-    connectOnLogin: true,
-    disconnectOnLogout: true,
-    authEndpoint: 'http://multigamingpanel.test/broadcasting/auth',
-    key: 'app-key',
-    wsHost: 'multigamingpanel.test',
-    wsPort: 6001,
-    wssPort: 6001,
-    disableStats: true
   },
   tailwindcss: {}
 }

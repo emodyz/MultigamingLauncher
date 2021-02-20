@@ -36,11 +36,7 @@ export default {
     themeStore.syncTheme()
   },
   mounted () {
-    console.log(this.$echo)
-    this.$echo.channel('modpacks')
-      .listen('Modpack\\ModpackUpdateRequested', e => {
-        console.log('event', e)
-      })
+
   }
 }
 </script>
