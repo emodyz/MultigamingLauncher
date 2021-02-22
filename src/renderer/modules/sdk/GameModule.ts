@@ -3,6 +3,7 @@ import { Downloader } from '@emodyz/node-downloader'
 
 export interface FileManifest {
   url: string;
+  path: string;
   name: string;
   size: string;
   sha256: string;
@@ -38,5 +39,5 @@ export abstract class GameModule {
 
   public abstract install(): void;
 
-  public abstract play(): void;
+  public abstract play(modPacks: ModPack[]): Promise<boolean>;
 }

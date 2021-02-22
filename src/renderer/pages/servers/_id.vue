@@ -117,7 +117,7 @@ import GamePathSelector from '~/pages/servers/components/GamePathSelector.vue'
 import PlayIcon from '~/components/icons/PlayIcon.vue'
 import DownloadIcon from '~/components/icons/DownloadIcon.vue'
 import StopIcon from '~/components/icons/StopIcon.vue'
-import { GameModule } from '~/modules/lib/GameModule'
+import { GameModule } from '~/modules/sdk/GameModule'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
 
 @Component({
@@ -152,7 +152,7 @@ import PauseIcon from '~/components/icons/PauseIcon.vue'
     this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
     // @ts-ignore
     // eslint-disable-next-line new-cap
-    this.module = new ((await import(`~/modules/${this.server.game.identifier}`)).default)()
+    this.module = new ((await import(`~/modules/${this.server.game.identifier}/main.ts`)).default)()
   }
 })
 export default class Server extends Vue {
@@ -256,8 +256,11 @@ export default class Server extends Vue {
 
     if (!this.module.validateGamePath(this.savedGamePath || '')) {
       this.openGamePathSelector = true
+      return
     }
-    console.log('Play')
+
+    const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
+    await this.module.play(modPacks)
   }
 }
 </script>

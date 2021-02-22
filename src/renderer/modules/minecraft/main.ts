@@ -1,10 +1,10 @@
 import * as path from 'path'
 import * as fs from 'fs'
 // @ts-ignore TODO: Fix that !
-import { Downloader, GameModule, ModPack, Sdk } from '~/modules/lib/Sdk'
+import { Downloader, GameModule, ModPack, Sdk } from '~/modules/sdk/Sdk'
 
 // @ts-ignore
-export default class Minecraft extends GameModule {
+export default class Main extends GameModule {
   gameIdentifier = 'minecraft';
   version = '1.0.0';
 
@@ -37,7 +37,8 @@ export default class Minecraft extends GameModule {
 
   protected validateGamePath (gamePath: string): boolean {
     const allowedGamesFiles = [
-      'minecraft.exe'
+      'minecraft.exe',
+      'minecraft.jar'
     ]
     const files = fs.readdirSync(gamePath).map(file => file.toLowerCase())
 

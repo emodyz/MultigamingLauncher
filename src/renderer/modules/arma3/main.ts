@@ -1,10 +1,11 @@
 import * as path from 'path'
 import * as fs from 'fs'
 // @ts-ignore TODO: Fix that !
-import { Downloader, GameModule, ModPack, Sdk } from '~/modules/lib/Sdk'
+import { Downloader, GameModule, ModPack, Sdk } from '~/modules/sdk/Sdk'
+import Arma3Launcher from '~/modules/arma3/Arma3Launcher'
 
 // @ts-ignore
-export default class Arma3 extends GameModule {
+export default class Main extends GameModule {
   gameIdentifier = 'arma3';
   version = '1.0.0';
 
@@ -17,14 +18,16 @@ export default class Arma3 extends GameModule {
 
     modPacks.forEach(modPack => {
       const manifest = Object.values(modPack.manifest)
-      const modPackInstallPath = path.resolve(this.gamePath, modPack.name)
-
-      fs.mkdirSync(modPackInstallPath, {
-        recursive: true
-      }) // TODO: Do Downloader library able to do that @iWirk ?
 
       manifest.forEach(file => {
-        downloader.addFile(file.url, modPackInstallPath, null, file.sha256)
+        const filePath = path.resolve(this.gamePath, path.dirname(file.path))
+        fs.mkdirSync(filePath, {
+          recursive: true
+        }) // TODO: Do Downloader library able to do that @iWirk ?
+
+        console.log(filePath)
+
+        downloader.addFile(file.url, filePath, null, file.sha256)
       })
     })
 
@@ -49,5 +52,17 @@ export default class Arma3 extends GameModule {
       }
     }
     return false
+  }
+
+  play (modPacks: ModPack[]): Promise<boolean> {
+    return new Promise(resolve => {
+      const launcher = new Arma3Launcher(path.resolve(this.gamePath, 'arma3battleye.exe'))
+
+      launcher.withModPacks(modPacks.map(modPack => modPack.name))
+
+      launcher.run()
+
+      resolve(true)
+    })
   }
 }

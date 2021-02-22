@@ -82,7 +82,7 @@ import JetButton from '~/components/JetStream/Button.vue'
 import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
 import JetInput from '~/components/JetStream/Input.vue'
 import JetInputError from '~/components/JetStream/InputError.vue'
-import { GameModule } from '~/modules/lib/GameModule'
+import { GameModule } from '~/modules/sdk/GameModule'
 import SectionBorder from '~/components/JetStream/SectionBorder.vue'
 
 @Component({
