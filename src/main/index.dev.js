@@ -9,8 +9,8 @@ import mainWinHandler from './mainWindow'
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 
 electronDebug({
-  showDevTools: false,
-  devToolsMode: 'right'
+  showDevTools: true,
+  devToolsMode: 'detach'
 })
 
 // work around https://github.com/MarshallOfSound/electron-devtools-installer/issues/122
@@ -35,6 +35,13 @@ app.on('ready', () => {
       app.exit(ELECTRON_RELAUNCH_CODE)
     }
   })
+  const testButton = new MenuItem({
+    label: 'DEV TOOL',
+    click: () => {
+      mainWinHandler.browserWindow.webContents.openDevTools()
+    }
+  })
+  menu.append(testButton)
   menu.append(refreshButton)
   Menu.setApplicationMenu(menu)
 })

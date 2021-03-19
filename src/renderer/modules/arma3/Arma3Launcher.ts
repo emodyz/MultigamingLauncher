@@ -1,7 +1,7 @@
 import GameLauncher from '~/modules/sdk/GameLauncher'
 
 export default class Arma3Launcher extends GameLauncher {
-  private command: string[] = ['2', '1', '-nopause']; // BattleEyes
+  private command: string[] = ['2', '1', '-nopause'];
   private modPacksNames: string[] = []
 
   /**
@@ -22,6 +22,10 @@ export default class Arma3Launcher extends GameLauncher {
 
   public setServerHost (host: string) {
     this.serverHost = host
+  }
+
+  public setServerPassword (password: string) {
+    this.serverPassword = password
   }
 
   protected toCommand (): string[] {

@@ -1,12 +1,31 @@
 import * as path from 'path'
 import * as fs from 'fs'
 // @ts-ignore TODO: Fix that !
-import { Downloader, GameModule, ModPack, Sdk } from '~/modules/sdk/Sdk'
+import { Downloader, GameExecutable, GameModule, ModPack, Sdk } from '~/modules/sdk/Sdk'
 
 // @ts-ignore
 export default class Main extends GameModule {
   gameIdentifier = 'minecraft';
   version = '1.0.0';
+
+  gamesApps: GameExecutable[] = [
+    {
+      platform: 'win32',
+      binary: 'minecraft.exe'
+    },
+    {
+      platform: 'win32',
+      binary: 'minecraft.jar'
+    },
+    {
+      platform: 'darwin',
+      binary: 'minecraft.app'
+    },
+    {
+      platform: 'darwin',
+      binary: 'minecraft.jar'
+    }
+  ]
 
   async findGamePath (): Promise<string | null> {
     return await Sdk.findSteamAppByName('minecraft')
@@ -33,20 +52,5 @@ export default class Main extends GameModule {
 
   install (): void {
     console.log('install games modules')
-  }
-
-  protected validateGamePath (gamePath: string): boolean {
-    const allowedGamesFiles = [
-      'minecraft.exe',
-      'minecraft.jar'
-    ]
-    const files = fs.readdirSync(gamePath).map(file => file.toLowerCase())
-
-    for (const allowedFile of allowedGamesFiles) {
-      if (files.includes(allowedFile)) {
-        return true
-      }
-    }
-    return false
   }
 }

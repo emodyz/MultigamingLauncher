@@ -21,8 +21,8 @@ export default abstract class GameLauncher {
     console.log('run', this.gamePath, command)
 
     // @ts-ignore
-    execFile(this.gamePath, command, { signal: this.controller.signal }, error => {
-      console.log(error)
+    execFile(this.gamePath, command, { signal: this.controller.signal }, (error, response) => {
+      console.log(error, response)
     })
   }
 

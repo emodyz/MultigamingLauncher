@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import {afterEachAlways, beforeEach} from '../helpers'
+import { afterEachAlways, beforeEach } from '../helpers'
 
 test.beforeEach(beforeEach)
 test.afterEach.always(afterEachAlways)

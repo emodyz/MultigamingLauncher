@@ -39,10 +39,18 @@
           <span v-else>Downloading...</span>
         </jet-button>
         <!--- Play Button --->
-        <jet-button v-else class=" w-full h-full font-light uppercase text-3xl" @click="startGame">
-          <span class="flex">
+        <jet-button
+          v-else
+          class="w-full h-full font-light uppercase text-3xl"
+          :disabled="isGameRunning"
+          @click="startGame"
+        >
+          <span v-if="!isGameRunning" class="flex">
             Play
             <PlayIcon class="w-7 ml-2 lg:w-6 xl:w-7 2xl:w-8" />
+          </span>
+          <span v-else class="flex">
+            Game is running
           </span>
         </jet-button>
       </div>
@@ -76,12 +84,22 @@
           </button>
         </div>
         <div v-if="!downloader" class="flex h-full flex-col justify-end">
-          <div v-if="server && !hasUpdate(id, server.update_hash)" class="self-start">
+          <div v-if="!isGameRunning && server && !hasUpdate(id, server.update_hash)" class="self-start">
             <span class="text-gray-900 dark:text-gray-100 flex justify-center items-center">
               <jet-checkbox v-model="forceUpdate" class="mr-2" />
               Force download.
             </span>
           </div>
+
+          <div v-if="isGameRunning" class="self-start items-center">
+            <a class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-red-500
+                 dark:hover:text-indigo-500"
+               @click="killGame"
+            >
+              Force kill the game
+            </a>
+          </div>
+
           <div class="mt-2">
             <a class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-indigo-400
                  dark:hover:text-indigo-500"
@@ -153,6 +171,9 @@ import PauseIcon from '~/components/icons/PauseIcon.vue'
     // @ts-ignore
     // eslint-disable-next-line new-cap
     this.module = new ((await import(`~/modules/${this.server.game.identifier}/main.ts`)).default)()
+
+    // @ts-ignore
+    this.module.validateGamePath(this.savedGamePath)
   }
 })
 export default class Server extends Vue {
@@ -162,6 +183,10 @@ export default class Server extends Vue {
   forceUpdate = false;
   checkServerInterval = null;
   server: any = null;
+
+  isGameRunning: boolean = false;
+
+  _gameCheckerInterval!: any;
 
   // @ts-ignore
   id: string;
@@ -182,8 +207,34 @@ export default class Server extends Vue {
     return this.downloader !== undefined
   }
 
-  mounted () {
+  async mounted () {
     pageStore.setTitle(null)
+    await this.checkIfGameRunning()
+    this._gameCheckerInterval = setInterval(async () => {
+      await this.checkIfGameRunning()
+      console.log('isRunnig', this.isGameRunning)
+    }, 4000)
+  }
+
+  destroyed () {
+    if (this._gameCheckerInterval) {
+      clearInterval(this._gameCheckerInterval)
+    }
+  }
+
+  async checkIfGameRunning () {
+    if (!this.module) {
+      this.isGameRunning = false
+      return false
+    }
+    this.isGameRunning = await this.module.isRunning()
+    return this.isGameRunning
+  }
+
+  killGame () {
+    if (this.module) {
+      this.module.kill()
+    }
   }
 
   async startDownload (installPath: string | null = null) {
@@ -210,7 +261,7 @@ export default class Server extends Vue {
       })
     }
 
-    this.module.gamePath = installPath || this.savedGamePath || ''
+    // this.module.gamePath = installPath || this.savedGamePath || ''
 
     try {
       const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
@@ -259,8 +310,10 @@ export default class Server extends Vue {
       return
     }
 
+    // this.module.gamePath = this.savedGamePath || ''
+
     const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-    await this.module.play(modPacks)
+    await this.module.play(modPacks, this.server)
   }
 }
 </script>
