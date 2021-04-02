@@ -4,14 +4,12 @@ module.exports = {
     browser: true,
     node: true
   },
-  globals: {
-    __resources: true
-  },
   parserOptions: {
     sourceType: 'module'
 
   },
   extends: [
+
     '@nuxtjs/eslint-config-typescript'
   ],
   // add your custom rules here

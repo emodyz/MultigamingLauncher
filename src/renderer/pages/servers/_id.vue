@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-    <div class="flex h-44 w-full p-2">
+    <div class="flex h-32 w-full p-2">
       <div class="flex items-center w-50 p-2">
         <!-- Download Button --->
         <jet-button v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloadInProgress"

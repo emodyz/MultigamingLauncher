@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, PropSync, Vue, Watch } from 'vue-property-decorator'
-import { remote } from 'electron'
+import { ipcRenderer } from 'electron'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
 import JetInput from '~/components/JetStream/Input.vue'
@@ -141,10 +141,12 @@ export default class GamePathSelector extends Vue {
     this.installPath = await this.module.findGamePath()
   }
 
-  chooseGamePath () {
-    const installPath = remote.dialog.showOpenDialogSync({
+  async chooseGamePath () {
+    const installPath = await ipcRenderer.invoke('electron.dialog.showOpenDialog', {
       properties: ['openDirectory']
     })
+
+    console.log(installPath)
 
     if (installPath && installPath.length > 0) {
       this.installPath = installPath.shift() || null

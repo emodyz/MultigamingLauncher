@@ -8,7 +8,7 @@ const windowsOS = {
   },
 
   nsis: {
-    differentialPackage: false // Set true to enable updates
+    differentialPackage: true
   }
 }
 
@@ -42,9 +42,8 @@ const macOS = {
 }
 
 module.exports = {
-  asar: false,
-  productName: 'EZGames',
-  appId: 'org.emodyz.ezgames',
+  productName: 'multigaming-launcher',
+  appId: 'com.emodyz.ezgames',
   artifactName: 'ezgames-${version}.${ext}',
   directories: {
     output: 'build'
@@ -59,10 +58,12 @@ module.exports = {
     {
       from: 'dist/renderer',
       to: 'dist/renderer/'
-    },
+    }
+  ],
+  extraResources: [
     {
-      from: 'src/resources/',
-      to: 'dist/resources/'
+      from: 'src/extraResources/',
+      to: ''
     }
   ],
   ...windowsOS,

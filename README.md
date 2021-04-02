@@ -1,54 +1,28 @@
-<p align="center">
-    <a href="https://ezgames.fr" target="_blank">
-        <img src="https://flashmodz.fr/img/33844530.png" width="150">
-    </a>
-</p>
-<p align="center">
-   <img src="https://github.com/emodyz/MultigamingLauncher/workflows/Tests/badge.svg" alt="Build Status">
-</p>
+# multigaming-launcher
 
-## About MultiGaming Launcher
-> **Note:** This project cannot be used without [MultigamingPanel](https://github.com/emodyz/MultigamingPanel).
+> A all in one GameLauncher for communities.
 
-This MultiGaming Launcher is an out of the box software that makes it easier for creators of custom game servers to share their creations with their player base.   
+#### Build Setup
 
-## Documentation
-
-COMING SOON
-
-#### Steps to launch
-
-> **NOTE:** Yarn is required to start this project ! [Install Yarn](https://yarnpkg.com/)  
-
-Install dependencies:  
-```
+``` bash
+# install dependencies
 yarn install
-```
 
-Run for development:  
-```
-yarn dev
-```
+# serve app with hot reload
+yarn run dev
 
-Build:
-```
-yarn build
-```
+# build electron application for production
+yarn run build
 
-Run Tests:
-```
+# yarn tests
 yarn test
+
+
+# lint all JS/Vue component files in `src/`
+yarn run lint
+
 ```
 
+---
 
-## Contributing
-
-Thank you for considering contributing to this project! The contribution guide can be found in the [Open Isssue](https://github.com/emodyz/MultigamingLauncher/issues/new/choose).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within, please send an e-mail to Léo Hubert via [leohub@live.fr](mailto:leohub@live.fr). All security vulnerabilities will be promptly addressed.
-
-## License
-
-MultiGaming Launcher is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project was generated with [electron-nuxt](https://github.com/michalzaq12/electron-nuxt) v1.7.0 using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://github.com/michalzaq12/electron-nuxt/blob/master/README.md).
