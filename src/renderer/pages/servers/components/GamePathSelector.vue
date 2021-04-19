@@ -82,8 +82,8 @@ import JetButton from '~/components/JetStream/Button.vue'
 import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
 import JetInput from '~/components/JetStream/Input.vue'
 import JetInputError from '~/components/JetStream/InputError.vue'
-import { GameModule } from '~/modules/sdk/GameModule'
 import SectionBorder from '~/components/JetStream/SectionBorder.vue'
+import GameModule from '~/entities/GameModule'
 
 @Component({
   components: {
@@ -101,6 +101,7 @@ export default class GamePathSelector extends Vue {
   @Prop() readonly savedGamePath!: string | null;
 
   installPath: string | null = null;
+  isValidPath: boolean = false;
 
   @Emit('closed')
   close () {
@@ -120,21 +121,31 @@ export default class GamePathSelector extends Vue {
     }
   }
 
+  @Watch('installPath')
+  async onInstallPathChange () {
+    if (!this.installPath) {
+      this.isValidPath = false
+    }
+
+    this.isValidPath = await this.module.validateGamePath(this.installPath)
+  }
+
   @Watch('opened')
-  async onOpenedModal () {
+  async onOpenedModal (opened: boolean) {
+    /**
+     * On close, reset install path to trigger
+     * installPath watcher on re-open.
+     */
+    if (!opened) {
+      this.installPath = null
+      return
+    }
+
     if (this.savedGamePath) {
       this.installPath = this.savedGamePath
     } else {
       await this.autoDetectPath()
     }
-  }
-
-  get isValidPath () {
-    if (!this.installPath) {
-      return false
-    }
-
-    return this.module.validateGamePath(this.installPath)
   }
 
   async autoDetectPath () {

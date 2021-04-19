@@ -1,9 +1,9 @@
 import * as path from 'path'
 import * as fs from 'fs'
 // @ts-ignore TODO: Fix that !
-import { Downloader, GameExecutable, GameModule, ModPack, Sdk } from '~/modules/sdk/Sdk'
-import Arma3Launcher from '~/modules/arma3/Arma3Launcher'
-import Server from '~/models/server'
+import Server from '../../../renderer/models/server'
+import { Downloader, GameExecutable, GameModule, ModPack, Sdk } from '../../sdk/Sdk'
+import Arma3Launcher from './Arma3Launcher'
 
 // @ts-ignore
 export default class Main extends GameModule {

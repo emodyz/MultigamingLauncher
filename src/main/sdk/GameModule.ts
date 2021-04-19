@@ -1,12 +1,12 @@
-import fs from 'fs'
-import os from 'os'
-import path from 'path'
-import process from 'process'
+import * as fs from 'fs'
+import * as os from 'os'
+import * as path from 'path'
+import * as process from 'process'
 // @ts-ignore TODO: Fix that !
 import { Downloader } from '@emodyz/node-downloader'
 // @ts-ignore
 import * as find from 'find-process'
-import Server from '~/models/server'
+import Server from '../../renderer/models/server'
 
 export interface FileManifest {
   url: string;
@@ -43,7 +43,7 @@ export abstract class GameModule {
   public validateGamePath (gamePath: string): boolean {
     const allowedGamesExecutable = this.gamesApps.filter(gameApp => gameApp.platform === os.platform())
 
-    const files = fs.readdirSync(gamePath).map(file => file.toLowerCase())
+    const files = fs.readdirSync(gamePath).map((file: string) => file.toLowerCase())
 
     for (const allowedFile of allowedGamesExecutable) {
       if (files.includes(allowedFile.binary)) {

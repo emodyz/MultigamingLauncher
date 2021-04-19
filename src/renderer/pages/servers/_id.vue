@@ -135,8 +135,8 @@ import GamePathSelector from '~/pages/servers/components/GamePathSelector.vue'
 import PlayIcon from '~/components/icons/PlayIcon.vue'
 import DownloadIcon from '~/components/icons/DownloadIcon.vue'
 import StopIcon from '~/components/icons/StopIcon.vue'
-import { GameModule } from '~/modules/sdk/GameModule'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
+import GameModule from '~/entities/GameModule'
 
 @Component({
   transition: 'fade',
@@ -168,18 +168,19 @@ import PauseIcon from '~/components/icons/PauseIcon.vue'
   async fetch () {
     // @ts-ignore
     this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
-    // @ts-ignore
-    // eslint-disable-next-line new-cap
-    this.module = new ((await import(`~/modules/${this.server.game.identifier}/main.ts`)).default)()
 
     // @ts-ignore
-    this.module.validateGamePath(this.savedGamePath)
+    this.module = new GameModule(this.server.game.identifier)
+
+    // @ts-ignore
+    await this.module.validateGamePath(this.savedGamePath)
   }
 })
 export default class Server extends Vue {
   openGamePathSelector: boolean = false;
 
-  module: GameModule | null = null;
+  module: GameModule | null = null
+
   forceUpdate = false;
   checkServerInterval = null;
   server: any = null;
@@ -227,14 +228,16 @@ export default class Server extends Vue {
       this.isGameRunning = false
       return false
     }
-    this.isGameRunning = await this.module.isRunning()
+    this.isGameRunning = await this.module.isGameRunning()
     return this.isGameRunning
   }
 
   killGame () {
+    /**
     if (this.module) {
       this.module.kill()
     }
+     */ // TODO
   }
 
   async startDownload (installPath: string | null = null) {
@@ -248,7 +251,7 @@ export default class Server extends Vue {
       return
     }
 
-    if (!this.module.validateGamePath(installPath || this.savedGamePath || '')) {
+    if (!await this.module.validateGamePath(installPath || this.savedGamePath || '')) {
       this.openGamePathSelector = true
       return
     }
@@ -263,7 +266,7 @@ export default class Server extends Vue {
 
     // this.module.gamePath = installPath || this.savedGamePath || ''
 
-    try {
+    /* try {
       const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
       const downloader = this.module.prepareDownload(modPacks)
 
@@ -284,23 +287,23 @@ export default class Server extends Vue {
       this.forceUpdate = false
     } catch (e) {
       console.error(e)
-    }
+    } */
   }
 
   pauseDownload () {
-    downloadersStore.pause(this.id)
+    // downloadersStore.pause(this.id)
   }
 
   resumeDownload () {
-    downloadersStore.resume(this.id)
+    // downloadersStore.resume(this.id)
   }
 
   stopDownload () {
-    downloadersStore.stop(this.id)
+    // downloadersStore.stop(this.id)
   }
 
   async startGame () {
-    if (!this.module) {
+    /** if (!this.module) {
       console.error('Game module not found.')
       return
     }
@@ -313,7 +316,7 @@ export default class Server extends Vue {
     // this.module.gamePath = this.savedGamePath || ''
 
     const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-    await this.module.play(modPacks, this.server)
+    await this.module.play(modPacks, this.server) */
   }
 }
 </script>

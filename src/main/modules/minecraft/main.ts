@@ -1,7 +1,7 @@
 import * as path from 'path'
 import * as fs from 'fs'
 // @ts-ignore TODO: Fix that !
-import { Downloader, GameExecutable, GameModule, ModPack, Sdk } from '~/modules/sdk/Sdk'
+import { Downloader, GameExecutable, GameModule, ModPack, Sdk } from '../../sdk/Sdk'
 
 // @ts-ignore
 export default class Main extends GameModule {

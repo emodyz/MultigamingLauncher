@@ -1,5 +1,5 @@
 import { ipcMain, nativeTheme } from 'electron'
-import winHandler from './mainWindow'
+import winHandler from '../mainWindow'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 ipcMain.handle('theme.themeSource', async function (event, themeSource = true) {
@@ -14,5 +14,5 @@ ipcMain.on('theme.shouldUseDarkColors', async function (event) {
 })
 
 nativeTheme.on('updated', () => {
-  winHandler.browserWindow.webContents.send('theme.updated', '<3')
+  winHandler.browserWindow.webContents.send('theme.updated')
 })

@@ -41,9 +41,7 @@ export default class Theme extends VuexModule {
   }
 
   handleSystemChange () {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.once('theme.updated', (event, args) => {
-      console.log('updated -> ', args)
+    ipcRenderer.once('theme.updated', () => {
       themeStore.forceUpdate()
       this.handleSystemChange()
     })
