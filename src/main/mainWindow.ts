@@ -1,3 +1,4 @@
+import { BrowserWindow } from 'electron'
 import BrowserWinHandler from './BrowserWinHandler'
 
 const winHandler = new BrowserWinHandler({
@@ -5,7 +6,7 @@ const winHandler = new BrowserWinHandler({
   width: 1000
 })
 
-winHandler.onCreated(_browserWindow => {
+winHandler.onCreated((_browserWindow: BrowserWindow) => {
   winHandler.loadPage('/')
   // Or load custom url
   // _browserWindow.loadURL('https://google.com')

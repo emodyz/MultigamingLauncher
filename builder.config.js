@@ -42,7 +42,7 @@ const macOS = {
 }
 
 module.exports = {
-  productName: 'multigaming-launcher',
+  productName: 'ezgames',
   appId: 'com.emodyz.ezgames',
   artifactName: 'ezgames-${version}.${ext}',
   directories: {

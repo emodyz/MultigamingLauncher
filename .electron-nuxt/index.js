@@ -33,10 +33,10 @@ const builder = new ElectronBuilder({
   processArgv: argumentsArray
 })
 
-const webpackConfig = Webpack.getBaseConfig({
+const webpackConfig = Webpack.getTypescriptConfig({
   entry: isDev
-    ? path.join(MAIN_PROCESS_DIR, 'boot/index.dev.js')
-    : path.join(MAIN_PROCESS_DIR, 'boot/index.prod.js'),
+    ? path.join(MAIN_PROCESS_DIR, 'boot/index.dev.ts')
+    : path.join(MAIN_PROCESS_DIR, 'boot/index.prod.ts'),
   output: {
     filename: 'index.js',
     path: path.join(DIST_DIR, 'main')
@@ -48,6 +48,9 @@ const webpackConfig = Webpack.getBaseConfig({
     })
   ]
 })
+
+// Fix in progress https://github.com/michalzaq12/xpda-dev/pull/4
+webpackConfig.resolve.extensions.push('.ts', '.tsx')
 
 const webpackMain = new Webpack({
   logger: new Logger('Main', 'olive'),

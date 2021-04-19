@@ -14,5 +14,5 @@ ipcMain.on('theme.shouldUseDarkColors', async function (event) {
 })
 
 nativeTheme.on('updated', () => {
-  winHandler.browserWindow.webContents.send('theme.updated', 'toot')
+  winHandler.browserWindow.webContents.send('theme.updated', '<3')
 })

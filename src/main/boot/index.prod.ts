@@ -17,8 +17,8 @@ app.once('ready', () => {
   registerProtocol(PRODUCTION_APP_PROTOCOL)
 })
 
-// Credits: https://github.com/nklayman/vue-cli-plugin-electron-builder/blob/master/lib/createProtocol.js
-function registerProtocol(scheme) {
+// Credits: https://github.com/nklayman/vue-cli-plugin-electroelectron-devtools-installern-builder/blob/master/lib/createProtocol.js
+function registerProtocol(scheme: any) {
   protocol.registerFileProtocol(
     scheme,
     (request, callback) => {

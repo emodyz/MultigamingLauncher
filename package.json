@@ -33,6 +33,7 @@
     "@nuxtjs/tailwindcss": "^4.0.3",
     "@tailwindcss/forms": "^0.3.2",
     "@tailwindcss/typography": "^0.4.0",
+    "@types/electron-devtools-installer": "^2.2.0",
     "@types/marked": "^2.0.1",
     "@vue/test-utils": "1.1.3",
     "@xpda-dev/core": "^0.1.6",
