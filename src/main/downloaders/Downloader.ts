@@ -1,10 +1,10 @@
-import { Downloader as NodeDownloader } from '@emodyz/node-downloader'
+// import { Downloader as NodeDownloader } from '@emodyz/node-downloader'
 
 export default class Downloader {
   private id: string;
-  private downloader: NodeDownloader;
+  private downloader: any// NodeDownloader;
 
-  constructor (id: string, downloader: NodeDownloader) {
+  constructor (id: string, downloader: any /* NodeDownloader */) {
     this.id = id
     this.downloader = downloader
   }
@@ -26,7 +26,7 @@ export default class Downloader {
   }
 
   handleEvents () {
-    this.downloader.on('progress', stats => {
+    this.downloader.on('progress', (stats: any) => {
       console.log('progress', stats.progressTotal)
     })
 

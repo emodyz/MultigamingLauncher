@@ -1,11 +1,11 @@
 // @ts-ignore TODO: Fix that !
-import { createDownloader, Downloader } from '@emodyz/node-downloader'
+// import { createDownloader, Downloader } from '@emodyz/node-downloader'
 import { findSteamAppById, findSteamAppByName, findSteamLibraries } from 'find-steam-app'
 
 export class Sdk {
-  public static createDownloader (): Downloader {
+  /* public static createDownloader (): Downloader {
     return createDownloader()
-  }
+  } */
 
   public static async findSteamAppByAppId (appId: number): Promise<string | null> {
     try {
@@ -28,5 +28,5 @@ export class Sdk {
   }
 }
 
-export * from './GameModule'
-export * from '@emodyz/node-downloader'
+export * from './game/BaseGameModule'
+// export * from '@emodyz/node-downloader'

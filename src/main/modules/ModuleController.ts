@@ -1,12 +1,11 @@
 import { ipcMain } from 'electron'
 import Arma3 from '../modules/arma3/main'
-import Minecraft from '../modules/minecraft/main'
-import { GameModule } from '../sdk/GameModule'
+import GameModule from '../comunication/GameModule'
 
 export default class ModuleController {
   private readonly modules = new Map<string, GameModule>([
-    ['arma3', new Arma3()],
-    ['minecraft', new Minecraft()]
+    ['arma3', new GameModule(new Arma3())]
+    // ['minecraft', new GameModule(new Arma3())]
   ])
 
   init () {
@@ -34,12 +33,12 @@ export default class ModuleController {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle('module.isGameRunning', (event, identifier: string) => {
-      return this.modules.get(identifier).isRunning()
+      return this.modules.get(identifier).isGameRunning()
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcMain.handle('module.prepareDownload', (event, identifier: string, modpacks: any) => {
+    /* ipcMain.handle('module.prepareDownload', (event, identifier: string, modpacks: any) => {
       return this.modules.get(identifier).prepareDownload(modpacks)
-    })
+    }) */
   }
 }

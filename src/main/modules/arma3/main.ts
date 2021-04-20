@@ -1,16 +1,19 @@
-import * as path from 'path'
-import * as fs from 'fs'
+// import * as path from 'path'
+// import * as fs from 'fs'
 // @ts-ignore TODO: Fix that !
 import Server from '../../../renderer/models/server'
-import { Downloader, GameExecutable, GameModule, ModPack, Sdk } from '../../sdk/Sdk'
+import { /* Downloader, */BaseGameModule, Sdk } from '../../../sdk/Sdk'
+// import FileManifest from '../../../sdk/definitions/FileManifest'
+import GameExecutable from '../../../sdk/definitions/GameExecutable'
+import ModPack from '../../../sdk/definitions/ModPack'
 import Arma3Launcher from './Arma3Launcher'
 
 // @ts-ignore
-export default class Main extends GameModule {
+export default class Main extends BaseGameModule {
   gameIdentifier = 'arma3';
   version = '1.0.0';
 
-  gamesApps: GameExecutable[] = [
+  gameApps: GameExecutable[] = [
     {
       platform: 'darwin',
       binary: 'arma3.app'
@@ -25,13 +28,13 @@ export default class Main extends GameModule {
     return await Sdk.findSteamAppByAppId(107410)
   }
 
-  prepareDownload (modPacks: ModPack[]): Downloader {
+  /* prepareDownload (modPacks: ModPack[]): Downloader {
     const downloader = Sdk.createDownloader()
 
     modPacks.forEach(modPack => {
       const manifest = Object.values(modPack.manifest)
 
-      manifest.forEach(file => {
+      manifest.forEach((file: FileManifest) => {
         const filePath = path.resolve(this.gamePath, path.dirname(file.path))
         fs.mkdirSync(filePath, {
           recursive: true
@@ -44,7 +47,7 @@ export default class Main extends GameModule {
     })
 
     return downloader
-  }
+  } */
 
   install (): void {
     console.log('install games modules')

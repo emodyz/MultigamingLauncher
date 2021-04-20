@@ -3,35 +3,20 @@ import * as os from 'os'
 import * as path from 'path'
 import * as process from 'process'
 // @ts-ignore TODO: Fix that !
-import { Downloader } from '@emodyz/node-downloader'
+// import { Downloader } from '@emodyz/node-downloader'
 // @ts-ignore
 import * as find from 'find-process'
 import Server from '../../renderer/models/server'
+import GameModule from '../contracts/GameModule'
+import GameExecutable from '../definitions/GameExecutable'
+import ModPack from '../definitions/ModPack'
 
-export interface FileManifest {
-  url: string;
-  path: string;
-  name: string;
-  size: string;
-  sha256: string;
-}
-
-export interface ModPack {
-  name: string;
-  manifest: FileManifest[];
-}
-
-export interface GameExecutable {
-  // eslint-disable-next-line no-undef
-  platform: NodeJS.Platform;
-  binary: string;
-}
-
-export abstract class GameModule {
+export abstract class BaseGameModule implements GameModule {
+  public abstract readonly identifier: string;
   public abstract gameIdentifier: string;
   public abstract version: string;
 
-  public abstract gamesApps: GameExecutable[];
+  public abstract gameApps: GameExecutable[];
 
   protected gamePath!: string;
   protected gameBinary!: string;
@@ -41,7 +26,7 @@ export abstract class GameModule {
   }
 
   public validateGamePath (gamePath: string): boolean {
-    const allowedGamesExecutable = this.gamesApps.filter(gameApp => gameApp.platform === os.platform())
+    const allowedGamesExecutable = this.gameApps.filter(gameApp => gameApp.platform === os.platform())
 
     const files = fs.readdirSync(gamePath).map((file: string) => file.toLowerCase())
 
@@ -55,7 +40,7 @@ export abstract class GameModule {
     return false
   }
 
-  public async isRunning (): Promise<boolean> {
+  async isGameRunning (): Promise<boolean> {
     try {
       const list = await find('name', 'arma3')
       console.log(list)
@@ -65,7 +50,7 @@ export abstract class GameModule {
     return false
   }
 
-  public async kill () {
+  async killGame (): Promise<boolean> {
     try {
       const list = await find('name', 'arma3')
       list.forEach((program: any) => {
@@ -79,7 +64,7 @@ export abstract class GameModule {
 
   public abstract findGamePath(): Promise<string | null>;
 
-  public abstract prepareDownload(modPacks: ModPack[]): Downloader;
+  // public abstract prepareDownload(modPacks: ModPack[]): Downloader;
 
   public abstract install(): void;
 

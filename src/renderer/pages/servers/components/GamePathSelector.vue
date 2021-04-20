@@ -83,7 +83,7 @@ import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
 import JetInput from '~/components/JetStream/Input.vue'
 import JetInputError from '~/components/JetStream/InputError.vue'
 import SectionBorder from '~/components/JetStream/SectionBorder.vue'
-import GameModule from '~/entities/GameModule'
+import GameModule from '~/comunication/GameModule'
 
 @Component({
   components: {
@@ -125,6 +125,7 @@ export default class GamePathSelector extends Vue {
   async onInstallPathChange () {
     if (!this.installPath) {
       this.isValidPath = false
+      return
     }
 
     this.isValidPath = await this.module.validateGamePath(this.installPath)

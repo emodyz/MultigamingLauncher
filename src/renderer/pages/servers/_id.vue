@@ -136,7 +136,7 @@ import PlayIcon from '~/components/icons/PlayIcon.vue'
 import DownloadIcon from '~/components/icons/DownloadIcon.vue'
 import StopIcon from '~/components/icons/StopIcon.vue'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
-import GameModule from '~/entities/GameModule'
+import GameModule from '~/comunication/GameModule'
 
 @Component({
   transition: 'fade',
