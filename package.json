@@ -52,7 +52,7 @@
     "native-ext-loader": "2.3.0",
     "node-sass": "4.14.1",
     "nuxt": "2.14.12",
-    "postcss": "^7",
+    "postcss": "^8",
     "require-extension-hooks": "0.3.3",
     "require-extension-hooks-babel": "1.0.0",
     "require-extension-hooks-vue": "0.4.2",
