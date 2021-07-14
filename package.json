@@ -15,7 +15,7 @@
     "postinstall": "electron-builder install-app-deps & yarn run lint:fix"
   },
   "keywords": [],
-  "author": "Léo Hubert Froideval <leohub@live.fr>",
+  "author": "Emodyz",
   "license": "MIT",
   "homepage": "https://github.com/michalzaq12/electron-nuxt/blob/master/README.md",
   "engines": {
@@ -67,6 +67,7 @@
     "webpack-node-externals": "2.5.2"
   },
   "dependencies": {
+    "@emodyz/node-downloader": "^2.0.0-RC.2",
     "find-process": "^1.4.4",
     "find-steam-app": "^1.0.2",
     "marked": "^2.0.1",

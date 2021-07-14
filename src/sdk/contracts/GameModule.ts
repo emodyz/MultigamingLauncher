@@ -2,6 +2,7 @@
 import Server from '../../renderer/models/server'
 import GameExecutable from '../definitions/GameExecutable'
 import ModPack from '../definitions/ModPack'
+import { Downloader } from '../Sdk'
 import Module from './Module'
 
 export default interface GameModule extends Module {
@@ -26,7 +27,7 @@ export default interface GameModule extends Module {
   /**
    * Download section
    */
-  // prepareDownload(modPacks: ModPack[]): Downloader; TODO: @node-downloader is broken
+  createDownloader(modPacks: ModPack[]): Downloader;
 
   /**
    * @deprecated

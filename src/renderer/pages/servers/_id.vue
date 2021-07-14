@@ -59,7 +59,7 @@
           <progress-bar :progress="downloader.progress" class="w-full h-7" />
 
           <!-- Pause Button -->
-          <button v-if="downloader.state === 0" class="ml-2 w-7 h-7 bg-gray-200
+          <button v-if="downloader.state === 1" class="ml-2 w-7 h-7 bg-gray-200
           rounded-md text-gray-500 hover:text-gray-900
           hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                   @click="pauseDownload"
@@ -67,7 +67,7 @@
             <PauseIcon />
           </button>
           <!-- Resume Button -->
-          <button v-else-if="downloader.state === 1" class="ml-2 w-7 h-7 bg-gray-200
+          <button v-else-if="downloader.state === 2" class="ml-2 w-7 h-7 bg-gray-200
           rounded-md text-gray-500 hover:text-gray-900
           hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                   @click="resumeDownload"
@@ -126,7 +126,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import ProgressBar from '@/components/ProgressBar.vue'
-import { downloadersStore, updaterStore, pageStore, gamesStore } from '@/store'
+import { updaterStore, pageStore, gamesStore, downloadersStore } from '@/store'
 import NewsSlider from '@/components/news/news-slider.vue'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetCheckbox from '~/components/JetStream/Checkbox.vue'
@@ -137,6 +137,7 @@ import DownloadIcon from '~/components/icons/DownloadIcon.vue'
 import StopIcon from '~/components/icons/StopIcon.vue'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
 import GameModule from '~/comunication/GameModule'
+import Downloader from '~/comunication/Downloader'
 
 @Component({
   transition: 'fade',
@@ -264,42 +265,35 @@ export default class Server extends Vue {
       })
     }
 
-    // this.module.gamePath = installPath || this.savedGamePath || ''
+    try {
+      const modPacks = (await this.$axios.$get(`/servers/${this.server.id}/modpacks`)).data
 
-    /* try {
-      const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-      const downloader = this.module.prepareDownload(modPacks)
+      console.log(modPacks)
 
-      if (this.forceUpdate) {
-        updaterStore.remove(this.id)
-      }
+      const downloader = await this.module.createDownloader(this.server.id, modPacks) as Downloader
 
-      downloadersStore.add({
-        server: this.server,
-        downloader
-      })
-
-      downloadersStore.start({
-        serverId: this.id,
-        forceDownload: this.forceUpdate
-      })
+      await downloader.start(this.forceUpdate)
 
       this.forceUpdate = false
-    } catch (e) {
-      console.error(e)
-    } */
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   pauseDownload () {
-    // downloadersStore.pause(this.id)
+    if (!module) {
+      return
+    }
+
+    this.module?.downloader(this.server.id).pause()
   }
 
   resumeDownload () {
-    // downloadersStore.resume(this.id)
+    this.module?.downloader(this.server.id).resume()
   }
 
   stopDownload () {
-    // downloadersStore.stop(this.id)
+    this.module?.downloader(this.server.id).stop()
   }
 
   async startGame () {

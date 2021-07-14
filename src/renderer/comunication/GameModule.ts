@@ -1,5 +1,8 @@
 import { ipcRenderer } from 'electron'
-import GameModuleProtocol from '../../shared/comunication/modules/GameModuleProtocol'
+import GameModuleProtocol, { Channels } from '../../shared/comunication/module/GameModuleProtocol'
+import ModPack from '../../sdk/definitions/ModPack'
+import DownloaderProtocol from '../../shared/comunication/downloader/DownloaderProtocol'
+import Downloader from '~/comunication/Downloader'
 
 export default class GameModule implements GameModuleProtocol {
   gameIdentifier: string;
@@ -9,23 +12,43 @@ export default class GameModule implements GameModuleProtocol {
   }
 
   async exist (): Promise<boolean> {
-    return await ipcRenderer.invoke('module.exist', this.gameIdentifier)
+    return await this.emit(Channels.EXIST)
   }
 
   async findGamePath (): Promise<string | null> {
-    return await ipcRenderer.invoke('module.findGamePath', this.gameIdentifier)
+    return await this.emit(Channels.FIND_GAME_PATH)
   }
 
   async isGameRunning (): Promise<boolean> {
-    return await ipcRenderer.invoke('module.isGameRunning', this.gameIdentifier)
+    return await this.emit(Channels.IS_GAME_RUNNING)
   }
 
   async validateGamePath (gamePath: string): Promise<boolean> {
     if (gamePath === null) {
-      console.log('gamePath null for', this.gameIdentifier)
+      console.log('no gamePath provided for', this.gameIdentifier)
       return false
     }
 
-    return await ipcRenderer.invoke('module.validateGamePath', this.gameIdentifier, gamePath)
+    return await this.emit(Channels.VALIDE_GAME_PATH, gamePath)
+  }
+
+  async createDownloader (serverId: string, modPacks: ModPack[]): Promise<DownloaderProtocol> {
+    await this.emit(Channels.CREATE_DOWNLOADER, serverId, modPacks)
+
+    return new Downloader(serverId)
+  }
+
+  get downloader (): (serverId: string) => Downloader {
+    return (serverId: string) => {
+      return new Downloader(serverId)
+    }
+  }
+
+  /**
+   * Private methods (helpers)
+   */
+
+  private async emit (channel: string, ...data): Promise<any> {
+    return await ipcRenderer.invoke(channel, this.gameIdentifier, ...data)
   }
 }

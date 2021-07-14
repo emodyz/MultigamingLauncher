@@ -958,6 +958,13 @@
     dir-compare "^2.4.0"
     fs-extra "^9.0.1"
 
+"@emodyz/node-downloader@^2.0.0-RC.2":
+  version "2.0.0-RC.2"
+  resolved "https://registry.yarnpkg.com/@emodyz/node-downloader/-/node-downloader-2.0.0-RC.2.tgz#6f22cf79a7d30dde8fe883bdc072d7b29f927437"
+  integrity sha512-XKQ3xzpBMbHOpkHf+DsXb4fCWuw5ZDstC1etziDJYKeFv4klcOuIvDoZMgA6Au9FPHfuvQ5I8IlPZ2oQsU6shA==
+  dependencies:
+    node-downloader-helper "^1.0.18"
+
 "@eslint/eslintrc@^0.4.0":
   version "0.4.0"
   resolved "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-0.4.0.tgz"
@@ -8634,6 +8641,11 @@ node-addon-api@^1.6.3:
   version "1.7.2"
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-1.7.2.tgz"
   integrity sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==
+
+node-downloader-helper@^1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/node-downloader-helper/-/node-downloader-helper-1.0.18.tgz#13b63324575df51c92142e6fa668596c6ab51d92"
+  integrity sha512-C7hxYz/yg4d8DFVC6c4fMIOI7jywbpQHOznkax/74F8NcC8wSOLO+UxNMcwds/5wEL8W+RPXT9C389w3bDOMxw==
 
 node-emoji@^1.8.1:
   version "1.10.0"

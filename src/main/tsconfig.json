@@ -6,6 +6,12 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-    }
+    },
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost",
+      "es2015.promise"
+    ]
   }
 }

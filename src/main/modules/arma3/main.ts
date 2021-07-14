@@ -1,15 +1,14 @@
-// import * as path from 'path'
-// import * as fs from 'fs'
-// @ts-ignore TODO: Fix that !
+import * as path from 'path'
+import * as fs from 'fs'
 import Server from '../../../renderer/models/server'
-import { /* Downloader, */BaseGameModule, Sdk } from '../../../sdk/Sdk'
-// import FileManifest from '../../../sdk/definitions/FileManifest'
+import { Downloader, GameModule, Sdk } from '../../../sdk/Sdk'
 import GameExecutable from '../../../sdk/definitions/GameExecutable'
 import ModPack from '../../../sdk/definitions/ModPack'
+import FileManifest from '../../../sdk/definitions/FileManifest'
 import Arma3Launcher from './Arma3Launcher'
 
 // @ts-ignore
-export default class Main extends BaseGameModule {
+export default class Main extends GameModule {
   gameIdentifier = 'arma3';
   version = '1.0.0';
 
@@ -28,7 +27,7 @@ export default class Main extends BaseGameModule {
     return await Sdk.findSteamAppByAppId(107410)
   }
 
-  /* prepareDownload (modPacks: ModPack[]): Downloader {
+  createDownloader (modPacks: ModPack[]): Downloader {
     const downloader = Sdk.createDownloader()
 
     modPacks.forEach(modPack => {
@@ -47,10 +46,10 @@ export default class Main extends BaseGameModule {
     })
 
     return downloader
-  } */
+  }
 
   install (): void {
-    console.log('install games modules')
+    console.log('install games module')
   }
 
   play (modPacks: ModPack[], server: Server): Promise<boolean> {

@@ -2,16 +2,15 @@ import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
 import * as process from 'process'
-// @ts-ignore TODO: Fix that !
-// import { Downloader } from '@emodyz/node-downloader'
 // @ts-ignore
 import * as find from 'find-process'
 import Server from '../../renderer/models/server'
-import GameModule from '../contracts/GameModule'
+import IGameModule from '../contracts/GameModule'
 import GameExecutable from '../definitions/GameExecutable'
 import ModPack from '../definitions/ModPack'
+import { Downloader } from '../../Sdk/Sdk'
 
-export abstract class BaseGameModule implements GameModule {
+export abstract class GameModule implements IGameModule {
   public abstract readonly identifier: string;
   public abstract gameIdentifier: string;
   public abstract version: string;
@@ -64,7 +63,7 @@ export abstract class BaseGameModule implements GameModule {
 
   public abstract findGamePath(): Promise<string | null>;
 
-  // public abstract prepareDownload(modPacks: ModPack[]): Downloader;
+  public abstract createDownloader(modPacks: ModPack[]): Downloader;
 
   public abstract install(): void;
 
