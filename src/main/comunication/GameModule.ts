@@ -1,7 +1,6 @@
 import GameModuleProtocol from '../../shared/comunication/module/GameModuleProtocol'
 import { GameModule as BaseGameModule } from '../../sdk/Sdk'
 import ModPack from '../../sdk/definitions/ModPack'
-import DownloaderProtocol from '../../shared/comunication/downloader/DownloaderProtocol'
 import DownloaderController from '../downloaders/DownloaderController'
 import Downloader from './Downloader'
 
