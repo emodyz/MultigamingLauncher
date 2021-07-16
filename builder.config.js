@@ -58,6 +58,14 @@ module.exports = {
     {
       from: 'dist/renderer',
       to: 'dist/renderer/'
+    },
+    {
+      from: 'dist/sdk',
+      to: 'dist/sdk/'
+    },
+    {
+      from: 'dist/shared',
+      to: 'dist/shared/'
     }
   ],
   extraResources: [
