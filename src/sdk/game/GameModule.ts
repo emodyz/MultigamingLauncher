@@ -8,7 +8,7 @@ import Server from '../../renderer/models/server'
 import IGameModule from '../contracts/GameModule'
 import GameExecutable from '../definitions/GameExecutable'
 import ModPack from '../definitions/ModPack'
-import { Downloader } from '../../Sdk/Sdk'
+import { Downloader } from '../Sdk'
 
 export abstract class GameModule implements IGameModule {
   public abstract readonly identifier: string;
