@@ -48,7 +48,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { remote } from 'electron'
+import { ipcRenderer } from 'electron'
 import AppearanceSettings from './sections/AppearanceSettings.vue'
 import { pageStore } from '~/store'
 import JetButton from '~/components/JetStream/Button.vue'
@@ -86,7 +86,7 @@ export default class Settings extends Vue {
   goToProfileSettings () {
     // @ts-ignore
     const url = this.$axios.defaults.baseURL.replace('/api', '/user/profile')
-    remote.shell.openExternal(url)
+    ipcRenderer.invoke('electron.shell.openExternal', url)
   }
 }
 </script>

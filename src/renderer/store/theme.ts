@@ -1,6 +1,6 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { remote } from 'electron'
-import { themeStore } from '~/utils/store-accessor'
+import { ipcRenderer } from 'electron'
+import { themeStore } from '~/store'
 
 @Module({
   name: 'theme',
@@ -14,7 +14,7 @@ export default class Theme extends VuexModule {
   @Mutation
   setThemeSource (themeSource: 'system' | 'dark' | 'light') {
     this.themeSource = themeSource
-    remote.nativeTheme.themeSource = themeSource
+    ipcRenderer.invoke('theme.themeSource', themeSource)
   }
 
   @Mutation
@@ -24,12 +24,12 @@ export default class Theme extends VuexModule {
 
   @Mutation
   syncTheme () {
-    remote.nativeTheme.themeSource = this.themeSource
+    ipcRenderer.invoke('theme.themeSource', this.themeSource)
   }
 
   get isDark () {
     if (this.themeSource === 'system') {
-      return this.uuid.length >= 0 && remote.nativeTheme.shouldUseDarkColors
+      return this.uuid.length >= 0 && ipcRenderer.sendSync('theme.shouldUseDarkColors')
     }
 
     return this.themeSource === 'dark'
@@ -41,7 +41,7 @@ export default class Theme extends VuexModule {
   }
 
   handleSystemChange () {
-    remote.nativeTheme.once('updated', () => {
+    ipcRenderer.once('theme.updated', () => {
       themeStore.forceUpdate()
       this.handleSystemChange()
     })

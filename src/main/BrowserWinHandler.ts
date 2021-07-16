@@ -1,13 +1,22 @@
+/* eslint-disable */
 import { EventEmitter } from 'events'
 import { BrowserWindow, app } from 'electron'
+const DEV_SERVER_URL = process.env.DEV_SERVER_URL
 const isProduction = process.env.NODE_ENV === 'production'
+const isDev = process.env.NODE_ENV === 'development'
 
 export default class BrowserWinHandler {
+
+  private _eventEmitter: EventEmitter;
+  private readonly allowRecreate: boolean;
+  public options: any
+  public browserWindow: BrowserWindow;
+
   /**
-     * @param [options] {object} - browser window options
-     * @param [allowRecreate] {boolean}
-     */
-  constructor (options, allowRecreate = true) {
+   * @param [options] {object} - browser window options
+   * @param [allowRecreate] {boolean}
+   */
+  constructor (options: any, allowRecreate = true) {
     this._eventEmitter = new EventEmitter()
     this.allowRecreate = allowRecreate
     this.options = options
@@ -36,8 +45,8 @@ export default class BrowserWinHandler {
         webPreferences: {
           ...this.options.webPreferences,
           webSecurity: isProduction, // disable on dev to allow loading local resources
-          nodeIntegration: true, // allow loading modules via the require () function
-          devTools: !process.env.SPECTRON // disable on e2e test environment
+          nodeIntegration: true, // allow loading module via the require () function
+          contextIsolation: false, // https://github.com/electron/electron/issues/18037#issuecomment-806320028
         }
       }
     )
@@ -53,29 +62,36 @@ export default class BrowserWinHandler {
   }
 
   /**
-     * @callback onReadyCallback
-     * @param {BrowserWindow}
-     */
+   * @callback onReadyCallback
+   * @param {BrowserWindow}
+   */
 
   /**
-     *
-     * @param callback {onReadyCallback}
-     */
-  onCreated (callback) {
+   *
+   * @param callback {onReadyCallback}
+   */
+  onCreated (callback: any) {
+    if (this.browserWindow !== null) return callback(this.browserWindow);
     this._eventEmitter.once('created', () => {
       callback(this.browserWindow)
+      if (isDev && BrowserWindow.getAllWindows().length === 1) this.browserWindow.webContents.openDevTools()
     })
   }
 
+  async loadPage(pagePath: string) {
+    if (!this.browserWindow) return Promise.reject(new Error('The page could not be loaded before win \'created\' event'))
+    const serverUrl = isDev ? DEV_SERVER_URL : 'app://./index.html'
+    const fullPath = serverUrl + '#' + pagePath;
+    await this.browserWindow.loadURL(fullPath)
+  }
+
   /**
-     *
-     * @returns {Promise<BrowserWindow>}
-     */
+   *
+   * @returns {Promise<BrowserWindow>}
+   */
   created () {
     return new Promise(resolve => {
-      this._eventEmitter.once('created', () => {
-        resolve(this.browserWindow)
-      })
+      this.onCreated(() => resolve(this.browserWindow))
     })
   }
 }

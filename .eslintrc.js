@@ -4,20 +4,19 @@ module.exports = {
     browser: true,
     node: true
   },
-  globals: {
-    __resources: true
-  },
   parserOptions: {
     sourceType: 'module'
 
   },
   extends: [
+
     '@nuxtjs/eslint-config-typescript'
   ],
   // add your custom rules here
   rules: {
     // StandardJS — The Rules
     indent: ['error', 2], // 2 spaces – for indentation
+    camelcase: 'off',
     'max-len': ['error', { code: 120 }],
     'no-console': 'off',
     'arrow-parens': ['error', 'as-needed'],

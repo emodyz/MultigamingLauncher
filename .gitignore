@@ -4,4 +4,3 @@ build/*
 !build/icons
 node_modules
 /.idea/
-/.electron-nuxt/
