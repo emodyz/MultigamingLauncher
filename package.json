@@ -15,7 +15,10 @@
     "postinstall": "electron-builder install-app-deps & yarn run lint:fix"
   },
   "keywords": [],
-  "author": "Emodyz",
+  "author": {
+    "name": "Emodyz",
+    "email": "admin@emodyz.eu"
+  },
   "license": "MIT",
   "homepage": "https://github.com/michalzaq12/electron-nuxt/blob/master/README.md",
   "engines": {
