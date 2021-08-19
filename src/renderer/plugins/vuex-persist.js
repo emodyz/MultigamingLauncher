@@ -1,4 +1,4 @@
-import VuexPersistence from 'vuex-persist'
+import * as VuexPersistence from 'vuex-persist'
 
 export default ({ store }) => {
   new VuexPersistence({
