@@ -1,4 +1,4 @@
-import GameLauncher from '~/modules/sdk/GameLauncher'
+import GameLauncher from '../../../sdk/GameLauncher'
 
 export default class Arma3Launcher extends GameLauncher {
   private command: string[] = ['2', '1', '-nopause'];

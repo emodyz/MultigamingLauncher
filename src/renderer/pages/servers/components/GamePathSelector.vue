@@ -77,13 +77,13 @@
 
 <script lang="ts">
 import { Component, Emit, Prop, PropSync, Vue, Watch } from 'vue-property-decorator'
-import { remote } from 'electron'
+import { ipcRenderer } from 'electron'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
 import JetInput from '~/components/JetStream/Input.vue'
 import JetInputError from '~/components/JetStream/InputError.vue'
-import { GameModule } from '~/modules/sdk/GameModule'
 import SectionBorder from '~/components/JetStream/SectionBorder.vue'
+import GameModule from '~/comunication/GameModule'
 
 @Component({
   components: {
@@ -101,6 +101,7 @@ export default class GamePathSelector extends Vue {
   @Prop() readonly savedGamePath!: string | null;
 
   installPath: string | null = null;
+  isValidPath: boolean = false;
 
   @Emit('closed')
   close () {
@@ -120,8 +121,27 @@ export default class GamePathSelector extends Vue {
     }
   }
 
+  @Watch('installPath')
+  async onInstallPathChange () {
+    if (!this.installPath) {
+      this.isValidPath = false
+      return
+    }
+
+    this.isValidPath = await this.module.validateGamePath(this.installPath)
+  }
+
   @Watch('opened')
-  async onOpenedModal () {
+  async onOpenedModal (opened: boolean) {
+    /**
+     * On close, reset install path to trigger
+     * installPath watcher on re-open.
+     */
+    if (!opened) {
+      this.installPath = null
+      return
+    }
+
     if (this.savedGamePath) {
       this.installPath = this.savedGamePath
     } else {
@@ -129,22 +149,16 @@ export default class GamePathSelector extends Vue {
     }
   }
 
-  get isValidPath () {
-    if (!this.installPath) {
-      return false
-    }
-
-    return this.module.validateGamePath(this.installPath)
-  }
-
   async autoDetectPath () {
     this.installPath = await this.module.findGamePath()
   }
 
-  chooseGamePath () {
-    const installPath = remote.dialog.showOpenDialogSync({
+  async chooseGamePath () {
+    const installPath = await ipcRenderer.invoke('electron.dialog.showOpenDialog', {
       properties: ['openDirectory']
     })
+
+    console.log(installPath)
 
     if (installPath && installPath.length > 0) {
       this.installPath = installPath.shift() || null

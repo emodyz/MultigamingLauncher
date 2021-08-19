@@ -1,4 +1,5 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
+import { serverStore } from '~/utils/store-accessor'
 
 @Module({
   name: 'updater',
@@ -20,8 +21,14 @@ export default class Updater extends VuexModule {
   }
 
   @Mutation
-  add (server: any) {
-    const index = this.servers.map(server => server.id).indexOf(server.id)
+  add (serverId: string) {
+    const index = this.servers.map(server => server.id).indexOf(serverId)
+    const server = serverStore.server(serverId)
+
+    if (!server) {
+      return
+    }
+
     if (index !== -1) {
       this.servers[index].hash = server.update_hash
     } else {

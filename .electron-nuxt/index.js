@@ -13,7 +13,11 @@ const NuxtApp = require('./renderer/NuxtApp')
 
 const isDev = process.env.NODE_ENV === 'development'
 
+const electronLogger = new Logger('Electron', 'teal')
+electronLogger.ignore(text => text.includes('nhdogjmejiglipccpnnnanhbledajbpd')) // Clear vue devtools errors
+
 const launcher = new ElectronLauncher({
+  logger: electronLogger,
   electronPath: electron,
   entryFile: path.join(DIST_DIR, 'main/index.js')
 })
@@ -23,27 +27,30 @@ function hasConfigArgument (array) {
   return false
 }
 const argumentsArray = process.argv.slice(2)
-if (!hasConfigArgument(argumentsArray)) argumentsArray.push('--config', 'builder.config.js' , '--publish', 'onTag')
+if (!hasConfigArgument(argumentsArray)) argumentsArray.push('--config', 'builder.config.js' , '--publish', 'never')
 
 const builder = new ElectronBuilder({
   processArgv: argumentsArray
 })
 
-const webpackConfig = Webpack.getBaseConfig({
+const webpackConfig = Webpack.getTypescriptConfig({
   entry: isDev
-    ? path.join(MAIN_PROCESS_DIR, 'index.dev.js')
-    : path.join(MAIN_PROCESS_DIR, 'index.js'),
+    ? path.join(MAIN_PROCESS_DIR, 'boot/index.dev.ts')
+    : path.join(MAIN_PROCESS_DIR, 'boot/index.prod.ts'),
   output: {
     filename: 'index.js',
     path: path.join(DIST_DIR, 'main')
   },
   plugins: [
     new webpack.DefinePlugin({
-      INCLUDE_RESOURCES_PATH: resourcesPath.mainProcess(),
+      'process.resourcesPath': resourcesPath.mainProcess(),
       'process.env.DEV_SERVER_URL': `'${SERVER_HOST}:${SERVER_PORT}'`
     })
   ]
 })
+
+// Fix in progress https://github.com/michalzaq12/xpda-dev/pull/4
+webpackConfig.resolve.extensions.push('.ts', '.tsx')
 
 const webpackMain = new Webpack({
   logger: new Logger('Main', 'olive'),

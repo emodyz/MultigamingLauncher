@@ -6,6 +6,7 @@
 
 module.exports = {
   ssr: false,
+  target: 'static',
   head: {
     title: 'EZGames',
     meta: [

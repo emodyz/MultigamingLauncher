@@ -10,7 +10,7 @@
 ## About MultiGaming Launcher
 > **Note:** This project cannot be used without [MultigamingPanel](https://github.com/emodyz/MultigamingPanel).
 
-This MultiGaming Launcher is an out of the box software that makes it easier for creators of custom game servers to share their creations with their player base.   
+This MultiGaming Launcher is an out of the box software that makes it easier for creators of custom game servers to share their creations with their player base.
 
 ## Documentation
 
@@ -18,14 +18,14 @@ COMING SOON
 
 #### Steps to launch
 
-> **NOTE:** Yarn is required to start this project ! [Install Yarn](https://yarnpkg.com/)  
+> **NOTE:** Yarn is required to start this project ! [Install Yarn](https://yarnpkg.com/)
 
-Install dependencies:  
+Install dependencies:
 ```
 yarn install
 ```
 
-Run for development:  
+Run for development:
 ```
 yarn dev
 ```

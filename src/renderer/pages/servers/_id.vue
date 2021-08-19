@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-    <div class="flex h-44 w-full p-2">
+    <div class="flex h-32 w-full p-2">
       <div class="flex items-center w-50 p-2">
         <!-- Download Button --->
         <jet-button v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloadInProgress"
@@ -59,7 +59,7 @@
           <progress-bar :progress="downloader.progress" class="w-full h-7" />
 
           <!-- Pause Button -->
-          <button v-if="downloader.state === 0" class="ml-2 w-7 h-7 bg-gray-200
+          <button v-if="downloader.state === 1" class="ml-2 w-7 h-7 bg-gray-200
           rounded-md text-gray-500 hover:text-gray-900
           hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                   @click="pauseDownload"
@@ -67,7 +67,7 @@
             <PauseIcon />
           </button>
           <!-- Resume Button -->
-          <button v-else-if="downloader.state === 1" class="ml-2 w-7 h-7 bg-gray-200
+          <button v-else-if="downloader.state === 2" class="ml-2 w-7 h-7 bg-gray-200
           rounded-md text-gray-500 hover:text-gray-900
           hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                   @click="resumeDownload"
@@ -126,7 +126,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import ProgressBar from '@/components/ProgressBar.vue'
-import { downloadersStore, updaterStore, pageStore, gamesStore } from '@/store'
+import { updaterStore, pageStore, gamesStore, downloadersStore } from '@/store'
 import NewsSlider from '@/components/news/news-slider.vue'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetCheckbox from '~/components/JetStream/Checkbox.vue'
@@ -135,8 +135,9 @@ import GamePathSelector from '~/pages/servers/components/GamePathSelector.vue'
 import PlayIcon from '~/components/icons/PlayIcon.vue'
 import DownloadIcon from '~/components/icons/DownloadIcon.vue'
 import StopIcon from '~/components/icons/StopIcon.vue'
-import { GameModule } from '~/modules/sdk/GameModule'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
+import GameModule from '~/comunication/GameModule'
+import Downloader from '~/comunication/Downloader'
 
 @Component({
   transition: 'fade',
@@ -168,18 +169,19 @@ import PauseIcon from '~/components/icons/PauseIcon.vue'
   async fetch () {
     // @ts-ignore
     this.server = (await this.$axios.$get(`/servers/${this.id}`)).data
-    // @ts-ignore
-    // eslint-disable-next-line new-cap
-    this.module = new ((await import(`~/modules/${this.server.game.identifier}/main.ts`)).default)()
 
     // @ts-ignore
-    this.module.validateGamePath(this.savedGamePath)
+    this.module = new GameModule(this.server.game.identifier)
+
+    // @ts-ignore
+    await this.module.validateGamePath(this.savedGamePath)
   }
 })
 export default class Server extends Vue {
   openGamePathSelector: boolean = false;
 
-  module: GameModule | null = null;
+  module: GameModule | null = null
+
   forceUpdate = false;
   checkServerInterval = null;
   server: any = null;
@@ -227,14 +229,16 @@ export default class Server extends Vue {
       this.isGameRunning = false
       return false
     }
-    this.isGameRunning = await this.module.isRunning()
+    this.isGameRunning = await this.module.isGameRunning()
     return this.isGameRunning
   }
 
   killGame () {
+    /**
     if (this.module) {
       this.module.kill()
     }
+     */ // TODO
   }
 
   async startDownload (installPath: string | null = null) {
@@ -248,7 +252,7 @@ export default class Server extends Vue {
       return
     }
 
-    if (!this.module.validateGamePath(installPath || this.savedGamePath || '')) {
+    if (!await this.module.validateGamePath(installPath || this.savedGamePath || '')) {
       this.openGamePathSelector = true
       return
     }
@@ -261,46 +265,39 @@ export default class Server extends Vue {
       })
     }
 
-    // this.module.gamePath = installPath || this.savedGamePath || ''
-
     try {
-      const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-      const downloader = this.module.prepareDownload(modPacks)
+      const modPacks = (await this.$axios.$get(`/servers/${this.server.id}/modpacks`)).data
 
-      if (this.forceUpdate) {
-        updaterStore.remove(this.id)
-      }
+      console.log(modPacks)
 
-      downloadersStore.add({
-        server: this.server,
-        downloader
-      })
+      const downloader = await this.module.createDownloader(this.server.id, modPacks) as Downloader
 
-      downloadersStore.start({
-        serverId: this.id,
-        forceDownload: this.forceUpdate
-      })
+      await downloader.start(this.forceUpdate)
 
       this.forceUpdate = false
-    } catch (e) {
-      console.error(e)
+    } catch (err) {
+      console.error(err)
     }
   }
 
   pauseDownload () {
-    downloadersStore.pause(this.id)
+    if (!module) {
+      return
+    }
+
+    this.module?.downloader(this.server.id).pause()
   }
 
   resumeDownload () {
-    downloadersStore.resume(this.id)
+    this.module?.downloader(this.server.id).resume()
   }
 
   stopDownload () {
-    downloadersStore.stop(this.id)
+    this.module?.downloader(this.server.id).stop()
   }
 
   async startGame () {
-    if (!this.module) {
+    /** if (!this.module) {
       console.error('Game module not found.')
       return
     }
@@ -313,7 +310,7 @@ export default class Server extends Vue {
     // this.module.gamePath = this.savedGamePath || ''
 
     const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-    await this.module.play(modPacks, this.server)
+    await this.module.play(modPacks, this.server) */
   }
 }
 </script>

@@ -4,6 +4,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "lib": [
       "esnext",
       "esnext.asynciterable",

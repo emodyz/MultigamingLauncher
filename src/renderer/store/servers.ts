@@ -1,5 +1,6 @@
 import { MutationAction, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { $axios } from '~/utils/api'
+import Server from '~/models/server'
 
 @Module({
   name: 'servers',
@@ -8,7 +9,7 @@ import { $axios } from '~/utils/api'
   preserveState: true
 })
 export default class Servers extends VuexModule {
-  servers: any[] = [];
+  servers: Server[] = [];
   favoritesServerIds: any[] = [];
 
   get isFavorite () {
@@ -28,7 +29,7 @@ export default class Servers extends VuexModule {
   }
 
   get server () {
-    return (serverId: string) => {
+    return (serverId: string): Server | null => {
       const index = this.servers.map(server => server.id).indexOf(serverId)
       if (index !== -1) {
         return this.servers[index]

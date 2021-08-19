@@ -28,5 +28,12 @@ export class Sdk {
   }
 }
 
-export * from './GameModule'
-export * from '@emodyz/node-downloader'
+export * from './contracts/Module'
+export * from './contracts/GameModule'
+export {
+  GameModule
+} from './game/GameModule'
+export {
+  Downloader,
+  createDownloader
+}
