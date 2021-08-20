@@ -10,20 +10,20 @@
         <nuxt />
       </div>
     </div>
-    <Downloader />
+    <DownloaderOverlay />
   </div>
 </template>
 
 <script>
 import Sidebar from '@/components/sidebar'
-import Downloader from '@/components/downloader'
+import DownloaderOverlay from '@/components/DownloaderOverlay'
 import Header from '@/components/header'
 import { pageStore, themeStore } from '~/store'
 
 export default {
   components: {
     Header,
-    Downloader,
+    DownloaderOverlay,
     Sidebar
   },
 

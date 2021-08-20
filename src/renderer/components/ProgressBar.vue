@@ -1,5 +1,5 @@
 <template>
-  <div class="relative h-3">
+  <div class="relative h-[1px]">
     <div class="overflow-hidden text-xs h-full flex rounded bg-gray-200 dark:bg-gray-700">
       <div :style="'width: ' + progress + '%'"
            class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center

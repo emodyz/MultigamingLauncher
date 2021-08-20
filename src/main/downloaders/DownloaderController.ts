@@ -6,6 +6,16 @@ import { send } from '../helpers/events'
 export default class DownloaderController {
   private static downloaders: Map<string, Downloader> = new Map<string, Downloader>()
 
+  public static getDownloaders () {
+    return Array.from(this.downloaders.values()).map(downloader => {
+      return {
+        serverId: downloader.serverId,
+        state: downloader.downloader.state,
+        stats: downloader.downloader.stats()
+      }
+    })
+  }
+
   public static add (serverId: string, downloader: Downloader) {
     if (this.has(serverId)) {
       console.error('Downloader already created for this server, aborting the mission...')

@@ -59,29 +59,24 @@
           <progress-bar :progress="downloader.progress" class="w-full h-7" />
 
           <!-- Pause Button -->
-          <button v-if="downloader.state === 1" class="ml-2 w-7 h-7 bg-gray-200
-          rounded-md text-gray-500 hover:text-gray-900
-          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  @click="pauseDownload"
+          <ActionButton v-if="isDownloading"
+                        @click="pauseDownload"
           >
             <PauseIcon />
-          </button>
+          </ActionButton>
           <!-- Resume Button -->
-          <button v-else-if="downloader.state === 2" class="ml-2 w-7 h-7 bg-gray-200
-          rounded-md text-gray-500 hover:text-gray-900
-          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  @click="resumeDownload"
+          <ActionButton v-else-if="isPaused"
+                        @click="resumeDownload"
           >
             <PlayIcon />
-          </button>
+          </ActionButton>
 
           <!-- Stop Button -->
-          <button class="ml-2 w-7 h-7 p-1 bg-gray-200 rounded-md text-gray-500 hover:text-gray-900
-          hover:bg-gray-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                  @click="stopDownload"
+          <ActionButton
+            @click="stopDownload"
           >
             <StopIcon />
-          </button>
+          </ActionButton>
         </div>
         <div v-if="!downloader" class="flex h-full flex-col justify-end">
           <div v-if="!isGameRunning && server && !hasUpdate(id, server.update_hash)" class="self-start">
@@ -125,6 +120,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { DownloaderState } from '../../../sdk/Sdk'
 import ProgressBar from '@/components/ProgressBar.vue'
 import { updaterStore, pageStore, gamesStore, downloadersStore } from '@/store'
 import NewsSlider from '@/components/news/news-slider.vue'
@@ -138,10 +134,12 @@ import StopIcon from '~/components/icons/StopIcon.vue'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
 import GameModule from '~/comunication/GameModule'
 import Downloader from '~/comunication/Downloader'
+import ActionButton from '~/components/buttons/ActionButton.vue'
 
 @Component({
   transition: 'fade',
   components: {
+    ActionButton,
     PauseIcon,
     StopIcon,
     DownloadIcon,
@@ -192,6 +190,14 @@ export default class Server extends Vue {
 
   // @ts-ignore
   id: string;
+
+  get isDownloading () {
+    return this.downloader.state === DownloaderState.DOWNLOADING
+  }
+
+  get isPaused () {
+    return this.downloader.state === DownloaderState.PAUSED
+  }
 
   get hasUpdate () {
     return updaterStore.hasUpdate

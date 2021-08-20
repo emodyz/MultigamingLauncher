@@ -3,6 +3,7 @@ import Arma3 from '../modules/arma3/main'
 import GameModule from '../comunication/GameModule'
 import { Channels } from '../../shared/comunication/module/GameModuleProtocol'
 import ModPack from '../../sdk/definitions/ModPack'
+import DownloaderController from '../downloaders/DownloaderController'
 
 export default class ModuleController {
   private readonly modules = new Map<string, GameModule>([
@@ -41,6 +42,11 @@ export default class ModuleController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle(Channels.CREATE_DOWNLOADER, (event, identifier: string, serverId: string, modPacks: ModPack[]) => {
       return this.modules.get(identifier).createDownloader(serverId, modPacks)
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ipcMain.handle('downloaders', () => {
+      return DownloaderController.getDownloaders()
     })
   }
 }

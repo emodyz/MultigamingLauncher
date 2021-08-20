@@ -66,17 +66,24 @@
       </div>
     </div>
     <div class="mb-4">
-      <a class="flex justify-center cursor-pointer mb-6">
-        <div :class="{'loader': downloaders.length > 0}" class="w-8 h-10">
-          <svg class="stroke-current text-gray-400 h-5 w-5 m-2 mx-auto hover:text-indigo-500 dark:text-gray-300
+      <div class="relative">
+        <span v-if="downloaders.length > 1" class="h-5 w-5 absolute -top-2 right-4">
+          <span class="flex items-center justify-center text-white relative inline-flex rounded-full h-5 w-5 bg-indigo-400">
+            {{ downloaders.length }}
+          </span>
+        </span>
+        <a class="flex justify-center cursor-pointer mb-6" @click="showAll">
+          <div :class="{'loader': downloaders.length > 0}" class="w-8 h-10">
+            <svg class="stroke-current text-gray-400 h-5 w-5 m-2 mx-auto hover:text-indigo-500 dark:text-gray-300
            dark:hover:text-indigo-400" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
-                  stroke-linejoin="round" stroke-width="2"
-            />
-          </svg>
-        </div>
-      </a>
+            >
+              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
+                    stroke-linejoin="round" stroke-width="2"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
       <a class="cursor-pointer" @click="logout">
         <span>
           <svg
@@ -108,6 +115,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { downloadersStore, serverStore } from '~/store'
 
 export default {
   name: 'Sidebar',
@@ -129,6 +137,10 @@ export default {
   },
 
   methods: {
+
+    showAll () {
+      downloadersStore.showAll()
+    },
 
     async logout () {
       await this.$auth.logout()

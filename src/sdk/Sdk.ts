@@ -1,5 +1,4 @@
-// @ts-ignore TODO: Fix that !
-import { createDownloader, Downloader } from '@emodyz/node-downloader'
+import { createDownloader, Downloader, DownloaderState } from '@emodyz/node-downloader'
 import { findSteamAppById, findSteamAppByName, findSteamLibraries } from 'find-steam-app'
 
 export class Sdk {
@@ -35,5 +34,6 @@ export {
 } from './game/GameModule'
 export {
   Downloader,
+  DownloaderState,
   createDownloader
 }

@@ -1,6 +1,7 @@
-import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
+import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { ipcRenderer } from 'electron'
 import { Events } from '../../shared/comunication/downloader/DownloaderProtocol'
+import { DownloaderState } from '../../sdk/Sdk'
 import { updaterStore } from '~/store'
 
 interface Downloader {
@@ -8,12 +9,6 @@ interface Downloader {
   hidden: boolean,
   state: number,
   progress: number
-}
-
-export enum State {
-  STAND_BY,
-  DOWNLOADING,
-  PAUSED
 }
 
 @Module({
@@ -27,13 +22,25 @@ export default class Downloaders extends VuexModule {
   constructor (props) {
     super(props)
 
+    ipcRenderer.invoke('downloaders').then((downloaders: any) => {
+      console.log('serversIds downloader', downloaders)
+      downloaders.forEach(downloader => {
+        this.list.push({
+          serverId: downloader.serverId,
+          hidden: false,
+          state: downloader.state,
+          progress: downloader.stats.progress
+        })
+      })
+    })
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcRenderer.on(Events.CREATED, (evt, serverId: string) => {
       updaterStore.remove(serverId)
       this.list.push({
         serverId,
         hidden: false,
-        state: State.STAND_BY,
+        state: DownloaderState.STAND_BY,
         progress: 0
       })
     })
@@ -50,17 +57,17 @@ export default class Downloaders extends VuexModule {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcRenderer.on(Events.DOWNLOAD_STARTED, (evt, serverId: string) => {
-      this.setDownloaderState({ serverId, state: State.DOWNLOADING })
+      this.setDownloaderState({ serverId, state: DownloaderState.DOWNLOADING })
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcRenderer.on(Events.DOWNLOAD_PAUSED, (evt, serverId: string) => {
-      this.setDownloaderState({ serverId, state: State.PAUSED })
+      this.setDownloaderState({ serverId, state: DownloaderState.PAUSED })
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcRenderer.on(Events.DOWNLOAD_RESUMED, (evt, serverId: string) => {
-      this.setDownloaderState({ serverId, state: State.DOWNLOADING })
+      this.setDownloaderState({ serverId, state: DownloaderState.DOWNLOADING })
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -95,6 +102,32 @@ export default class Downloaders extends VuexModule {
       }
       return null
     }
+  }
+
+  @Mutation
+  hide (serverId: string) {
+    const index = this.list.map(downloader => downloader.serverId).indexOf(serverId)
+    if (index !== -1) {
+      this.list[index].hidden = true
+    }
+  }
+
+  @Mutation
+  hideAll () {
+    const list = this.list
+    for (const item of list) {
+      item.hidden = true
+    }
+    this.list = list
+  }
+
+  @Mutation
+  showAll () {
+    const list = this.list
+    for (const item of list) {
+      item.hidden = false
+    }
+    this.list = list
   }
 
   @Mutation

@@ -996,9 +996,9 @@
     fs-extra "^9.0.1"
 
 "@emodyz/node-downloader@^2.0.0-RC.2":
-  version "2.0.0-RC.2"
-  resolved "https://registry.yarnpkg.com/@emodyz/node-downloader/-/node-downloader-2.0.0-RC.2.tgz#6f22cf79a7d30dde8fe883bdc072d7b29f927437"
-  integrity sha512-XKQ3xzpBMbHOpkHf+DsXb4fCWuw5ZDstC1etziDJYKeFv4klcOuIvDoZMgA6Au9FPHfuvQ5I8IlPZ2oQsU6shA==
+  version "2.0.0-RC.3"
+  resolved "https://registry.yarnpkg.com/@emodyz/node-downloader/-/node-downloader-2.0.0-RC.3.tgz#a52a52c46c234c70ac8f3c309afb110ad91ba014"
+  integrity sha512-2RRC+SUNkM7mfA+swjaD/pkXEaNZscjPEo+lKshrhW5J5Q8+4vx2egCDXlSajwF9M+D3Q6Jtp2n89qBrJhb92Q==
   dependencies:
     node-downloader-helper "^1.0.18"
 
@@ -1509,7 +1509,7 @@
   dependencies:
     http-proxy-middleware "^1.0.6"
 
-"@nuxtjs/tailwindcss@^4.0.3":
+"@nuxtjs/tailwindcss@^4.2.1":
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/@nuxtjs/tailwindcss/-/tailwindcss-4.2.1.tgz#bd0dc5e0d7f02aebe15bc2384c003687e6e5d508"
   integrity sha512-Sku7VETunn5YmvzkXFDuRdP1gUGau02eh5HtcAsI9//1hpSuEN49n3XhatBrPOXQ57WhUlnjXf0/LjT9KQH0+A==
