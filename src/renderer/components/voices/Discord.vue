@@ -15,7 +15,7 @@ import { themeStore } from '~/store'
 
 @Component
 export default class Discord extends Vue {
-  @Prop({ required: true }) settings!: any;
+  @Prop({ required: true }) settings!: any
 
   get isDarkMode () {
     return themeStore.isDark

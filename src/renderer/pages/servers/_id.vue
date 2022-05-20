@@ -18,7 +18,8 @@
         <news-slider :server-id="id" />
       </div>
       <div class="h-full w-1/3 ml-2">
-        <div class="w-full h-full bg-gray-100 shadow-md text-gray-900 rounded-md uppercase
+        <div
+          class="w-full h-full bg-gray-100 shadow-md text-gray-900 rounded-md uppercase
         border border-gray-200 dark:border-transparent dark:bg-gray-800 dark:text-gray-50"
         >
           <server-status :server="server" />
@@ -28,8 +29,9 @@
     <div class="flex h-32 w-full p-2">
       <div class="flex items-center w-50 p-2">
         <!-- Download Button --->
-        <jet-button v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloadInProgress"
-                    class="w-full h-full font-light uppercase
+        <jet-button
+          v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloadInProgress"
+          class="w-full h-full font-light uppercase
                     text-base lg:text-xl xl:text-2xl 2xl:text-3xl" @click="startDownload()"
         >
           <span v-if="!downloadInProgress" class="flex">
@@ -59,14 +61,16 @@
           <progress-bar :progress="downloader.progress" class="w-full h-7" />
 
           <!-- Pause Button -->
-          <ActionButton v-if="isDownloading"
-                        @click="pauseDownload"
+          <ActionButton
+            v-if="isDownloading"
+            @click="pauseDownload"
           >
             <PauseIcon />
           </ActionButton>
           <!-- Resume Button -->
-          <ActionButton v-else-if="isPaused"
-                        @click="resumeDownload"
+          <ActionButton
+            v-else-if="isPaused"
+            @click="resumeDownload"
           >
             <PlayIcon />
           </ActionButton>
@@ -87,18 +91,20 @@
           </div>
 
           <div v-if="isGameRunning" class="self-start items-center">
-            <a class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-red-500
+            <a
+              class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-red-500
                  dark:hover:text-indigo-500"
-               @click="killGame"
+              @click="killGame"
             >
               Force kill the game
             </a>
           </div>
 
           <div class="mt-2">
-            <a class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-indigo-400
+            <a
+              class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-indigo-400
                  dark:hover:text-indigo-500"
-               @click="openGamePathSelector = true"
+              @click="openGamePathSelector = true"
             >
               Open game path installer
             </a>
@@ -176,20 +182,20 @@ import ActionButton from '~/components/buttons/ActionButton.vue'
   }
 })
 export default class Server extends Vue {
-  openGamePathSelector: boolean = false;
+  openGamePathSelector: boolean = false
 
   module: GameModule | null = null
 
-  forceUpdate = false;
-  checkServerInterval = null;
-  server: any = null;
+  forceUpdate = false
+  checkServerInterval = null
+  server: any = null
 
-  isGameRunning: boolean = false;
+  isGameRunning: boolean = false
 
-  _gameCheckerInterval!: any;
+  _gameCheckerInterval!: any
 
   // @ts-ignore
-  id: string;
+  id: string
 
   get isDownloading () {
     return this.downloader.state === DownloaderState.DOWNLOADING
@@ -274,15 +280,20 @@ export default class Server extends Vue {
     try {
       const modPacks = (await this.$axios.$get(`/servers/${this.server.id}/modpacks`)).data
 
-      console.log(modPacks)
+      const filesToDownload = modPacks.map(modpack => modpack.manifest.length).reduce((a, b) => a + b, 0)
+
+      if (filesToDownload === 0) {
+        alert('Empty modpack, please contact an administrator...')
+        return
+      }
 
       const downloader = await this.module.createDownloader(this.server.id, modPacks) as Downloader
 
       await downloader.start(this.forceUpdate)
-
-      this.forceUpdate = false
     } catch (err) {
       console.error(err)
+    } finally {
+      this.forceUpdate = false
     }
   }
 

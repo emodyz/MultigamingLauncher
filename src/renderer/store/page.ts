@@ -6,7 +6,7 @@ import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
   namespaced: true
 })
 export default class Theme extends VuexModule {
-  title: string | null = null;
+  title: string | null = null
 
   @Mutation
   setTitle (title: string | null) {

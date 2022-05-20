@@ -5,7 +5,7 @@ import DownloaderProtocol from '../../shared/comunication/downloader/DownloaderP
 import Downloader from '~/comunication/Downloader'
 
 export default class GameModule implements GameModuleProtocol {
-  gameIdentifier: string;
+  gameIdentifier: string
 
   constructor (gameIdentifier: string) {
     this.gameIdentifier = gameIdentifier

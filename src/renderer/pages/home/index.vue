@@ -1,16 +1,18 @@
 <template>
   <div class="flex flex-row h-full ">
-    <div class="flex h-auto p-4"
-         :class="{
-           'w-full': voiceSettings.type === null,
-           'w-2/3': voiceSettings.type !== null
-         }"
+    <div
+      class="flex h-auto p-4"
+      :class="{
+        'w-full': voiceSettings.type === null,
+        'w-2/3': voiceSettings.type !== null
+      }"
     >
       <news-slider />
     </div>
     <div v-if="voiceComponent()" class="flex w-1/3  h-auto p-4">
-      <component :is="voiceComponent()" class="shadow-md border border-gray-200 rounded-md dark:border-transparent"
-                 :settings="voiceSettings"
+      <component
+        :is="voiceComponent()" class="shadow-md border border-gray-200 rounded-md dark:border-transparent"
+        :settings="voiceSettings"
       />
     </div>
   </div>
@@ -30,10 +32,10 @@ import TeamSpeak3 from '@/components/voices/TeamSpeak3.vue'
   }
 })
 export default class Home extends Vue {
-  news = [];
+  news = []
   voiceSettings = {
     type: null as string | null
-  };
+  }
 
   get user () {
     return this.$store.state.auth.user

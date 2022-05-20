@@ -20,18 +20,21 @@
     </div>
     <div class="flex pt-2">
       <div class="h-full w-80 px-4">
-        <div class="rounded-md border border-gray-200 bg-gray-50 divide-y dark:bg-gray-800 dark:border-gray-700
+        <div
+          class="rounded-md border border-gray-200 bg-gray-50 divide-y dark:bg-gray-800 dark:border-gray-700
         dark:divide-gray-700"
         >
           <div class="py-2 px-4 font-bold bg-gray-100 dark:bg-gray-900">
             Account settings
           </div>
 
-          <div v-for="section of sections" :key="section.name"
-               class="relative py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900"
-               @click="selectSection(section)"
+          <div
+            v-for="section of sections" :key="section.name"
+            class="relative py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900"
+            @click="selectSection(section)"
           >
-            <div v-if="currentSection.name === section.name" class="border-l-2 border-r border-indigo-400
+            <div
+              v-if="currentSection.name === section.name" class="border-l-2 border-r border-indigo-400
              h-full absolute top-0 bottom-0 left-0 dark:border-orange-700"
             />
             {{ section.name }}

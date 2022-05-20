@@ -1,8 +1,8 @@
 import { execFile } from 'child_process'
 
 export default abstract class GameLauncher {
-  private readonly gamePath: string;
-  private controller: null|AbortController = null;
+  private readonly gamePath: string
+  private controller: null|AbortController = null
 
   public constructor (gamePath: string) {
     this.gamePath = gamePath

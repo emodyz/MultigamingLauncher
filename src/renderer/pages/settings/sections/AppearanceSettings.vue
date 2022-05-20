@@ -11,8 +11,9 @@
         or choose to use the light or dark theme.
       </span>
       <div class="flex mt-4">
-        <div class="relative w-40 h-28 border border-gray-200 rounded-md mx-2 cursor-pointer dark:border-gray-700"
-             @click="setThemeSource('system')"
+        <div
+          class="relative w-40 h-28 border border-gray-200 rounded-md mx-2 cursor-pointer dark:border-gray-700"
+          @click="setThemeSource('system')"
         >
           <img src="~/assets/images/appearances/color_mode_auto.svg" class="rounded-t-md">
           <div class="absolute flex items-center w-full h-7 left-0 right-0 bottom-0 rounded-b-md px-2">
@@ -22,8 +23,9 @@
             </span>
           </div>
         </div>
-        <div class="relative w-40 h-28 border border-gray-200 rounded-md mx-2 cursor-pointer dark:border-gray-700"
-             @click="setThemeSource('light')"
+        <div
+          class="relative w-40 h-28 border border-gray-200 rounded-md mx-2 cursor-pointer dark:border-gray-700"
+          @click="setThemeSource('light')"
         >
           <img src="~/assets/images/appearances/color_mode_light.svg" class="rounded-t-md">
           <div class="absolute flex items-center  w-full h-7 left-0 right-0 bottom-0 rounded-b-md px-2">
@@ -33,8 +35,9 @@
             </span>
           </div>
         </div>
-        <div class="relative w-40 h-28 border border-gray-200 rounded-md mx-2 cursor-pointer dark:border-gray-700"
-             @click="setThemeSource('dark')"
+        <div
+          class="relative w-40 h-28 border border-gray-200 rounded-md mx-2 cursor-pointer dark:border-gray-700"
+          @click="setThemeSource('dark')"
         >
           <img src="~/assets/images/appearances/color_mode_dark.svg" class="rounded-t-md">
           <div class="absolute flex items-center w-full h-7 left-0 right-0 bottom-0 rounded-b-md px-2">

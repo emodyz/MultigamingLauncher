@@ -4,7 +4,7 @@ import DownloaderController from '../downloaders/DownloaderController'
 import { send } from '../helpers/events'
 
 export default class Downloader implements DownloaderProtocol {
-  serverId: string;
+  serverId: string
   downloader: BaseDownloader
 
   constructor (serverId: string, downloader: BaseDownloader) {
@@ -12,6 +12,16 @@ export default class Downloader implements DownloaderProtocol {
     this.downloader = downloader
 
     this.handleEvents()
+  }
+
+  call (functionToCall: string, ...args: any[]): any {
+    // @ts-ignore
+    if (typeof this.downloader[functionToCall] === 'function') {
+      // @ts-ignore
+      return this.downloader[functionToCall](...args)
+    }
+    // @ts-ignore
+    return this.downloader[functionToCall]
   }
 
   pause (): Promise<void> {
@@ -23,19 +33,20 @@ export default class Downloader implements DownloaderProtocol {
   }
 
   resume (): Promise<void> {
-    this.downloader.resume()
-
-    send(Events.DOWNLOAD_RESUMED, this.serverId)
-
-    return Promise.resolve()
+    return this.downloader.resume()
+      .then(() => {
+        send(Events.DOWNLOAD_RESUMED, this.serverId)
+      })
   }
 
   start (forceDownload: boolean = false): Promise<void> {
-    this.downloader.start(forceDownload)
-
-    send(Events.DOWNLOAD_STARTED, this.serverId)
-
-    return Promise.resolve()
+    return this.downloader.start(forceDownload)
+      .then(() => {
+        send(Events.DOWNLOAD_STARTED, this.serverId)
+      }).catch((e: any) => {
+        send(Events.ERROR, this.serverId, e)
+        DownloaderController.remove(this.serverId)
+      })
   }
 
   stop (): Promise<void> {
@@ -68,6 +79,12 @@ export default class Downloader implements DownloaderProtocol {
       console.log('download stoped', this.serverId)
 
       send(Events.DOWNLOAD_STOPPED, this.serverId)
+
+      DownloaderController.remove(this.serverId)
+    })
+
+    this.downloader.on('error', (e: any) => {
+      send(Events.ERROR, this.serverId, e)
 
       DownloaderController.remove(this.serverId)
     })

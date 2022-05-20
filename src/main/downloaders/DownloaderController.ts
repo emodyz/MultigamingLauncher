@@ -44,6 +44,10 @@ export default class DownloaderController {
   public static handleEvents () {
     console.log('Handle Downloader events')
 
+    setInterval(() => {
+      console.log(this.downloaders)
+    }, 1000)
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle(Channels.START, async (event, serverId: string, forceDownload?: boolean) => {
       return await this.get(serverId).start(forceDownload)
@@ -62,6 +66,11 @@ export default class DownloaderController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle(Channels.RESUME, async (event, serverId: string) => {
       return await this.get(serverId).resume()
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ipcMain.handle(Channels.CALL, async (event, serverId: string, functionToCall: string, ...args: any[]) => {
+      return this.get(serverId).call(functionToCall, args)
     })
   }
 }

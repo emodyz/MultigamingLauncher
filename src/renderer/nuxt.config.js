@@ -61,7 +61,7 @@ module.exports = {
     }
   },
   axios: {
-    baseURL: 'http://51.15.239.102/api'
+    baseURL: 'http://launcher.test/api'
   },
   tailwindcss: {}
 }

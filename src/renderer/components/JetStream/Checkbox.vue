@@ -1,6 +1,7 @@
 <template>
-  <input v-model="checked" type="checkbox"
-         class="form-checkbox"
+  <input
+    v-model="checked" type="checkbox"
+    class="form-checkbox"
   >
 </template>
 
@@ -9,6 +10,6 @@ import { Component, VModel, Vue } from 'vue-property-decorator'
 
 @Component
 export default class Checkbox extends Vue {
-  @VModel() checked;
+  @VModel() checked
 }
 </script>

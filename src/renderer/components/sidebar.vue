@@ -1,13 +1,14 @@
 <template>
-  <nav class="fixed flex flex-col justify-between h-full w-20 z-50 border-r border-gray-300 bg-gray-100
-   dark:bg-gray-800 dark:border-gray-600"
+  <nav
+    class="fixed z-50 flex flex-col justify-between w-20 h-full bg-gray-100 border-r border-gray-300
+     dark:bg-gray-800 dark:border-gray-600"
   >
     <div class="mt-10 mb-10">
       <div v-tooltip.right="'Settings'">
         <a href="#" @click="goToPanel">
           <img
             :src="$auth.user.profile_photo_url"
-            class="shadow-md rounded-full w-10 h-10 mb-3 mx-auto"
+            class="w-10 h-10 mx-auto mb-3 rounded-full shadow-md"
           >
         </a>
       </div>
@@ -15,8 +16,9 @@
         <ul>
           <li class="mb-6">
             <NuxtLink to="/home">
-              <svg class="stroke-current text-gray-400 h-8 w-8 mx-auto hover:text-indigo-400 dark:text-gray-300"
-                   fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+              <svg
+                class="w-8 h-8 mx-auto text-gray-400 stroke-current hover:text-indigo-400 dark:text-gray-300"
+                fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0
@@ -28,10 +30,12 @@
           </li>
           <li class="mb-6">
             <NuxtLink to="/servers">
-              <svg class="stroke-current text-gray-400 h-8 w-8 mx-auto hover:text-indigo-400 dark:text-gray-300"
-                   fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+              <svg
+                class="w-8 h-8 mx-auto text-gray-400 stroke-current hover:text-indigo-400 dark:text-gray-300"
+                fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M5 12h14M5 12a2 2 0 01-2-2V6a2
+                <path
+                  d="M5 12h14M5 12a2 2 0 01-2-2V6a2
                  2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0
                   00-2-2m-2-4h.01M17 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 />
@@ -40,23 +44,24 @@
           </li>
           <transition-group name="pop">
             <li v-for="server of favorites" :key="server.id" class="mb-3">
-              <div v-tooltip.right="server.name"
-                   :class="{'server-selected': $route.fullPath === '/servers/' + server.id}"
-                   class="relative"
-                   @click="goToServer(server)"
+              <div
+                v-tooltip.right="server.name"
+                :class="{'server-selected': $route.fullPath === '/servers/' + server.id}"
+                class="relative"
+                @click="goToServer(server)"
               >
-                <div class="relative mx-auto w-3/5">
-                  <img :src="server.logo_url" class="shadow-md object-cover server-picture">
+                <div class="relative w-3/5 mx-auto">
+                  <img :src="server.logo_url" class="object-cover shadow-md server-picture">
                   <div
                     v-if="hasUpdate(server.id, server.update_hash)"
-                    class="absolute top-0 right-0 flex cursor-pointer transform transition transition-all"
+                    class="absolute top-0 right-0 flex transition-all transition transform cursor-pointer"
                     :class="{
                       'translate-x-0.5': $route.fullPath === '/servers/' + server.id,
                       '-translate-y-0.5': $route.fullPath === '/servers/' + server.id
                     }"
                   >
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
-                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
+                    <span class="absolute inline-flex w-full h-full bg-red-500 rounded-full opacity-75 animate-ping" />
+                    <span class="relative inline-flex w-3 h-3 bg-red-500 rounded-full" />
                   </div>
                 </div>
               </div>
@@ -67,18 +72,26 @@
     </div>
     <div class="mb-4">
       <div class="relative">
-        <span v-if="downloaders.length > 1" class="h-5 w-5 absolute -top-2 right-4">
-          <span class="flex items-center justify-center text-white relative inline-flex rounded-full h-5 w-5 bg-indigo-400">
+        <span v-if="downloaders.length > 1" class="absolute w-5 h-5 -top-2 right-4">
+          <span
+            class="relative flex inline-flex items-center justify-center w-5 h-5 text-white bg-indigo-400 rounded-full"
+          >
             {{ downloaders.length }}
           </span>
         </span>
-        <a class="flex justify-center cursor-pointer mb-6" @click="showAll">
+        <a class="flex justify-center mb-6 cursor-pointer" @click="showAll">
           <div :class="{'loader': downloaders.length > 0}" class="w-8 h-10">
-            <svg class="stroke-current text-gray-400 h-5 w-5 m-2 mx-auto hover:text-indigo-500 dark:text-gray-300
-           dark:hover:text-indigo-400" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+            <svg
+              class="
+            w-5 h-5 m-2 mx-auto text-gray-400 stroke-current hover:text-indigo-500
+             dark:text-gray-300 dark:hover:text-indigo-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
-                    stroke-linejoin="round" stroke-width="2"
+              <path
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2"
               />
             </svg>
           </div>
@@ -87,8 +100,11 @@
       <a class="cursor-pointer" @click="logout">
         <span>
           <svg
-            class="fill-current h-5 w-5 text-gray-400 mx-auto hover:text-red-600
-             dark:text-gray-300 dark:hover:text-red-500"
+            class="
+            w-5 h-5 mx-auto text-gray-400 fill-current
+            hover:text-red-600
+            dark:text-gray-300 dark:hover:t ext-red-500
+            "
             fill="none"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +131,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { downloadersStore, serverStore } from '~/store'
+import { downloadersStore } from '~/store'
 
 export default {
   name: 'Sidebar',

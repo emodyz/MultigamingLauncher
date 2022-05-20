@@ -9,8 +9,8 @@ import Arma3Launcher from './Arma3Launcher'
 
 // @ts-ignore
 export default class Main extends GameModule {
-  gameIdentifier = 'arma3';
-  version = '1.0.0';
+  gameIdentifier = 'arma3'
+  version = '1.0.0'
 
   gameApps: GameExecutable[] = [
     {
@@ -21,7 +21,7 @@ export default class Main extends GameModule {
       platform: 'win32',
       binary: 'arma3battleye.exe'
     }
-  ];
+  ]
 
   async findGamePath (): Promise<string | null> {
     return await Sdk.findSteamAppByAppId(107410)
@@ -39,7 +39,7 @@ export default class Main extends GameModule {
           recursive: true
         }) // TODO: Do Downloader library able to do that @iWirk ?
 
-        console.log(filePath)
+        console.log(filePath, file.path)
 
         downloader.addFile(file.url, filePath, null, file.sha256)
       })

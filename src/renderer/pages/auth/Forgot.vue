@@ -22,8 +22,9 @@
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <NuxtLink to="/auth/login"
-                  class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-100
+        <NuxtLink
+          to="/auth/login"
+          class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-100
                   dark:hover:text-gray-200"
         >
           Want to login?
@@ -62,14 +63,14 @@ import JetButton from '~/components/JetStream/Button.vue'
   }
 })
 export default class Forgot extends Vue {
-  processing = false;
+  processing = false
   message: {
     type: string,
     value: string
-  } | null = null;
+  } | null = null
 
-  email = '';
-  errors = {};
+  email = ''
+  errors = {}
 
   async submit () {
     this.errors = []

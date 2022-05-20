@@ -8,19 +8,27 @@ export default class Downloader implements DownloaderProtocol {
     this.serverId = serverId
   }
 
+  get filesToDownload (): Promise<number> {
+    return this.emit(Channels.CALL, 'filesToDownload')
+  }
+
   async pause (): Promise<void> {
+    console.log('download paused ui', this.serverId)
     return await this.emit(Channels.PAUSE)
   }
 
   async resume (): Promise<void> {
+    console.log('download resumed ui', this.serverId)
     return await this.emit(Channels.RESUME)
   }
 
   async start (forceDownload: boolean): Promise<void> {
+    console.log('download started ui', this.serverId)
     return await this.emit(Channels.START, forceDownload)
   }
 
   async stop (): Promise<void> {
+    console.log('download stopped ui', this.serverId)
     return await this.emit(Channels.STOP)
   }
 

@@ -7,10 +7,12 @@
 
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-      <div class="relative inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform
+      <div
+        class="relative inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform
          transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full dark:bg-gray-800"
       >
-        <img :src="game.logo_url" class="absolute ring-4 ring-white bg-white rounded-md -top-7 left-5
+        <img
+          :src="game.logo_url" class="absolute ring-4 ring-white bg-white rounded-md -top-7 left-5
           z-20 w-14 h-14 dark:ring-gray-800 dark:bg-gray-800"
         >
 
@@ -46,15 +48,17 @@
               </div>
               <section-border />
               <div>
-                <a class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-indigo-400
+                <a
+                  class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-indigo-400
                  dark:hover:text-indigo-500"
-                   @click="chooseGamePath"
+                  @click="chooseGamePath"
                 >
                   Select manually
                 </a>
-                <a class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-indigo-400
+                <a
+                  class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-indigo-400
                  dark:hover:text-indigo-500 ml-5"
-                   @click="autoDetectPath"
+                  @click="autoDetectPath"
                 >
                   Retry auto detection
                 </a>
@@ -95,13 +99,13 @@ import GameModule from '~/comunication/GameModule'
   }
 })
 export default class GamePathSelector extends Vue {
-  @PropSync('opened', { required: true, default: false }) syncedOpened!: boolean;
+  @PropSync('opened', { required: true, default: false }) syncedOpened!: boolean
   @Prop() readonly module!: GameModule
-  @Prop() readonly game!: any;
-  @Prop() readonly savedGamePath!: string | null;
+  @Prop() readonly game!: any
+  @Prop() readonly savedGamePath!: string | null
 
-  installPath: string | null = null;
-  isValidPath: boolean = false;
+  installPath: string | null = null
+  isValidPath: boolean = false
 
   @Emit('closed')
   close () {

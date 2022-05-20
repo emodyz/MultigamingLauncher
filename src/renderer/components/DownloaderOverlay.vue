@@ -1,10 +1,16 @@
 <template>
-  <div class="absolute top-0 right-0 m-2 z-50 space-y-2">
-    <div v-for="downloader of downloaders.filter((item) => !item.hidden)"
-         :key="downloader.serverId"
-         class="bg-gray-100 border border-gray-200 text-white rounded overflow-hidden shadow-md w-64
+  <div class="absolute  top-0 right-0 m-2 z-50 space-y-2">
+    <div
+      v-for="downloader of downloaders.filter((item) => !item.hidden)"
+      :key="downloader.serverId"
+      class="relative group bg-gray-100 border border-gray-200 text-white rounded overflow-hidden shadow-md w-64
           dark:bg-gray-800 dark:border-gray-700"
     >
+      <div class="absolute top-1 right-1 p-0">
+        <ActionButton @click="hide(downloader.serverId)">
+          <HideEyeIcon />
+        </ActionButton>
+      </div>
       <div class="flex flex-col w-full px-2 py-1">
         <div class="flex items-center h-14">
           <div class="flex">
@@ -19,8 +25,18 @@
             </div>
           </div>
         </div>
-        <ProgressBar :progress="downloader.progress" class="w-full" />
-        <div class="flex mt-1 justify-evenly items-center">
+        <ProgressBar
+          show-progress
+          :progress="downloader.progress"
+          class="transition-all w-full h-5 group-hover:h-[1px]"
+        >
+          <div class="flex h-full text-xs items-center justify-center group-hover:hidden">
+            <div>
+              {{ downloader.progress.toFixed(0) }}%
+            </div>
+          </div>
+        </ProgressBar>
+        <div class="hidden group-hover:flex mt-1 justify-evenly items-center">
           <ActionButton v-if="isPaused(downloader)" class="w-4 h-4" @click="resume(downloader.serverId)">
             <PlayIcon />
           </ActionButton>
@@ -31,10 +47,7 @@
             <StopIcon />
           </ActionButton>
           <ActionButton @click="$router.push(`/servers/${downloader.serverId}`)">
-            See
-          </ActionButton>
-          <ActionButton @click="hide(downloader.serverId)">
-            Hide
+            <ExternalLink />
           </ActionButton>
         </div>
       </div>
@@ -52,9 +65,11 @@ import ActionButton from '~/components/buttons/ActionButton.vue'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
 import StopIcon from '~/components/icons/StopIcon.vue'
 import Downloader from '~/comunication/Downloader'
+import HideEyeIcon from '~/components/icons/HideEyeIcon.vue'
+import ExternalLink from '~/components/icons/ExternalLink.vue'
 
 @Component({
-  components: { StopIcon, PauseIcon, ActionButton, ProgressBar, PlayIcon }
+  components: { ExternalLink, HideEyeIcon, StopIcon, PauseIcon, ActionButton, ProgressBar, PlayIcon }
 })
 export default class DownloaderOverlay extends Vue {
   get downloaders () {
@@ -91,10 +106,6 @@ export default class DownloaderOverlay extends Vue {
 
   stop (serverId: string) {
     return new Downloader(serverId).stop()
-  }
-
-  close () {
-    // TODO: White method to hide downloader UI
   }
 }
 </script>

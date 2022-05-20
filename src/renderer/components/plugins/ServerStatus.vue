@@ -1,11 +1,13 @@
 <template>
   <div v-if="server" class="p-2 relative rounded-md h-full">
-    <div v-if="server.status.online" class="absolute rounded-tr-md rounded-bl-md top-0 right-0 px-2 py-1 text-xs
+    <div
+      v-if="server.status.online" class="absolute rounded-tr-md rounded-bl-md top-0 right-0 px-2 py-1 text-xs
      bg-green-100 text-green-800 dark:text-emerald-300 dark:bg-emerald-900"
     >
       Online
     </div>
-    <div v-else-if="!server.status.online" class="absolute rounded-tr-md rounded-bl-md top-0 right-0 px-2 py-1
+    <div
+      v-else-if="!server.status.online" class="absolute rounded-tr-md rounded-bl-md top-0 right-0 px-2 py-1
     text-xs bg-red-500 text-white dark:text-gray-300 dark:bg-red-900 "
     >
       Offline
@@ -44,7 +46,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class ServerStatus extends Vue {
-  @Prop({ required: true }) !server;
+  @Prop({ required: true }) !server
 }
 </script>
 

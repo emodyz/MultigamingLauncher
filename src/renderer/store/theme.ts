@@ -9,7 +9,7 @@ import { themeStore } from '~/store'
 })
 export default class Theme extends VuexModule {
   uuid: string = ''
-  themeSource: 'system' | 'dark' | 'light' = 'system';
+  themeSource: 'system' | 'dark' | 'light' = 'system'
 
   @Mutation
   setThemeSource (themeSource: 'system' | 'dark' | 'light') {

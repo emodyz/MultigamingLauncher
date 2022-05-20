@@ -1,4 +1,4 @@
-import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators'
+import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { ipcRenderer } from 'electron'
 import { Events } from '../../shared/comunication/downloader/DownloaderProtocol'
 import { DownloaderState } from '../../sdk/Sdk'
@@ -17,7 +17,7 @@ interface Downloader {
   namespaced: true
 })
 export default class Downloaders extends VuexModule {
-  list: Downloader[] = [];
+  list: Downloader[] = []
 
   constructor (props) {
     super(props)
@@ -73,6 +73,12 @@ export default class Downloaders extends VuexModule {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcRenderer.on(Events.DOWNLOAD_PROGRESS, (evt, serverId: string, data) => {
       this.setDownloaderProgress({ serverId, progress: data.progress })
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ipcRenderer.on(Events.ERROR, (evt, serverId: string, data) => {
+      this.deleteDownloader(serverId)
+      console.error(data)
     })
   }
 

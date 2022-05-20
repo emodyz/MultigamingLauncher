@@ -1,6 +1,7 @@
 <template>
-  <div :style="{ 'background-image': 'url(' + image + ')' }"
-       class="bg-black shadow overflow-hidden relative bg-cover bg-center w-full h-full select-none"
+  <div
+    :style="{ 'background-image': 'url(' + image + ')' }"
+    class="bg-black shadow overflow-hidden relative bg-cover bg-center w-full h-full select-none"
   >
     <div
       :class="{'overlay-opened': opened}"
@@ -31,16 +32,16 @@ import marked from 'marked'
 
 @Component
 export default class Article extends Vue {
-  @Ref() readonly newsHeader: any;
+  @Ref() readonly newsHeader: any
 
-  @Prop({ type: String, required: true, default: null }) image!: string;
-  @Prop({ type: String, required: true, default: null }) title!: string;
-  @Prop({ type: String, default: null }) subtitle!: string | null;
-  @Prop({ type: String, required: true, default: null }) content!: string;
+  @Prop({ type: String, required: true, default: null }) image!: string
+  @Prop({ type: String, required: true, default: null }) title!: string
+  @Prop({ type: String, default: null }) subtitle!: string | null
+  @Prop({ type: String, required: true, default: null }) content!: string
 
-  opened: boolean = false;
-  headerSize: number = 0;
-  resizeHeaderTimeout: any = null;
+  opened: boolean = false
+  headerSize: number = 0
+  resizeHeaderTimeout: any = null
 
   get parsedContent () {
     return marked(this.content)

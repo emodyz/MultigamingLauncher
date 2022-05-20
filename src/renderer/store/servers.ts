@@ -9,8 +9,8 @@ import Server from '~/models/server'
   preserveState: true
 })
 export default class Servers extends VuexModule {
-  servers: Server[] = [];
-  favoritesServerIds: any[] = [];
+  servers: Server[] = []
+  favoritesServerIds: any[] = []
 
   get isFavorite () {
     return (serverId: string) => {
@@ -56,8 +56,7 @@ export default class Servers extends VuexModule {
   @MutationAction
   async sync () {
     const servers = (await $axios.$get('/servers')).data
-    // @ts-ignore
-    const favoritesServerIds: any[] = this.state.favoritesServerIds
+    const favoritesServerIds: any[] = this.favoritesServerIds
 
     for (const serverId of favoritesServerIds) {
       if (!servers.map((server: any) => server.id).includes(serverId)) {

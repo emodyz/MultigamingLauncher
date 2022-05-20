@@ -7,24 +7,27 @@
     <form v-if="!showTwoFactor" @submit.prevent="submit">
       <div>
         <jet-label for="email" value="Email" />
-        <jet-input id="email" v-model="form.email" type="email"
-                   class="mt-1 p-2 block w-full"
-                   required autofocus
+        <jet-input
+          id="email" v-model="form.email" type="email"
+          class="mt-1 p-2 block w-full"
+          required autofocus
         />
         <jet-input-error :message="errors.email" />
       </div>
 
       <div class="mt-4">
         <jet-label for="password" value="Password" />
-        <jet-input id="password" v-model="form.password" type="password"
-                   class="mt-1 p-2 block w-full"
-                   required autocomplete="current-password"
+        <jet-input
+          id="password" v-model="form.password" type="password"
+          class="mt-1 p-2 block w-full"
+          required autocomplete="current-password"
         />
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <NuxtLink to="/auth/forgot"
-                  class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-100
+        <NuxtLink
+          to="/auth/forgot"
+          class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-100
                   dark:hover:text-gray-200"
         >
           Forgot your password?
@@ -85,7 +88,7 @@ import TwoFactor from '~/pages/auth/TwoFactor.vue'
 
 })
 export default class Login extends Vue {
-  processing = false;
+  processing = false
 
   form = {
     email: '',
@@ -96,7 +99,7 @@ export default class Login extends Vue {
 
   showTwoFactor = false
 
-  errors = {};
+  errors = {}
 
   reset () {
     this.showTwoFactor = false

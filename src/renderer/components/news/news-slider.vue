@@ -29,7 +29,7 @@ export default class NewsSlider extends Vue {
 
   maxNews: number = 7
 
-  @Prop({ type: String, default: null }) serverId!: string | null;
+  @Prop({ type: String, default: null }) serverId!: string | null
 
   async mounted () {
     let news

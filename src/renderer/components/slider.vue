@@ -1,8 +1,9 @@
 <template>
-  <div class="w-full h-full shadow-md border border-gray-200 bg-gray-100 rounded-md
+  <div
+    class="w-full h-full shadow-md border border-gray-200 bg-gray-100 rounded-md
   dark:bg-gray-800 dark:border-transparent"
-       @mouseout="startAutoSlider"
-       @mouseover="stopAutoSlider"
+    @mouseout="startAutoSlider"
+    @mouseover="stopAutoSlider"
   >
     <div class="relative flex justify-center w-full h-full overflow-hidden rounded-md">
       <slot v-if="sliderSlides.length === 0" name="empty" />
@@ -31,10 +32,11 @@
             class="absolute flex top-2 right-1/2 text-indigo-400 blurred bg-black bg-opacity-20
             rounded-full transform translate-x-1/2 "
           >
-            <div v-for="(slide, index) of slides"
-                 :key="index"
-                 class="cursor-pointer p-2"
-                 @click="goToSlide(index)"
+            <div
+              v-for="(slide, index) of slides"
+              :key="index"
+              class="cursor-pointer p-2"
+              @click="goToSlide(index)"
             >
               <div
                 :class="{
@@ -44,22 +46,26 @@
             </div>
           </div>
           <div class="absolute right-1 top-1/2 transform -translate-y-1/2">
-            <button class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white
+            <button
+              class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white
             transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next"
             >
-              <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                   xmlns="http://www.w3.org/2000/svg"
+              <svg
+                class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
               </svg>
             </button>
           </div>
           <div class="absolute left-1 top-1/2 transform -translate-y-1/2">
-            <button class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors
+            <button
+              class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors
              blurred hover:bg-opacity-50 focus:outline-none" @click="prev"
             >
-              <svg class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                   xmlns="http://www.w3.org/2000/svg"
+              <svg
+                class="stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
               </svg>
@@ -76,15 +82,15 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class Slider extends Vue {
-  @Prop({ type: Array, required: true, default: [] }) slides!: any[];
+  @Prop({ type: Array, required: true, default: [] }) slides!: any[]
 
-  hideControl: boolean = false;
-  currentSlide: number = 1;
+  hideControl: boolean = false
+  currentSlide: number = 1
 
-  animationInProgress: boolean = false;
-  doAnimation: boolean = true;
+  animationInProgress: boolean = false
+  doAnimation: boolean = true
 
-  autoSlideInterval: any = null;
+  autoSlideInterval: any = null
 
   get sliderSlides () {
     const slides = [...this.slides]

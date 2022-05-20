@@ -8,7 +8,7 @@ import { serverStore } from '~/utils/store-accessor'
   preserveState: true
 })
 export default class Updater extends VuexModule {
-  servers: any[] = [];
+  servers: any[] = []
 
   get hasUpdate () {
     return (serverId: string, updateHash: string) => {

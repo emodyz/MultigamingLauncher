@@ -17,8 +17,8 @@ export abstract class GameModule implements IGameModule {
 
   public abstract gameApps: GameExecutable[];
 
-  protected gamePath!: string;
-  protected gameBinary!: string;
+  protected gamePath!: string
+  protected gameBinary!: string
 
   get gamePathWithBinary (): string {
     return path.resolve(this.gamePath, this.gameBinary)

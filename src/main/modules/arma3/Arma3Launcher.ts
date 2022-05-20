@@ -1,13 +1,13 @@
 import GameLauncher from '../../../sdk/GameLauncher'
 
 export default class Arma3Launcher extends GameLauncher {
-  private command: string[] = ['2', '1', '-nopause'];
+  private command: string[] = ['2', '1', '-nopause']
   private modPacksNames: string[] = []
 
   /**
    * Server Part
    */
-  private serverHost: string|null = null;
+  private serverHost: string|null = null
   private serverPassword: string|null = null
 
   public withModPacks (names: string|string[]): Arma3Launcher {

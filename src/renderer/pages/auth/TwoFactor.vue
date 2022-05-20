@@ -14,22 +14,25 @@
     <form @submit.prevent="submit">
       <div v-if="! recovery">
         <jet-label for="code" value="Code" />
-        <jet-input id="code" ref="code" v-model="syncedCode" type="text" inputmode="numeric"
-                   class="mt-1 p-2 block w-full" autofocus autocomplete="one-time-code"
+        <jet-input
+          id="code" ref="code" v-model="syncedCode" type="text" inputmode="numeric"
+          class="mt-1 p-2 block w-full" autofocus autocomplete="one-time-code"
         />
         <jet-input-error :message="errors.two_factor" />
       </div>
 
       <div v-else>
         <jet-label for="recovery_code" value="Recovery Code" />
-        <jet-input id="recovery_code" ref="recovery_code" v-model="syncedRecoveryCode" type="text"
-                   class="mt-1 p-2 block w-full" autocomplete="one-time-code"
+        <jet-input
+          id="recovery_code" ref="recovery_code" v-model="syncedRecoveryCode" type="text"
+          class="mt-1 p-2 block w-full" autocomplete="one-time-code"
         />
         <jet-input-error :message="errors.two_factor" />
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer
+        <button
+          type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer
          dark:text-gray-100 dark:hover:text-gray-200" @click.prevent="toggleRecovery"
         >
           <template v-if="! recovery">
@@ -41,7 +44,8 @@
           </template>
         </button>
 
-        <button type="button" class="ml-4 text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer
+        <button
+          type="button" class="ml-4 text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer
          dark:text-gray-100 dark:hover:text-gray-200" @click.prevent="cancelLogin"
         >
           Cancel
@@ -80,12 +84,12 @@ import JetInputError from '~/components/JetStream/InputError.vue'
   }
 })
 export default class TwoFactor extends Vue {
-  @PropSync('code', { type: String }) syncedCode!: string;
-  @PropSync('recovery_code', { type: String }) syncedRecoveryCode!: string;
-  @Prop({ type: Boolean, default: false }) processing!: boolean;
-  @Prop({ default: {} }) errors!: any;
+  @PropSync('code', { type: String }) syncedCode!: string
+  @PropSync('recovery_code', { type: String }) syncedRecoveryCode!: string
+  @Prop({ type: Boolean, default: false }) processing!: boolean
+  @Prop({ default: {} }) errors!: any
 
-  recovery: boolean = false;
+  recovery: boolean = false
 
   @Emit()
   submit () {

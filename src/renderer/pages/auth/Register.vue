@@ -12,8 +12,9 @@
     <form @submit.prevent="submit">
       <div>
         <jet-label for="name" value="Name" />
-        <jet-input id="name" v-model="form.name" type="text" class="mt-1 p-2 block w-full" required autofocus
-                   autocomplete="name"
+        <jet-input
+          id="name" v-model="form.name" type="text" class="mt-1 p-2 block w-full" required autofocus
+          autocomplete="name"
         />
         <jet-input-error :message="errors.name" />
       </div>
@@ -26,22 +27,25 @@
 
       <div class="mt-4">
         <jet-label for="password" value="Password" />
-        <jet-input id="password" v-model="form.password" type="password" class="mt-1 p-2 block w-full" required
-                   autocomplete="new-password"
+        <jet-input
+          id="password" v-model="form.password" type="password" class="mt-1 p-2 block w-full" required
+          autocomplete="new-password"
         />
         <jet-input-error :message="errors.password" />
       </div>
 
       <div class="mt-4">
         <jet-label for="password_confirmation" value="Confirm Password" />
-        <jet-input id="password_confirmation" v-model="form.password_confirmation" type="password"
-                   class="mt-1 p-2 block w-full" required autocomplete="new-password"
+        <jet-input
+          id="password_confirmation" v-model="form.password_confirmation" type="password"
+          class="mt-1 p-2 block w-full" required autocomplete="new-password"
         />
         <jet-input-error :message="errors.password_confirmation" />
       </div>
 
       <div class="flex items-center justify-end mt-4">
-        <NuxtLink to="/auth/login" class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-100
+        <NuxtLink
+          to="/auth/login" class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-100
                   dark:hover:text-gray-200"
         >
           Already registered?
@@ -80,12 +84,12 @@ import { $axios } from '~/utils/api'
   }
 })
 export default class Forgot extends Vue {
-  processing = false;
+  processing = false
 
   message: {
     type: string,
     value: string
-  } | null = null;
+  } | null = null
 
   form = {
     name: '',
@@ -94,7 +98,7 @@ export default class Forgot extends Vue {
     password_confirmation: ''
   }
 
-  errors = {};
+  errors = {}
 
   async submit () {
     this.errors = {}
