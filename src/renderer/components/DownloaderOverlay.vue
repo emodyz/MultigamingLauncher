@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { DownloaderState } from '../../../../NodeDownloader'
+import { DownloaderState } from '@emodyz/node-downloader'
 import ProgressBar from '~/components/ProgressBar.vue'
 import { downloadersStore, serverStore } from '~/store'
 import PlayIcon from '~/components/icons/PlayIcon.vue'

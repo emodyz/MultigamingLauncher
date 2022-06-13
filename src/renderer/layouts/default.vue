@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-50 dark:bg-gray-900 subpixel-antialiased">
-    <Sidebar class="slide-animation" />
+    <SideBar class="slide-animation" />
     <Header :title="title" class="pl-20 slide-animation" />
     <div
       class="pl-20 h-screen w-screen overflow-y-scroll slide-animation"
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Sidebar from '~/components/SideBar'
+import SideBar from '~/components/SideBar'
 import DownloaderOverlay from '@/components/DownloaderOverlay'
 import Header from '@/components/header'
 import { pageStore, themeStore } from '~/store'
@@ -26,7 +26,7 @@ export default {
   components: {
     Header,
     DownloaderOverlay,
-    Sidebar
+    SideBar
   },
 
   computed: {
