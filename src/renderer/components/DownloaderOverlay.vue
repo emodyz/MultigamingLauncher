@@ -3,8 +3,8 @@
     <div
       v-for="downloader of downloaders.filter((item) => !item.hidden)"
       :key="downloader.serverId"
-      class="relative group bg-gray-100 border border-gray-200 text-gray-800 dark:text-white rounded overflow-hidden shadow-md w-64
-          dark:bg-gray-800 dark:border-gray-700"
+      class="relative group bg-gray-100 border border-gray-200 text-gray-800 rounded overflow-hidden shadow-md w-64
+          dark:bg-gray-800 dark:border-gray-700 dark:text-white"
     >
       <div class="absolute top-1 right-1 p-0">
         <ActionButton @click="hide(downloader.serverId)">

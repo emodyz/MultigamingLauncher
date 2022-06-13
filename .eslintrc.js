@@ -16,6 +16,8 @@ module.exports = {
     // StandardJS — The Rules
     indent: ['error', 2], // 2 spaces – for indentation
     camelcase: 'off',
+    'import/export': 'off',
+    'import/named': 'off',
     'max-len': ['error', { code: 120 }],
     'no-console': 'off',
     'arrow-parens': ['error', 'as-needed'],

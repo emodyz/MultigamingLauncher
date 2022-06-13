@@ -15,12 +15,14 @@
 </template>
 
 <script>
-import Sidebar from '@/components/sidebar'
+import Sidebar from '~/components/SideBar'
 import DownloaderOverlay from '@/components/DownloaderOverlay'
 import Header from '@/components/header'
 import { pageStore, themeStore } from '~/store'
 
 export default {
+  name: 'DefaultLayout',
+
   components: {
     Header,
     DownloaderOverlay,

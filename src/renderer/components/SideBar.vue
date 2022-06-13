@@ -134,7 +134,7 @@ import { mapGetters } from 'vuex'
 import { downloadersStore } from '~/store'
 
 export default {
-  name: 'Sidebar',
+  name: 'SideBar',
 
   computed: {
     ...mapGetters('updater', [
