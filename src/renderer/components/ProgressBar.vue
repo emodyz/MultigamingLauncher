@@ -7,8 +7,8 @@
             progress-animation bg-indigo-400 dark:bg-indigo-500"
       />
     </div>
-    <div v-if="$slots.default" class="absolute inset-0" >
-      <slot/>
+    <div v-if="$slots.default" class="absolute inset-0">
+      <slot />
     </div>
   </div>
 </template>

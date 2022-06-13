@@ -28,9 +28,16 @@
     </div>
     <div class="flex h-32 w-full p-2">
       <div class="flex items-center w-50 p-2">
+        <jet-button
+          v-if="!isReady"
+          disabled
+          class="w-full h-full font-light uppercase text-base lg:text-xl xl:text-2xl 2xl:text-3xl"
+        >
+          Loading ...
+        </jet-button>
         <!-- Download Button --->
         <jet-button
-          v-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloadInProgress"
+          v-else-if="(server && hasUpdate(id, server.update_hash)) || forceUpdate" :disabled="downloadInProgress"
           class="w-full h-full font-light uppercase
                     text-base lg:text-xl xl:text-2xl 2xl:text-3xl" @click="startDownload()"
         >
@@ -197,6 +204,10 @@ export default class Server extends Vue {
   // @ts-ignore
   id: string
 
+  get isReady () {
+    return this.server && this.module
+  }
+
   get isDownloading () {
     return this.downloader.state === DownloaderState.DOWNLOADING
   }
@@ -281,7 +292,6 @@ export default class Server extends Vue {
       const modPacks = (await this.$axios.$get(`/servers/${this.server.id}/modpacks`)).data
 
       const filesToDownload = modPacks.map(modpack => modpack.manifest.length).reduce((a, b) => a + b, 0)
-
       if (filesToDownload === 0) {
         alert('Empty modpack, please contact an administrator...')
         return

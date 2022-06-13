@@ -40,8 +40,9 @@
             >
               <div
                 :class="{
-                  'opacity-100': isCurrentSlide(index)
-                }" class="w-4 h-0 border opacity-30 rounded-full"
+                  'opacity-100': isCurrentSlide(index),
+                  'opacity-30': !isCurrentSlide(index),
+                }" class="w-4 h-0 border rounded-full"
               />
             </div>
           </div>

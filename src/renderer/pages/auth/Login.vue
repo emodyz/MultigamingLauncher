@@ -129,7 +129,7 @@ export default class Login extends Vue {
         }
       })
     } catch (err) {
-      if (err.response.status === 418) {
+      if (err?.response?.status === 418) {
         this.form.two_factor_code = ''
         this.form.two_factor_recovery_code = ''
 

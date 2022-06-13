@@ -61,7 +61,7 @@ module.exports = {
     }
   },
   axios: {
-    baseURL: 'http://launcher.test/api'
+    baseURL: 'https://9fc1a328-aaaf-431d-a6cc-cef02d341859.pub.instances.scw.cloud/api'
   },
   tailwindcss: {}
 }

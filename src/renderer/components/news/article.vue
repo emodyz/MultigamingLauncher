@@ -9,10 +9,10 @@
       class="absolute w-full h-full p-4 shadow-xl overflow-y-scroll text-white overlay"
     >
       <div id="news-header" ref="newsHeader" class="mb-2 cursor-pointer" @click="openCloseNews">
-        <span v-if="title" class="font-bold w-full block text-3xl mb-2">
+        <span v-if="title" class="font-bold w-full block text-2xl mb-2">
           {{ title }}
         </span>
-        <span v-if="subtitle" class="font-light block text-xl">
+        <span v-if="subtitle" class="font-light block text-lg">
           {{ subtitle }}
         </span>
       </div>

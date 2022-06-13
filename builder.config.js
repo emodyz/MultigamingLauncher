@@ -48,6 +48,14 @@ module.exports = {
   directories: {
     output: 'build'
   },
+  // updater
+  publish: [
+    {
+      provider: 'generic',
+      url: 'https://updater.test'
+    }
+  ],
+
   // default files: https://www.electron.build/configuration/contents
   files: [
     'package.json',

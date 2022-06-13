@@ -1,9 +1,9 @@
 <template>
-  <div class="absolute  top-0 right-0 m-2 z-50 space-y-2">
+  <div class="absolute top-0 right-0 m-2 z-50 space-y-2">
     <div
       v-for="downloader of downloaders.filter((item) => !item.hidden)"
       :key="downloader.serverId"
-      class="relative group bg-gray-100 border border-gray-200 text-white rounded overflow-hidden shadow-md w-64
+      class="relative group bg-gray-100 border border-gray-200 text-gray-800 dark:text-white rounded overflow-hidden shadow-md w-64
           dark:bg-gray-800 dark:border-gray-700"
     >
       <div class="absolute top-1 right-1 p-0">
