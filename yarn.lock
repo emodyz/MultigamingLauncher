@@ -1013,10 +1013,10 @@
     minimatch "^3.0.4"
     plist "^3.0.4"
 
-"@emodyz/node-downloader@^2.0.0-RC9":
-  version "2.0.0-RC9"
-  resolved "https://registry.yarnpkg.com/@emodyz/node-downloader/-/node-downloader-2.0.0-RC9.tgz#0ad57c024b6298dd2971617cc3c38d1f400786d1"
-  integrity sha512-32xA4EJYlCEYKNl4C9BHzUvl0pAY8EoW5SKK4gmHWS71IXz5GUogPtr25tIDAvlsD1wUBT7aptFeLBFS6rHjVA==
+"@emodyz/node-downloader@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@emodyz/node-downloader/-/node-downloader-2.0.0.tgz#1999f643c39dc640e87b0ab7e077e7589cddfcec"
+  integrity sha512-G+df/xzvO6+hHpTeIGQJKQo/mp2Nhl6V/U3xRLQWhgjQsN3y1H8chSgLqzk/UJX45zrjdyrIhWYy9BLyH1Y1nw==
   dependencies:
     node-downloader-helper "^2.1.1"
 

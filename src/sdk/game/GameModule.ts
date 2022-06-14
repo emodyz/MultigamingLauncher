@@ -24,7 +24,7 @@ export abstract class GameModule implements IGameModule {
     return path.resolve(this.gamePath, this.gameBinary)
   }
 
-  public validateGamePath (gamePath: string): boolean {
+  public checkGamePath (gamePath: string): boolean {
     const allowedGamesExecutable = this.gameApps.filter(gameApp => gameApp.platform === os.platform())
 
     const files = fs.readdirSync(gamePath).map((file: string) => file.toLowerCase())

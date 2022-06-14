@@ -25,8 +25,8 @@ export default class ModuleController {
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcMain.handle(Channels.VALIDE_GAME_PATH, (event, identifier: string, path: string) => {
-      return this.modules.get(identifier).validateGamePath(path)
+    ipcMain.handle(Channels.CHECK_GAME_PATH, (event, identifier: string, path: string) => {
+      return this.modules.get(identifier).checkGamePath(path)
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -23,13 +23,13 @@ export default class GameModule implements GameModuleProtocol {
     return await this.emit(Channels.IS_GAME_RUNNING)
   }
 
-  async validateGamePath (gamePath: string): Promise<boolean> {
+  async checkGamePath (gamePath: string): Promise<boolean> {
     if (gamePath === null) {
       console.log('no gamePath provided for', this.gameIdentifier)
       return false
     }
 
-    return await this.emit(Channels.VALIDE_GAME_PATH, gamePath)
+    return await this.emit(Channels.CHECK_GAME_PATH, gamePath)
   }
 
   async createDownloader (serverId: string, modPacks: ModPack[]): Promise<DownloaderProtocol> {

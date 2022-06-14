@@ -11,7 +11,7 @@ export default interface GameModule extends Module {
   /**
    * Game Path Section
    */
-  validateGamePath(gamePath: string): boolean;
+  checkGamePath(gamePath: string): boolean;
 
   findGamePath(): Promise<string | null>;
 

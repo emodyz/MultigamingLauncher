@@ -132,7 +132,7 @@ export default class GamePathSelector extends Vue {
       return
     }
 
-    this.isValidPath = await this.module.validateGamePath(this.installPath)
+    this.isValidPath = await this.module.checkGamePath(this.installPath)
   }
 
   @Watch('opened')

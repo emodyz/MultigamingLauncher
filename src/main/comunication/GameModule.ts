@@ -19,8 +19,8 @@ export default class GameModule implements GameModuleProtocol {
     return this.gameModule.isGameRunning()
   }
 
-  validateGamePath (gamePath: string): Promise<boolean> {
-    return Promise.resolve(this.gameModule.validateGamePath(gamePath))
+  checkGamePath (gamePath: string): Promise<boolean> {
+    return Promise.resolve(this.gameModule.checkGamePath(gamePath))
   }
 
   createDownloader (serverId: string, modPacks: ModPack[]): Promise<any> {

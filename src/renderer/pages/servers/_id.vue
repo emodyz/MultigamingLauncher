@@ -185,7 +185,7 @@ import ActionButton from '~/components/buttons/ActionButton.vue'
     this.module = new GameModule(this.server.game.identifier)
 
     // @ts-ignore
-    await this.module.validateGamePath(this.savedGamePath)
+    await this.module.checkGamePath(this.savedGamePath)
   }
 })
 export default class Server extends Vue {
@@ -275,7 +275,7 @@ export default class Server extends Vue {
       return
     }
 
-    if (!await this.module.validateGamePath(installPath || this.savedGamePath || '')) {
+    if (!await this.module.checkGamePath(installPath || this.savedGamePath || '')) {
       this.openGamePathSelector = true
       return
     }
@@ -329,7 +329,7 @@ export default class Server extends Vue {
       return
     }
 
-    if (!this.module.validateGamePath(this.savedGamePath || '')) {
+    if (!this.module.checkGamePath(this.savedGamePath || '')) {
       this.openGamePathSelector = true
       return
     }
