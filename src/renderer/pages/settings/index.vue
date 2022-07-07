@@ -53,6 +53,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { ipcRenderer } from 'electron'
 import AppearanceSettings from './sections/AppearanceSettings.vue'
+import UpdaterSettings from './sections/UpdaterSettings.vue'
 import { pageStore } from '~/store'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
@@ -73,6 +74,10 @@ export default class Settings extends Vue {
     {
       name: 'Appearance',
       component: AppearanceSettings
+    },
+    {
+      name: 'Updater',
+      component: UpdaterSettings
     }
   ]
 
