@@ -83,8 +83,8 @@ export default function RendererCommunicator (id: string, mainObject: any) {
         })
       }
 
-      call (funcName: string, ...args) {
-        return ipcRenderer.invoke(`${this.channel}-call`, funcName, ...args)
+      call (func: any, ...args): any {
+        return ipcRenderer.invoke(`${this.channel}-call`, func, ...args)
       }
 
       destroy () {
@@ -92,8 +92,6 @@ export default function RendererCommunicator (id: string, mainObject: any) {
 
         this.propsToListen.forEach(prop => prop.unsubscribe())
 
-        ipcRenderer.removeAllListeners(`${this.channel}`)
-        ipcRenderer.removeAllListeners(`${this.channel}-call`)
         ipcRenderer.removeAllListeners(`${this.channel}-set`)
         ipcRenderer.removeAllListeners(`${this.channel}-event`)
       }

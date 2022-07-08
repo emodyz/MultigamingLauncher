@@ -1,5 +1,5 @@
 import { Context } from '../../helper/Context'
-import {FunctionPropertyNames, SyncableAttributes} from '../helper'
+import { FunctionPropertyNames, SyncableAttributes } from '../helper'
 
 export interface ICommunicator<Props, Events> {
    uniqIdentifier?: string|null

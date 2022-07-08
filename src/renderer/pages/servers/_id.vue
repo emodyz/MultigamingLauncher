@@ -242,6 +242,7 @@ export default class Server extends Vue {
   }
 
   destroyed () {
+    this.module?.destroy()
     if (this._gameCheckerInterval) {
       clearInterval(this._gameCheckerInterval)
     }
