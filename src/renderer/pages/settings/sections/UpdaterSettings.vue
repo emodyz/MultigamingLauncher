@@ -21,9 +21,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { UpdaterEvents } from '../../../../shared/comunication/updater/UpdaterProtocol'
+import { UpdaterEvents } from '../../../../shared/comunication/updater/UpdaterContract'
 import JetButton from '../../../components/JetStream/Button.vue'
-import RendererUpdater from '~/comunication/RendererUpdater'
+import Updater from '~/comunication/Updater'
 
 @Component({
   components: {
@@ -31,7 +31,7 @@ import RendererUpdater from '~/comunication/RendererUpdater'
   }
 })
 export default class UpdaterSettings extends Vue {
-  updater = new RendererUpdater()
+  updater = new Updater()
 
   currentVersion = this.updater.version
 

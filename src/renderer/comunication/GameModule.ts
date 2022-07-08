@@ -1,39 +1,31 @@
-import { ipcRenderer } from 'electron'
-import GameModuleProtocol, { Channels } from '../../shared/comunication/module/GameModuleProtocol'
+import GameModuleContract from '../../shared/comunication/module/GameModuleContract'
 import ModPack from '../../sdk/definitions/ModPack'
-import DownloaderProtocol from '../../shared/comunication/downloader/DownloaderProtocol'
+import DownloaderContract from '../../shared/comunication/downloader/DownloaderContract'
+import { Communicator } from '../../shared/communicator/renderer/Communicator'
+import RendererCommunicator from '../../shared/communicator/renderer/RendererCommunicator'
+import MainGameModule from '../../main/comunication/MainGameModule'
 import Downloader from '~/comunication/Downloader'
 
-export default class GameModule implements GameModuleProtocol {
-  gameIdentifier: string
-
+@RendererCommunicator('game.module', MainGameModule)
+export default class GameModule extends Communicator<GameModuleContract> {
   constructor (gameIdentifier: string) {
-    this.gameIdentifier = gameIdentifier
-  }
-
-  async exist (): Promise<boolean> {
-    return await this.emit(Channels.EXIST)
-  }
-
-  async findGamePath (): Promise<string | null> {
-    return await this.emit(Channels.FIND_GAME_PATH)
-  }
-
-  async isGameRunning (): Promise<boolean> {
-    return await this.emit(Channels.IS_GAME_RUNNING)
+    super()
+    this.uniqIdentifier = gameIdentifier
   }
 
   async checkGamePath (gamePath: string): Promise<boolean> {
     if (gamePath === null) {
-      console.log('no gamePath provided for', this.gameIdentifier)
+      console.log('no gamePath provided for', this.uniqIdentifier)
       return false
     }
 
-    return await this.emit(Channels.CHECK_GAME_PATH, gamePath)
+    return this.call('checkGamePath', gamePath)
   }
 
-  async createDownloader (serverId: string, modPacks: ModPack[]): Promise<DownloaderProtocol> {
-    await this.emit(Channels.CREATE_DOWNLOADER, serverId, modPacks)
+  async createDownloader (serverId: string, modPacks: ModPack[]): Promise<DownloaderContract> {
+    const downloader = await this.call('createDownloader', serverId, modPacks)
+
+    console.log(downloader)
 
     return new Downloader(serverId)
   }
@@ -42,13 +34,5 @@ export default class GameModule implements GameModuleProtocol {
     return (serverId: string) => {
       return new Downloader(serverId)
     }
-  }
-
-  /**
-   * Private methods (helpers)
-   */
-
-  private async emit (channel: string, ...data): Promise<any> {
-    return await ipcRenderer.invoke(channel, this.gameIdentifier, ...data)
   }
 }

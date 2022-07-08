@@ -1,5 +1,5 @@
 import { createDownloader, Downloader, DownloaderState } from '@emodyz/node-downloader'
-import { findSteamAppById, findSteamAppByName, findSteamLibraries } from 'find-steam-app'
+import { findSteamAppById, findSteamAppByName, findSteamLibraries } from '@moddota/find-steam-app'
 
 export class Sdk {
   public static createDownloader (): Downloader {

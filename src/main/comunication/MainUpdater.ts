@@ -1,5 +1,5 @@
 import { autoUpdater, UpdateInfo } from 'electron-updater'
-import { UpdaterContract, UpdaterEvents } from '../../shared/comunication/updater/UpdaterProtocol'
+import { UpdaterContract, UpdaterEvents } from '../../shared/comunication/updater/UpdaterContract'
 import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
 import { Communicator } from '../../shared/communicator/main/Communicator'
 

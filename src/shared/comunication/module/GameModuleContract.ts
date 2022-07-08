@@ -1,5 +1,5 @@
 import ModPack from '../../../sdk/definitions/ModPack'
-import DownloaderProtocol from '../downloader/DownloaderProtocol'
+import DownloaderContract from '../downloader/DownloaderContract'
 
 export enum Channels {
   EXIST = 'module.exist',
@@ -9,7 +9,7 @@ export enum Channels {
   CREATE_DOWNLOADER = 'module.createDownloader'
 }
 
-export default interface GameModuleProtocol
+export default interface GameModuleContract
 {
   findGamePath(): Promise<string | null>
 
@@ -17,5 +17,5 @@ export default interface GameModuleProtocol
 
   checkGamePath(gamePath: string): Promise<boolean>;
 
-  createDownloader(serverId: string, modPacks: ModPack[]): Promise<DownloaderProtocol>;
+  createDownloader(serverId: string, modPacks: ModPack[]): Promise<DownloaderContract>;
 }

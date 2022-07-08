@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
-import DownloaderProtocol, { Channels } from '../../shared/comunication/downloader/DownloaderProtocol'
+import DownloaderContract, { Channels } from '../../shared/comunication/downloader/DownloaderContract'
 
-export default class Downloader implements DownloaderProtocol {
+export default class Downloader implements DownloaderContract {
   private readonly serverId: string
 
   constructor (serverId: string) {

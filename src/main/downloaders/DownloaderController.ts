@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron'
 import Downloader from '../comunication/Downloader'
-import { Channels, Events } from '../../shared/comunication/downloader/DownloaderProtocol'
+import { Channels, DownloaderEvents } from '../../shared/comunication/downloader/DownloaderContract'
 import { send } from '../helpers/events'
 
 export default class DownloaderController {
@@ -22,13 +22,13 @@ export default class DownloaderController {
       return
     }
 
-    send(Events.CREATED, serverId)
+    send(DownloaderEvents.CREATED, serverId)
 
     this.downloaders.set(serverId, downloader)
   }
 
   public static remove (serverId: string) {
-    send(Events.DELETED, serverId)
+    send(DownloaderEvents.DELETED, serverId)
 
     this.downloaders.delete(serverId)
   }
@@ -46,26 +46,31 @@ export default class DownloaderController {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle(Channels.START, async (event, serverId: string, forceDownload?: boolean) => {
+      // @ts-ignore
       return await this.get(serverId).start(forceDownload)
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle(Channels.STOP, async (event, serverId: string) => {
+      // @ts-ignore
       return await this.get(serverId).stop()
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle(Channels.PAUSE, async (event, serverId: string) => {
+      // @ts-ignore
       return await this.get(serverId).pause()
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle(Channels.RESUME, async (event, serverId: string) => {
+      // @ts-ignore
       return await this.get(serverId).resume()
     })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ipcMain.handle(Channels.CALL, async (event, serverId: string, functionToCall: string, ...args: any[]) => {
+      // @ts-ignore
       return this.get(serverId).call(functionToCall, args)
     })
   }

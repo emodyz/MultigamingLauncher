@@ -1,13 +1,18 @@
-import GameModuleProtocol from '../../shared/comunication/module/GameModuleProtocol'
+import GameModuleContract from '../../shared/comunication/module/GameModuleContract'
 import { GameModule as BaseGameModule } from '../../sdk/Sdk'
 import ModPack from '../../sdk/definitions/ModPack'
 import DownloaderController from '../downloaders/DownloaderController'
+import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
+import { Communicator } from '../../shared/communicator/main/Communicator'
 import Downloader from './Downloader'
 
-export default class GameModule implements GameModuleProtocol {
+@MainCommunicator('game.module')
+export default class MainGameModule extends Communicator implements GameModuleContract {
   private gameModule: BaseGameModule
 
   constructor (gameModule: BaseGameModule) {
+    super()
+    this.uniqIdentifier = gameModule.gameIdentifier
     this.gameModule = gameModule
   }
 
