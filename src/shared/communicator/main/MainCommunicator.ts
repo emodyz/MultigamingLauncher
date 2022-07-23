@@ -10,7 +10,7 @@ export default function MainCommunicator (id: string) {
   return function <T extends Constructor> (Target: T) {
     return class MainCommunicatorClass extends Target implements ICommunicator<any> {
       public uniqIdentifier?: string|null
-      private readonly channel: string|null
+      private readonly channel: string
 
       constructor (...args: any[]) {
         super(...args)
@@ -25,13 +25,19 @@ export default function MainCommunicator (id: string) {
           throw new Error('Cannot use this decorator on renderer process')
         }
 
-        console.log('init main', this.channel)
-
         return handleMain(this.channel, this)
       }
 
       trigger (event: any, ...args: any[]): void {
+        console.log(`Event triggered - ${event}`, args)
         send(`${this.channel}-event`, event, ...args)
+      }
+
+      destroy (): void {
+        console.log('destroy', this.channel)
+
+        ipcMain.removeAllListeners(this.channel)
+        ipcMain.removeHandler(`${this.channel}-call`)
       }
     }
   }
@@ -45,12 +51,9 @@ function handleMain (channel: string, currentInstance: any) {
 
     Object.defineProperty(currentInstance, key, {
       get (): any {
-        console.log('getter accessed for', key)
         return currentInstance[`_${key}`]
       },
       set (value: any) {
-        console.log('setter accessed for', key)
-
         send(`${channel}-set`, key, value)
 
         currentInstance[`_${key}`] = value

@@ -31,7 +31,7 @@
           <div
             v-for="section of sections" :key="section.name"
             class="relative py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900"
-            @click="selectSection(section)"
+            @click="selectSection(section.name)"
           >
             <div
               v-if="currentSection.name === section.name" class="border-l-2 border-r border-indigo-400
@@ -84,11 +84,17 @@ export default class Settings extends Vue {
   currentSection: SettingsSection = this.sections[0]
 
   mounted () {
+    this.selectSection(this.$route.query.section as string)
     pageStore.noTitle()
   }
 
-  selectSection (section) {
-    this.currentSection = section
+  selectSection (sectionName: string|null) {
+    const section = this.sections.find(section => section.name === sectionName)
+    if (section) {
+      this.currentSection = section
+    } else {
+      this.currentSection = this.sections[0]
+    }
   }
 
   goToProfileSettings () {

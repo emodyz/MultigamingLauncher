@@ -1,11 +1,16 @@
-import { UpdateInfo } from 'electron-updater'
+export type UpdateInfo = {
+  version: string;
+  releaseDate: string;
+  releaseName?: string | null;
+  releaseNotes?: string;
+}
 
 export enum UpdaterEvents {
-  UPDATE_DETECTED = 'updater.newUpdateDetected',
+  UPDATE_AVAILABLE = 'updater.newUpdateAvailable',
 }
 
 export interface UpdaterContract {
-  newVersion: UpdateInfo|null
+  updateInfo: UpdateInfo|null
   version: string
   isUpdateAvailable: boolean
 

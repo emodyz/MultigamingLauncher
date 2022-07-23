@@ -2,7 +2,7 @@ import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 
 @Module({
   name: 'page',
-  stateFactory: true,
+  stateFactory: false,
   namespaced: true
 })
 export default class Theme extends VuexModule {

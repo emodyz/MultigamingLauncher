@@ -42,7 +42,6 @@ export abstract class GameModule implements IGameModule {
   async isGameRunning (): Promise<boolean> {
     try {
       const list = await find('name', 'arma3')
-      console.log(list)
       return list.length > 0
     } catch (e) {
     }

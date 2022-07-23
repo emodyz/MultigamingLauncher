@@ -6,6 +6,7 @@ import Page from '~/store/page'
 import Servers from '~/store/servers'
 import Theme from '~/store/theme'
 import Games from '~/store/games'
+import AppUpdater from '~/store/appUpdater'
 
 // eslint-disable-next-line import/no-mutable-exports
 let downloadersStore: Downloaders
@@ -19,6 +20,8 @@ let serverStore: Servers
 let themeStore: Theme
 // eslint-disable-next-line import/no-mutable-exports
 let gamesStore: Games
+// eslint-disable-next-line import/no-mutable-exports
+let appUpdater: AppUpdater
 
 function initialiseStores (store: Store<any>): void {
   downloadersStore = getModule(Downloaders, store)
@@ -27,6 +30,7 @@ function initialiseStores (store: Store<any>): void {
   serverStore = getModule(Servers, store)
   themeStore = getModule(Theme, store)
   gamesStore = getModule(Games, store)
+  appUpdater = getModule(AppUpdater, store)
 }
 
 export {
@@ -36,5 +40,6 @@ export {
   pageStore,
   serverStore,
   themeStore,
-  gamesStore
+  gamesStore,
+  appUpdater
 }

@@ -14,23 +14,23 @@ export default function RendererCommunicator (id: string, mainObject: any) {
       private readonly propsToListen: BehaviorSubject<any>[] = []
 
       private handler: ProxyHandler<RendererCommunicatorClass> = {
-        get: (target: any, prop: string, receiver: any) => {
-          if (prop in target) {
-            console.log('forward local call\t', prop)
-            return Reflect.get(target, prop, receiver)
-          }
-
+        get: (target: any, prop: string|symbol, receiver: any) => {
           let safeProp = prop.toString()
           const isSyncWanted = safeProp.endsWith('Sync')
 
+          if (prop in target) {
+            console.log('[LOCAL] \t forward getter', safeProp)
+            return Reflect.get(target, prop, receiver)
+          }
+
           if (typeof mainObject.prototype[safeProp] === 'function') {
             return (...args: any[]) => {
-              console.log('forward function call\t', prop, args)
+              console.log('[REMOTE] \t forward function\t', safeProp, args)
               return this.call(safeProp, ...args)
             }
           }
 
-          console.log('forward attribute getter\t', prop)
+          console.log('[REMOTE] \t forward getter\t', safeProp)
 
           if (isSyncWanted) {
             safeProp = safeProp.substring(0, safeProp.length - 4)
@@ -62,7 +62,6 @@ export default function RendererCommunicator (id: string, mainObject: any) {
         if (!isRenderer) {
           throw new Error('Cannot use this decorator on main process')
         }
-        console.log('init renderer', this.channel)
 
         ipcRenderer.on(`${this.channel}-set`, (_, prop, value) => {
           const safeProps = prop.toString()

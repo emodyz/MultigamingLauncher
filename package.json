@@ -1,6 +1,6 @@
 {
   "name": "multigaming-launcher",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "A all in one GameLauncher for communities.",
   "main": "./dist/main/index.js",
   "scripts": {

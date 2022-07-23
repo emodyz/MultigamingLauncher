@@ -1,11 +1,11 @@
-import { autoUpdater, UpdateInfo } from 'electron-updater'
-import { UpdaterContract, UpdaterEvents } from '../../shared/comunication/updater/UpdaterContract'
+import { autoUpdater } from 'electron-updater'
+import { UpdateInfo, UpdaterContract, UpdaterEvents } from '../../shared/comunication/updater/UpdaterContract'
 import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
 import { Communicator } from '../../shared/communicator/main/Communicator'
 
 @MainCommunicator('updater')
 export default class MainUpdater extends Communicator<UpdaterEvents> implements UpdaterContract {
-  newVersion: UpdateInfo|null = null
+  updateInfo: UpdateInfo|null = null
   version: string = autoUpdater.currentVersion.version
 
   isUpdateAvailable: boolean = false
@@ -15,6 +15,22 @@ export default class MainUpdater extends Communicator<UpdaterEvents> implements 
 
     // Setup autoUpdater config
     autoUpdater.autoDownload = false
+
+    autoUpdater.on('update-available', updateInfo => {
+      const customUpdateInfo: UpdateInfo = {
+        version: updateInfo.version,
+        releaseName: updateInfo.releaseName,
+        releaseNotes: typeof updateInfo?.releaseNotes === 'string'
+          ? updateInfo?.releaseNotes
+          // eslint-disable-next-line max-len
+          : 'Type of Release note not supported, please create an issue if you see this message https://github.com/emodyz/MultigamingLauncher/issues', // TODO: Handle ReleaseNoteInfo[] type ?
+        releaseDate: updateInfo.releaseDate
+      }
+
+      this.updateInfo = customUpdateInfo
+      this.isUpdateAvailable = true
+      this.trigger(UpdaterEvents.UPDATE_AVAILABLE, customUpdateInfo)
+    })
 
     this.checkForUpdate()
       .then(isUpdateAvailable => {
@@ -33,24 +49,16 @@ export default class MainUpdater extends Communicator<UpdaterEvents> implements 
   }
 
   async checkForUpdate (): Promise<boolean> {
-    if (this.isUpdateAvailable) {
-      return true
-    }
-
-    const response = await autoUpdater.checkForUpdates()
-
-    if (response?.updateInfo) {
-      this.newVersion = response.updateInfo
-      if (!this.isUpdateAvailable) {
-        this.trigger(UpdaterEvents.UPDATE_DETECTED, response.updateInfo)
-      }
-      this.isUpdateAvailable = true
-    }
+    await autoUpdater.checkForUpdates()
 
     return this.isUpdateAvailable
   }
 
   async processUpdate (): Promise<void> {
+    if (!this.isUpdateAvailable) {
+      throw new Error('processUpdate: called too early, no version available')
+    }
+
     await autoUpdater.downloadUpdate()
 
     await autoUpdater.quitAndInstall()

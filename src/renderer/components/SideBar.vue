@@ -71,8 +71,24 @@
       </div>
     </div>
     <div class="mb-4">
-      <div class="relative">
-        <span v-if="downloaders.length > 1" class="absolute w-5 h-5 -top-2 right-4">
+      <div v-if="isUpdateAvailable">
+        <a class="flex  justify-center mb-6 cursor-pointer" @click="goToUpdatePage">
+          <svg
+              class="w-5 h-5 text-gray-400 stroke-current text-green-500
+           dark:text-green-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2"
+            />
+          </svg>
+        </a>
+      </div>
+      <div class="relative" v-if="downloaders.length > 1">
+        <span class="absolute w-5 h-5 -top-2 right-4">
           <span
             class="relative flex inline-flex items-center justify-center w-5 h-5 text-white bg-indigo-400 rounded-full"
           >
@@ -145,6 +161,9 @@ export default {
     ]),
     ...mapGetters('downloaders', [
       'downloaders'
+    ]),
+    ...mapGetters('appUpdater', [
+      'isUpdateAvailable'
     ])
   },
 
@@ -168,6 +187,10 @@ export default {
 
     goToPanel () {
       this.$router.push('/settings')
+    },
+
+    goToUpdatePage () {
+      this.$router.push('/settings?section=Updater')
     }
   }
 }

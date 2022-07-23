@@ -4,28 +4,12 @@ import { themeStore } from '~/store'
 
 @Module({
   name: 'theme',
-  stateFactory: true,
+  stateFactory: false,
   namespaced: true
 })
 export default class Theme extends VuexModule {
   uuid: string = ''
   themeSource: 'system' | 'dark' | 'light' = 'system'
-
-  @Mutation
-  setThemeSource (themeSource: 'system' | 'dark' | 'light') {
-    this.themeSource = themeSource
-    ipcRenderer.invoke('theme.themeSource', themeSource)
-  }
-
-  @Mutation
-  forceUpdate () {
-    this.uuid = Math.random().toString(36).substring(7)
-  }
-
-  @Mutation
-  syncTheme () {
-    ipcRenderer.invoke('theme.themeSource', this.themeSource)
-  }
 
   get isDark () {
     if (this.themeSource === 'system') {
@@ -45,5 +29,21 @@ export default class Theme extends VuexModule {
       themeStore.forceUpdate()
       this.handleSystemChange()
     })
+  }
+
+  @Mutation
+  setThemeSource (themeSource: 'system' | 'dark' | 'light') {
+    this.themeSource = themeSource
+    ipcRenderer.invoke('theme.themeSource', themeSource)
+  }
+
+  @Mutation
+  forceUpdate () {
+    this.uuid = Math.random().toString(36).substring(7)
+  }
+
+  @Mutation
+  syncTheme () {
+    ipcRenderer.invoke('theme.themeSource', this.themeSource)
   }
 }

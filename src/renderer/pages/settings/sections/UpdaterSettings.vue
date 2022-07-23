@@ -5,15 +5,15 @@
       Current version: {{ currentVersion }}
     </div>
 
-    <div v-if="newVersion.value">
-      New Version: {{ newVersion.value.version }}
+    <div v-if="updateInfo">
+      New Version: {{ updateInfo.version }}
     </div>
 
-    <div v-if="!isUpdateAvailable.value">
+    <div v-if="!isUpdateAvailable">
       <JetButton @click="checkForUpdate">Check for updates</JetButton>
     </div>
 
-    <div v-if="isUpdateAvailable.value">
+    <div v-if="isUpdateAvailable">
       <JetButton @click="processUpdate">Update launcher</JetButton>
     </div>
   </div>
@@ -21,9 +21,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { UpdaterEvents } from '../../../../shared/comunication/updater/UpdaterContract'
 import JetButton from '../../../components/JetStream/Button.vue'
-import Updater from '~/comunication/Updater'
+import { appUpdater } from '@/store'
 
 @Component({
   components: {
@@ -31,30 +30,24 @@ import Updater from '~/comunication/Updater'
   }
 })
 export default class UpdaterSettings extends Vue {
-  updater = new Updater()
+  get currentVersion () {
+    return appUpdater.currentVersion
+  }
 
-  currentVersion = this.updater.version
+  get updateInfo () {
+    return appUpdater.updateInfo
+  }
 
-  newVersion = this.updater.newVersionSync
-
-  isUpdateAvailable = this.updater.isUpdateAvailableSync
+  get isUpdateAvailable () {
+    return appUpdater.isUpdateAvailable
+  }
 
   async checkForUpdate () {
-    console.log(await this.updater.checkForUpdate())
+    await appUpdater.checkForUpdate()
   }
 
   async processUpdate () {
-    console.log(await this.updater.processUpdate())
-  }
-
-  mounted () {
-    this.updater.on(UpdaterEvents.UPDATE_DETECTED, value => {
-      console.log('ccc', value)
-    })
-  }
-
-  destroyed () {
-    this.updater.destroy()
+    await appUpdater.processUpdate()
   }
 }
 </script>

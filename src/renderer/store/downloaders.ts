@@ -1,11 +1,14 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { ipcRenderer } from 'electron'
+import { DownloaderState } from '@emodyz/node-downloader'
 import { DownloaderEvents } from '../../shared/comunication/downloader/DownloaderContract'
-import { DownloaderState } from '../../sdk/Sdk'
+import { DownloaderControllerEvents } from '../../shared/comunication/downloader/DownloaderControllerContract'
 import { updaterStore } from '~/store'
+import Downloader from '~/comunication/Downloader'
+import DownloaderController from '~/comunication/DownloaderController'
 
-interface Downloader {
+interface StoreDownloaderState {
   serverId: any,
+  downloader: Downloader
   hidden: boolean,
   state: number,
   progress: number
@@ -13,98 +16,86 @@ interface Downloader {
 
 @Module({
   name: 'downloaders',
-  stateFactory: true,
+  stateFactory: false,
   namespaced: true
 })
 export default class Downloaders extends VuexModule {
-  list: Downloader[] = []
+  _downloaders: StoreDownloaderState[] = []
 
-  constructor (props) {
-    super(props)
+  constructor (module) {
+    super(module)
+    const controller = new DownloaderController()
 
-    ipcRenderer.invoke('downloaders').then((downloaders: any) => {
-      console.log('serversIds downloader', downloaders)
-      downloaders.forEach(downloader => {
-        this.list.push({
-          serverId: downloader.serverId,
-          hidden: false,
-          state: downloader.state,
-          progress: downloader.stats.progress
-        })
-      })
-    })
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.on(DownloaderEvents.CREATED, (evt, serverId: string) => {
+    controller.on(DownloaderControllerEvents.CREATED, (serverId: string) => {
       updaterStore.remove(serverId)
-      this.list.push({
+      const downloader = new Downloader(serverId)
+
+      this.handleDownloaderEvents(downloader)
+      this._downloaders.push({
         serverId,
+        downloader,
         hidden: false,
         state: DownloaderState.STAND_BY,
         progress: 0
       })
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.on(DownloaderEvents.DELETED, (evt, serverId: string) => {
+    controller.on(DownloaderControllerEvents.DELETED, (serverId: string) => {
       this.deleteDownloader(serverId)
     })
+  }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.on(DownloaderEvents.DOWNLOAD_ENDED, (evt, serverId: string) => {
+  @Mutation
+  handleDownloaderEvents (downloader: Downloader) {
+    downloader.on(DownloaderEvents.DOWNLOAD_ENDED, (serverId: string) => {
       updaterStore.add(serverId)
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.on(DownloaderEvents.DOWNLOAD_STARTED, (evt, serverId: string) => {
+    downloader.on(DownloaderEvents.DOWNLOAD_STARTED, (serverId: string) => {
       this.setDownloaderState({ serverId, state: DownloaderState.DOWNLOADING })
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.on(DownloaderEvents.DOWNLOAD_PAUSED, (evt, serverId: string) => {
+    downloader.on(DownloaderEvents.DOWNLOAD_PAUSED, (serverId: string) => {
       this.setDownloaderState({ serverId, state: DownloaderState.PAUSED })
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.on(DownloaderEvents.DOWNLOAD_RESUMED, (evt, serverId: string) => {
+    downloader.on(DownloaderEvents.DOWNLOAD_RESUMED, (serverId: string) => {
       this.setDownloaderState({ serverId, state: DownloaderState.DOWNLOADING })
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.on(DownloaderEvents.DOWNLOAD_PROGRESS, (evt, serverId: string, data) => {
+    downloader.on(DownloaderEvents.DOWNLOAD_PROGRESS, (serverId: string, data) => {
       this.setDownloaderProgress({ serverId, progress: data.progress })
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ipcRenderer.on(DownloaderEvents.ERROR, (evt, serverId: string, data) => {
+    downloader.on(DownloaderEvents.ERROR, (serverId: string, data) => {
       this.deleteDownloader(serverId)
       console.error(data)
     })
   }
 
   get downloaders () {
-    return this.list
+    return this._downloaders
   }
 
   get downloaderByServer () {
     return (serverId: string) => {
-      const index = this.list.map(downloader => downloader.serverId).indexOf(serverId)
-      return this.list[index]
+      const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+      return this._downloaders[index]
     }
   }
 
   get progressByServer () {
     return (serverId: string) => {
-      const index = this.list.map(downloader => downloader.serverId).indexOf(serverId)
-      return this.list[index]?.progress || 0
+      const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+      return this._downloaders[index]?.progress || 0
     }
   }
 
-  get findDownloader (): (serverId: string) => Downloader | null {
+  get findDownloader (): (serverId: string) => (StoreDownloaderState | null) {
     return (serverId: string) => {
-      const index = this.list.map(downloader => downloader.serverId).indexOf(serverId)
+      const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
       if (index !== -1) {
-        return this.list[index]
+        return this._downloaders[index]
       }
       return null
     }
@@ -112,51 +103,52 @@ export default class Downloaders extends VuexModule {
 
   @Mutation
   hide (serverId: string) {
-    const index = this.list.map(downloader => downloader.serverId).indexOf(serverId)
+    const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
     if (index !== -1) {
-      this.list[index].hidden = true
+      this._downloaders[index].hidden = true
     }
   }
 
   @Mutation
   hideAll () {
-    const list = this.list
+    const list = this._downloaders
     for (const item of list) {
       item.hidden = true
     }
-    this.list = list
+    this._downloaders = list
   }
 
   @Mutation
   showAll () {
-    const list = this.list
+    const list = this._downloaders
     for (const item of list) {
       item.hidden = false
     }
-    this.list = list
+    this._downloaders = list
   }
 
   @Mutation
   deleteDownloader (serverId: string) {
-    const index = this.list.map(downloader => downloader.serverId).indexOf(serverId)
+    const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
     if (index !== -1) {
-      this.list.splice(index, 1)
+      const downloaderState = this._downloaders.splice(index, 1)
+      downloaderState[0].downloader.destroy()
     }
   }
 
   @Mutation
   setDownloaderProgress ({ serverId, progress }: {serverId: string, progress: number}) {
-    const index = this.list.map(downloader => downloader.serverId).indexOf(serverId)
+    const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
     if (index !== -1) {
-      this.list[index].progress = progress
+      this._downloaders[index].progress = progress
     }
   }
 
   @Mutation
   setDownloaderState ({ serverId, state }: {serverId: string, state: number}) {
-    const index = this.list.map(downloader => downloader.serverId).indexOf(serverId)
+    const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
     if (index !== -1) {
-      this.list[index].state = state
+      this._downloaders[index].state = state
     }
   }
 }

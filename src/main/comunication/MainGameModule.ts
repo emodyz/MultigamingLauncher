@@ -1,10 +1,10 @@
 import GameModuleContract from '../../shared/comunication/module/GameModuleContract'
 import { GameModule as BaseGameModule } from '../../sdk/Sdk'
 import ModPack from '../../sdk/definitions/ModPack'
-import DownloaderController from '../downloaders/DownloaderController'
+import MainDownloaderController from '../downloaders/MainDownloaderController'
 import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
 import { Communicator } from '../../shared/communicator/main/Communicator'
-import Downloader from './Downloader'
+import MainDownloader from './MainDownloader'
 
 @MainCommunicator('game.module')
 export default class MainGameModule extends Communicator implements GameModuleContract {
@@ -31,7 +31,7 @@ export default class MainGameModule extends Communicator implements GameModuleCo
   createDownloader (serverId: string, modPacks: ModPack[]): Promise<any> {
     console.log('creating downloader for serverId', serverId)
 
-    if (DownloaderController.has(serverId)) {
+    if (MainDownloaderController.get().has(serverId)) {
       console.log('A downloader is already created for this server', serverId)
       // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject<string>('A downloader is already created for this server')
@@ -39,7 +39,7 @@ export default class MainGameModule extends Communicator implements GameModuleCo
 
     const downloader = this.gameModule.createDownloader(modPacks)
 
-    DownloaderController.add(serverId, new Downloader(serverId, downloader))
+    MainDownloaderController.get().add(serverId, new MainDownloader(serverId, downloader))
 
     return Promise.resolve('ok')
   }
