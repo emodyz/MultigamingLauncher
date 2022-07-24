@@ -26,9 +26,9 @@ jobs:
         node-version: 16
     - run: yarn
     - run: yarn build
-    - name: Archive code coverage results
+    - name: Upload ${{ matrix.os }} build
       uses: actions/upload-artifact@v3
       with:
-        name: builds
+        name: builds-${{ matrix.os }}
         path: build/**
     #- run: yarn test
