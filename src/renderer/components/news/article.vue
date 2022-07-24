@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { Component, Prop, Ref, Vue } from 'vue-property-decorator'
-import marked from 'marked'
+import { marked } from 'marked'
 
 @Component
 export default class Article extends Vue {
@@ -44,7 +44,7 @@ export default class Article extends Vue {
   resizeHeaderTimeout: any = null
 
   get parsedContent () {
-    return marked(this.content)
+    return marked.parse(this.content)
   }
 
   mounted () {
