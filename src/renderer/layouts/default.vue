@@ -18,7 +18,7 @@
 import SideBar from '~/components/SideBar'
 import DownloaderOverlay from '@/components/DownloaderOverlay'
 import Header from '@/components/header'
-import { pageStore, themeStore } from '~/store'
+import { pageStore } from '~/store'
 
 export default {
   name: 'DefaultLayout',
@@ -33,9 +33,6 @@ export default {
     title () {
       return pageStore.title
     }
-  },
-  beforeCreate () {
-    themeStore.syncTheme()
   },
   mounted () {
 

@@ -1,5 +1,4 @@
 import { app } from 'electron'
-import MainDownloaderController from './downloaders/MainDownloaderController'
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -12,4 +11,4 @@ app.on('window-all-closed', function () {
 require('./mainWindow')
 require('./helpers')
 require('./modules')
-MainDownloaderController.get()
+require('./communicator')

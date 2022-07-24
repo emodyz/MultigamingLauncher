@@ -1,9 +1,9 @@
-import GameModuleContract from '../../shared/comunication/module/GameModuleContract'
+import GameModuleContract from '../../shared/contracts/comunication/module/GameModuleContract'
 import { GameModule as BaseGameModule } from '../../sdk/Sdk'
 import ModPack from '../../sdk/definitions/ModPack'
-import MainDownloaderController from '../downloaders/MainDownloaderController'
 import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
 import { Communicator } from '../../shared/communicator/main/Communicator'
+import MainDownloaderController from './MainDownloaderController'
 import MainDownloader from './MainDownloader'
 
 @MainCommunicator('game.module')

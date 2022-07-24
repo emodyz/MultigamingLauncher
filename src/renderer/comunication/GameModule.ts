@@ -1,7 +1,7 @@
-import GameModuleContract from '../../shared/comunication/module/GameModuleContract'
+import GameModuleContract from '../../shared/contracts/comunication/module/GameModuleContract'
 import { Communicator } from '../../shared/communicator/renderer/Communicator'
 import RendererCommunicator from '../../shared/communicator/renderer/RendererCommunicator'
-import MainGameModule from '../../main/comunication/MainGameModule'
+import MainGameModule from '../../main/communicator/MainGameModule'
 
 @RendererCommunicator('game.module', MainGameModule)
 export default class GameModule extends Communicator<GameModuleContract> {

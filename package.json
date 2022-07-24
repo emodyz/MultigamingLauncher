@@ -53,6 +53,7 @@
     "electron": "^16.0.5",
     "electron-builder": "^23.0.3",
     "electron-devtools-installer": "^3.2.0",
+    "electron-store": "^8.0.2",
     "electron-updater": "^5.0.1",
     "eslint": "8.1.0",
     "eslint-friendly-formatter": "4.0.1",

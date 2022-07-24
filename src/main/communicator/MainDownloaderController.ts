@@ -1,9 +1,9 @@
-import MainDownloader from '../comunication/MainDownloader'
 import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
 import { Communicator } from '../../shared/communicator/main/Communicator'
 import DownloaderControllerContract, {
   DownloaderControllerEvents, QueuedDownloader
-} from '../../shared/comunication/downloader/DownloaderControllerContract'
+} from '../../shared/contracts/comunication/downloader/DownloaderControllerContract'
+import MainDownloader from './MainDownloader'
 
 @MainCommunicator('downloader.controller')
 // eslint-disable-next-line max-len

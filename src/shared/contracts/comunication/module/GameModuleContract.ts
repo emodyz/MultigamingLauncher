@@ -1,4 +1,4 @@
-import ModPack from '../../../sdk/definitions/ModPack'
+import ModPack from '../../../../sdk/definitions/ModPack'
 import DownloaderContract from '../downloader/DownloaderContract'
 
 export default interface GameModuleContract

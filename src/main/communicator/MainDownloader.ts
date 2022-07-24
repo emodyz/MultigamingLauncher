@@ -1,8 +1,8 @@
-import DownloaderContract, { DownloaderEvents } from '../../shared/comunication/downloader/DownloaderContract'
+import DownloaderContract, { DownloaderEvents } from '../../shared/contracts/comunication/downloader/DownloaderContract'
 import { Downloader as BaseDownloader } from '../../sdk/Sdk'
-import MainDownloaderController from '../downloaders/MainDownloaderController'
 import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
 import { Communicator } from '../../shared/communicator/main/Communicator'
+import MainDownloaderController from './MainDownloaderController'
 
 @MainCommunicator('downloader')
 export default class MainDownloader extends Communicator<DownloaderEvents> implements DownloaderContract {

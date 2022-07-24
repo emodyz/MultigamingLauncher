@@ -1,49 +1,28 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { ipcRenderer } from 'electron'
-import { themeStore } from '~/store'
+import { ThemeSource } from '../../shared/contracts/comunication/theme/ThemeContract'
+import Theme from '~/comunication/Theme'
+
+const theme = new Theme()
 
 @Module({
   name: 'theme',
   stateFactory: false,
   namespaced: true
 })
-export default class Theme extends VuexModule {
-  uuid: string = ''
-  themeSource: 'system' | 'dark' | 'light' = 'system'
+export default class ThemeStore extends VuexModule {
+  themeSource: ThemeSource = theme.themeSource
 
   get isDark () {
     if (this.themeSource === 'system') {
-      return this.uuid.length >= 0 && ipcRenderer.sendSync('theme.shouldUseDarkColors')
+      return theme.shouldUseDarkColors
     }
 
     return this.themeSource === 'dark'
   }
 
-  constructor (props) {
-    super(props)
-    this.handleSystemChange()
-  }
-
-  handleSystemChange () {
-    ipcRenderer.once('theme.updated', () => {
-      themeStore.forceUpdate()
-      this.handleSystemChange()
-    })
-  }
-
   @Mutation
-  setThemeSource (themeSource: 'system' | 'dark' | 'light') {
+  async setThemeSource (themeSource: ThemeSource) {
     this.themeSource = themeSource
-    ipcRenderer.invoke('theme.themeSource', themeSource)
-  }
-
-  @Mutation
-  forceUpdate () {
-    this.uuid = Math.random().toString(36).substring(7)
-  }
-
-  @Mutation
-  syncTheme () {
-    ipcRenderer.invoke('theme.themeSource', this.themeSource)
+    await theme.setThemeSource(themeSource)
   }
 }

@@ -4,7 +4,7 @@ import Downloaders from '~/store/downloaders'
 import Updater from '~/store/updater'
 import Page from '~/store/page'
 import Servers from '~/store/servers'
-import Theme from '~/store/theme'
+import ThemeStore from '~/store/theme'
 import Games from '~/store/games'
 import AppUpdater from '~/store/appUpdater'
 
@@ -17,7 +17,7 @@ let pageStore: Page
 // eslint-disable-next-line import/no-mutable-exports
 let serverStore: Servers
 // eslint-disable-next-line import/no-mutable-exports
-let themeStore: Theme
+let themeStore: ThemeStore
 // eslint-disable-next-line import/no-mutable-exports
 let gamesStore: Games
 // eslint-disable-next-line import/no-mutable-exports
@@ -28,7 +28,7 @@ function initialiseStores (store: Store<any>): void {
   updaterStore = getModule(Updater, store)
   pageStore = getModule(Page, store)
   serverStore = getModule(Servers, store)
-  themeStore = getModule(Theme, store)
+  themeStore = getModule(ThemeStore, store)
   gamesStore = getModule(Games, store)
   appUpdaterStore = getModule(AppUpdater, store)
 }

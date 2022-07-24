@@ -1,5 +1,5 @@
 import Arma3 from '../modules/arma3/main'
-import MainGameModule from '../comunication/MainGameModule'
+import MainGameModule from '../communicator/MainGameModule'
 
 export default class ModuleController {
   private readonly modules = new Map<string, MainGameModule>([

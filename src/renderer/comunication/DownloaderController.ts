@@ -2,8 +2,8 @@ import RendererCommunicator from '../../shared/communicator/renderer/RendererCom
 import { Communicator } from '../../shared/communicator/renderer/Communicator'
 import DownloaderControllerContract, {
   DownloaderControllerEvents
-} from '../../shared/comunication/downloader/DownloaderControllerContract'
-import MainDownloaderController from '../../main/downloaders/MainDownloaderController'
+} from '../../shared/contracts/comunication/downloader/DownloaderControllerContract'
+import MainDownloaderController from '../../main/communicator/MainDownloaderController'
 
 @RendererCommunicator('downloader.controller', MainDownloaderController)
 // eslint-disable-next-line max-len
