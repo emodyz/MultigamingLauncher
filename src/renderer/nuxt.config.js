@@ -26,7 +26,7 @@ module.exports = {
   ],
   buildModules: [
     '@nuxt/typescript-build',
-    '@nuxtjs/tailwindcss'
+    '@nuxt/postcss8'
   ],
   modules: [
     '@nuxtjs/axios',
@@ -63,5 +63,12 @@ module.exports = {
   axios: {
     baseURL: 'https://9fc1a328-aaaf-431d-a6cc-cef02d341859.pub.instances.scw.cloud/api'
   },
-  tailwindcss: {}
+  build: {
+    postcss: {
+      plugins: {
+        tailwindcss: {},
+        autoprefixer: {}
+      }
+    }
+  }
 }
