@@ -29,13 +29,10 @@ export default function MainCommunicator (id: string) {
       }
 
       trigger (event: any, ...args: any[]): void {
-        console.log(`Event triggered - ${event}`, args)
         send(`${this.channel}-event`, event, ...args)
       }
 
       destroy (): void {
-        console.log('destroy', this.channel)
-
         ipcMain.removeAllListeners(this.channel)
         ipcMain.removeHandler(`${this.channel}-call`)
       }
@@ -63,12 +60,10 @@ function handleMain (channel: string, currentInstance: any) {
   })
 
   ipcMain.on(channel, (event, prop: string) => {
-    console.log(channel, prop)
     event.returnValue = currentInstance[prop]
   })
 
   ipcMain.handle(`${channel}-call`, async (_, prop: string, ...args: any[]) => {
-    console.log(`${channel}-call`, prop, args)
     return await currentInstance[prop](...args)
   })
 

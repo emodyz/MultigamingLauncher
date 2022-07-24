@@ -162,8 +162,6 @@ export default class GamePathSelector extends Vue {
       properties: ['openDirectory']
     })
 
-    console.log(installPath)
-
     if (installPath && installPath.length > 0) {
       this.installPath = installPath.shift() || null
     }

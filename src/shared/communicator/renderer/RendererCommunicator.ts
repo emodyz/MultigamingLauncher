@@ -65,7 +65,6 @@ export default function RendererCommunicator (id: string, mainObject: any) {
 
         ipcRenderer.on(`${this.channel}-set`, (_, prop, value) => {
           const safeProps = prop.toString()
-          console.log('prop value changed', prop, value)
           if (this.propsToListen[`${this.channel}-${safeProps}`]) {
             this.propsToListen[`${this.channel}-${safeProps}`].next(value)
           }
@@ -87,8 +86,6 @@ export default function RendererCommunicator (id: string, mainObject: any) {
       }
 
       destroy () {
-        console.log('destroy')
-
         this.propsToListen.forEach(prop => prop.unsubscribe())
 
         ipcRenderer.removeAllListeners(`${this.channel}-set`)

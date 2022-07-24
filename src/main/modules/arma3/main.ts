@@ -24,7 +24,6 @@ export default class Main extends GameModule {
   ]
 
   async findGamePath (): Promise<string | null> {
-    console.log(await Sdk.findSteamAppByAppId(107410))
     return await Sdk.findSteamAppByAppId(107410)
   }
 
