@@ -4,7 +4,7 @@ import Server from '~/models/server'
 
 @Module({
   name: 'servers',
-  stateFactory: true,
+  stateFactory: false,
   namespaced: true,
   preserveState: true
 })

@@ -11,4 +11,4 @@ app.on('window-all-closed', function () {
 require('./mainWindow')
 require('./helpers')
 require('./modules')
-require('./downloaders')
+require('./communicator')

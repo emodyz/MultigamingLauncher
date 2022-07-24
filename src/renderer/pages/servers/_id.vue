@@ -146,7 +146,6 @@ import DownloadIcon from '~/components/icons/DownloadIcon.vue'
 import StopIcon from '~/components/icons/StopIcon.vue'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
 import GameModule from '~/comunication/GameModule'
-import Downloader from '~/comunication/Downloader'
 import ActionButton from '~/components/buttons/ActionButton.vue'
 
 @Component({
@@ -242,6 +241,7 @@ export default class Server extends Vue {
   }
 
   destroyed () {
+    this.module?.destroy()
     if (this._gameCheckerInterval) {
       clearInterval(this._gameCheckerInterval)
     }
@@ -293,13 +293,13 @@ export default class Server extends Vue {
 
       const filesToDownload = modPacks.map(modpack => modpack.manifest.length).reduce((a, b) => a + b, 0)
       if (filesToDownload === 0) {
-        alert('Empty modpack, please contact an administrator...')
+        alert('Empty ModPack, please contact an administrator...')
         return
       }
 
-      const downloader = await this.module.createDownloader(this.server.id, modPacks) as Downloader
+      await this.module.createDownloader(this.server.id, modPacks)
 
-      await downloader.start(this.forceUpdate)
+      await this.downloader.downloader.start(this.forceUpdate)
     } catch (err) {
       console.error(err)
     } finally {
@@ -312,15 +312,15 @@ export default class Server extends Vue {
       return
     }
 
-    this.module?.downloader(this.server.id).pause()
+    this.downloader.downloader.pause()
   }
 
   resumeDownload () {
-    this.module?.downloader(this.server.id).resume()
+    this.downloader.downloader.resume()
   }
 
   stopDownload () {
-    this.module?.downloader(this.server.id).stop()
+    this.downloader.downloader.stop()
   }
 
   async startGame () {

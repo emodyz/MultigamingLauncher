@@ -3,7 +3,7 @@ import { serverStore } from '~/utils/store-accessor'
 
 @Module({
   name: 'updater',
-  stateFactory: true,
+  stateFactory: false,
   namespaced: true,
   preserveState: true
 })

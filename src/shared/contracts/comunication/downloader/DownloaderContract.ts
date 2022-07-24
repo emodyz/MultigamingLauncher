@@ -1,14 +1,4 @@
-export enum Channels {
-  START = 'downloader.start',
-  STOP = 'downloader.stop',
-  PAUSE = 'downloader.pause',
-  RESUME = 'downloader.resume',
-  CALL = 'downloader.call',
-}
-
-export enum Events {
-  CREATED = 'downloader.created',
-  DELETED = 'downloader.deleted',
+export enum DownloaderEvents {
   ERROR = 'downloader.error',
   DOWNLOAD_STARTED = 'downloader.started',
   DOWNLOAD_STOPPED = 'downloader.stopped',
@@ -18,7 +8,7 @@ export enum Events {
   DOWNLOAD_ENDED = 'downloader.ended',
 }
 
-export default interface DownloaderProtocol {
+export default interface DownloaderContract {
 
   start(forceDownload?: boolean): Promise<void>
 

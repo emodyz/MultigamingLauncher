@@ -71,16 +71,34 @@
       </div>
     </div>
     <div class="mb-4">
-      <div class="relative">
+      <div v-if="isUpdateAvailable">
+        <a class="flex justify-center mb-6 cursor-pointer" @click="goToUpdatePage">
+          <svg
+            class="h-5 w-5 text-green-500 dark:text-green-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+            />
+          </svg>
+        </a>
+      </div>
+      <div v-if="downloaders.length > 0" class="relative">
         <span v-if="downloaders.length > 1" class="absolute w-5 h-5 -top-2 right-4">
           <span
-            class="relative flex inline-flex items-center justify-center w-5 h-5 text-white bg-indigo-400 rounded-full"
+            class="relative flex inline-flex items-center justify-center
+             w-5 h-5 text-white text-sm bg-indigo-400 rounded-full"
           >
             {{ downloaders.length }}
           </span>
         </span>
         <a class="flex justify-center mb-6 cursor-pointer" @click="showAll">
-          <div :class="{'loader': downloaders.length > 0}" class="w-8 h-10">
+          <div class="w-8 h-10 loader">
             <svg
               class="
             w-5 h-5 m-2 mx-auto text-gray-400 stroke-current hover:text-indigo-500
@@ -129,46 +147,52 @@
   </nav>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import { downloadersStore } from '~/store'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { downloadersStore, updaterStore, appUpdaterStore, serverStore } from '~/store'
+import { SettingsSections } from '~/pages/settings/index.vue'
 
-export default {
-  name: 'SideBar',
+@Component
+export default class SideBar extends Vue {
+  get hasUpdate () {
+    return updaterStore.hasUpdate
+  }
 
-  computed: {
-    ...mapGetters('updater', [
-      'hasUpdate'
-    ]),
-    ...mapGetters('servers', [
-      'favorites'
-    ]),
-    ...mapGetters('downloaders', [
-      'downloaders'
-    ])
-  },
+  get favorites () {
+    return serverStore.favorites
+  }
+
+  get downloaders () {
+    return downloadersStore.downloaders
+  }
+
+  get isUpdateAvailable () {
+    return appUpdaterStore.isUpdateAvailable
+  }
 
   async created () {
     await this.$store.dispatch('servers/sync')
-  },
+  }
 
-  methods: {
+  showAll () {
+    downloadersStore.showAll()
+  }
 
-    showAll () {
-      downloadersStore.showAll()
-    },
+  async logout () {
+    // @ts-ignore
+    await this.$auth.logout()
+  }
 
-    async logout () {
-      await this.$auth.logout()
-    },
+  goToServer (server) {
+    this.$router.push('/servers/' + server.id)
+  }
 
-    goToServer (server) {
-      this.$router.push('/servers/' + server.id)
-    },
+  goToPanel () {
+    this.$router.push('/settings')
+  }
 
-    goToPanel () {
-      this.$router.push('/settings')
-    }
+  goToUpdatePage () {
+    this.$router.push(`/settings?section=${SettingsSections.APP_UPDATER}`)
   }
 }
 </script>

@@ -31,7 +31,7 @@
           <div
             v-for="section of sections" :key="section.name"
             class="relative py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900"
-            @click="selectSection(section)"
+            @click="selectSection(section.name)"
           >
             <div
               v-if="currentSection.name === section.name" class="border-l-2 border-r border-indigo-400
@@ -53,13 +53,19 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { ipcRenderer } from 'electron'
 import AppearanceSettings from './sections/AppearanceSettings.vue'
+import UpdaterSettings from './sections/UpdaterSettings.vue'
 import { pageStore } from '~/store'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
 
-interface SettingsSection {
+interface Section {
   name: string;
   component: any
+}
+
+export enum SettingsSections {
+  APPEARANCE = 'Appearance',
+  APP_UPDATER = 'App Updater'
 }
 
 @Component({
@@ -69,21 +75,31 @@ interface SettingsSection {
   }
 })
 export default class Settings extends Vue {
-  sections: SettingsSection[] = [
+  sections: Section[] = [
     {
-      name: 'Appearance',
+      name: SettingsSections.APPEARANCE,
       component: AppearanceSettings
+    },
+    {
+      name: SettingsSections.APP_UPDATER,
+      component: UpdaterSettings
     }
   ]
 
-  currentSection: SettingsSection = this.sections[0]
+  currentSection: Section = this.sections[0]
 
   mounted () {
+    this.selectSection(this.$route.query.section as string)
     pageStore.noTitle()
   }
 
-  selectSection (section) {
-    this.currentSection = section
+  selectSection (sectionName: string|null) {
+    const section = this.sections.find(section => section.name === sectionName)
+    if (section) {
+      this.currentSection = section
+    } else {
+      this.currentSection = this.sections[0]
+    }
   }
 
   goToProfileSettings () {

@@ -1,5 +1,3 @@
 import ModuleController from './ModuleController'
 
-const moduleController = new ModuleController()
-
-moduleController.init()
+export const moduleController = new ModuleController()

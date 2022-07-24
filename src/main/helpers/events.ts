@@ -1,5 +1,5 @@
-import winHandler from '../mainWindow'
+import { webContents } from 'electron'
 
 export function send (channel: string, ...args: any[]) {
-  winHandler.browserWindow.webContents.send(channel, ...args)
+  webContents.getAllWebContents().forEach(webContent => webContent.send(channel, ...args))
 }

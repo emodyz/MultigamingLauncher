@@ -64,7 +64,6 @@ import PlayIcon from '~/components/icons/PlayIcon.vue'
 import ActionButton from '~/components/buttons/ActionButton.vue'
 import PauseIcon from '~/components/icons/PauseIcon.vue'
 import StopIcon from '~/components/icons/StopIcon.vue'
-import Downloader from '~/comunication/Downloader'
 import HideEyeIcon from '~/components/icons/HideEyeIcon.vue'
 import ExternalLink from '~/components/icons/ExternalLink.vue'
 
@@ -74,6 +73,10 @@ import ExternalLink from '~/components/icons/ExternalLink.vue'
 export default class DownloaderOverlay extends Vue {
   get downloaders () {
     return downloadersStore.downloaders
+  }
+
+  downloader (serverId: string) {
+    return downloadersStore.findDownloader(serverId)?.downloader
   }
 
   get isDownloading () {
@@ -97,15 +100,15 @@ export default class DownloaderOverlay extends Vue {
   }
 
   pause (serverId: string) {
-    return new Downloader(serverId).pause()
+    return this.downloader(serverId)?.pause()
   }
 
   resume (serverId: string) {
-    return new Downloader(serverId).resume()
+    return this.downloader(serverId)?.resume()
   }
 
   stop (serverId: string) {
-    return new Downloader(serverId).stop()
+    return this.downloader(serverId)?.stop()
   }
 }
 </script>

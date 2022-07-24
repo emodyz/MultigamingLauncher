@@ -21,7 +21,7 @@ const linuxOS = {
 
 const macOS = {
   mac: {
-    target: 'dmg',
+    target: ['zip', 'dmg'],
     icon: ICONS_DIR + 'con.icns'
   },
   dmg: {
@@ -52,7 +52,8 @@ module.exports = {
   publish: [
     {
       provider: 'generic',
-      url: 'https://updater.test'
+      url: 'https://updater.test',
+      channel: 'latest'
     }
   ],
 

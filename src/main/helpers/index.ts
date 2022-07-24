@@ -1,3 +1,2 @@
-require('./dialog')
-require('./shell')
-require('./theme')
+require('./dialog') // TODO: Refactoring with Communicator
+require('./shell') // TODO: Refactoring with Communicator

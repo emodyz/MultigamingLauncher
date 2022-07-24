@@ -8,7 +8,7 @@ interface Game {
 
 @Module({
   name: 'games',
-  stateFactory: true,
+  stateFactory: false,
   namespaced: true
 })
 export default class Games extends VuexModule {
