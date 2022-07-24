@@ -10,7 +10,7 @@ interface StoreDownloaderState {
   serverId: any,
   downloader: Downloader
   hidden: boolean,
-  state: number,
+  state: DownloaderState,
   progress: number
 }
 
@@ -20,28 +20,48 @@ interface StoreDownloaderState {
   namespaced: true
 })
 export default class Downloaders extends VuexModule {
-  _downloaders: StoreDownloaderState[] = []
+  downloaders: StoreDownloaderState[] = []
 
   constructor (module) {
     super(module)
     const controller = new DownloaderController()
 
-    controller.on(DownloaderControllerEvents.CREATED, (serverId: string) => {
-      updaterStore.remove(serverId)
-      const downloader = new Downloader(serverId)
-
-      this.handleDownloaderEvents(downloader)
-      this._downloaders.push({
-        serverId,
-        downloader,
-        hidden: false,
-        state: DownloaderState.STAND_BY,
-        progress: 0
+    // When window is reloaded, fetch backend queuedDownloaders to reinstate downloader list
+    controller.queuedDownloaders()
+      .then(downloaders => {
+        for (const downloader of downloaders) {
+          this.newDownloader(
+            downloader.serverId,
+            downloader.state,
+            downloader.progress
+          )
+        }
       })
+
+    controller.on(DownloaderControllerEvents.CREATED, (serverId: string) => {
+      this.newDownloader(serverId)
     })
 
     controller.on(DownloaderControllerEvents.DELETED, (serverId: string) => {
       this.deleteDownloader(serverId)
+    })
+  }
+
+  newDownloader (
+    serverId: string,
+    state: DownloaderState = DownloaderState.STAND_BY,
+    progress: number = 0
+  ) {
+    updaterStore.remove(serverId)
+    const downloader = new Downloader(serverId)
+
+    this.handleDownloaderEvents(downloader)
+    this.downloaders.push({
+      serverId,
+      downloader,
+      hidden: false,
+      state,
+      progress
     })
   }
 
@@ -73,29 +93,25 @@ export default class Downloaders extends VuexModule {
     })
   }
 
-  get downloaders () {
-    return this._downloaders
-  }
-
   get downloaderByServer () {
     return (serverId: string) => {
-      const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
-      return this._downloaders[index]
+      const index = this.downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+      return this.downloaders[index]
     }
   }
 
   get progressByServer () {
     return (serverId: string) => {
-      const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
-      return this._downloaders[index]?.progress || 0
+      const index = this.downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+      return this.downloaders[index]?.progress || 0
     }
   }
 
   get findDownloader (): (serverId: string) => (StoreDownloaderState | null) {
     return (serverId: string) => {
-      const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+      const index = this.downloaders.map(downloader => downloader.serverId).indexOf(serverId)
       if (index !== -1) {
-        return this._downloaders[index]
+        return this.downloaders[index]
       }
       return null
     }
@@ -103,52 +119,52 @@ export default class Downloaders extends VuexModule {
 
   @Mutation
   hide (serverId: string) {
-    const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+    const index = this.downloaders.map(downloader => downloader.serverId).indexOf(serverId)
     if (index !== -1) {
-      this._downloaders[index].hidden = true
+      this.downloaders[index].hidden = true
     }
   }
 
   @Mutation
   hideAll () {
-    const list = this._downloaders
+    const list = this.downloaders
     for (const item of list) {
       item.hidden = true
     }
-    this._downloaders = list
+    this.downloaders = list
   }
 
   @Mutation
   showAll () {
-    const list = this._downloaders
+    const list = this.downloaders
     for (const item of list) {
       item.hidden = false
     }
-    this._downloaders = list
+    this.downloaders = list
   }
 
   @Mutation
   deleteDownloader (serverId: string) {
-    const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+    const index = this.downloaders.map(downloader => downloader.serverId).indexOf(serverId)
     if (index !== -1) {
-      const downloaderState = this._downloaders.splice(index, 1)
+      const downloaderState = this.downloaders.splice(index, 1)
       downloaderState[0].downloader.destroy()
     }
   }
 
   @Mutation
   setDownloaderProgress ({ serverId, progress }: {serverId: string, progress: number}) {
-    const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+    const index = this.downloaders.map(downloader => downloader.serverId).indexOf(serverId)
     if (index !== -1) {
-      this._downloaders[index].progress = progress
+      this.downloaders[index].progress = progress
     }
   }
 
   @Mutation
   setDownloaderState ({ serverId, state }: {serverId: string, state: number}) {
-    const index = this._downloaders.map(downloader => downloader.serverId).indexOf(serverId)
+    const index = this.downloaders.map(downloader => downloader.serverId).indexOf(serverId)
     if (index !== -1) {
-      this._downloaders[index].state = state
+      this.downloaders[index].state = state
     }
   }
 }

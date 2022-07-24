@@ -2,7 +2,7 @@ import MainDownloader from '../comunication/MainDownloader'
 import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
 import { Communicator } from '../../shared/communicator/main/Communicator'
 import DownloaderControllerContract, {
-  DownloaderControllerEvents
+  DownloaderControllerEvents, QueuedDownloader
 } from '../../shared/comunication/downloader/DownloaderControllerContract'
 
 @MainCommunicator('downloader.controller')
@@ -19,12 +19,12 @@ export default class MainDownloaderController extends Communicator<DownloaderCon
     return MainDownloaderController.instance
   }
 
-  public getDownloaders () {
+  public async queuedDownloaders (): Promise<QueuedDownloader[]> {
     return Array.from(this.downloaders.values()).map(downloader => {
       return {
         serverId: downloader.serverId,
         state: downloader.downloader.state,
-        stats: downloader.downloader.stats()
+        progress: downloader.downloader.stats().progress
       }
     })
   }

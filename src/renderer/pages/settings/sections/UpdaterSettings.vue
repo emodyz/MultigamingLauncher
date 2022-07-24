@@ -22,7 +22,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import JetButton from '../../../components/JetStream/Button.vue'
-import { appUpdater } from '@/store'
+import { appUpdaterStore } from '@/store'
 
 @Component({
   components: {
@@ -31,23 +31,23 @@ import { appUpdater } from '@/store'
 })
 export default class UpdaterSettings extends Vue {
   get currentVersion () {
-    return appUpdater.currentVersion
+    return appUpdaterStore.currentVersion
   }
 
   get updateInfo () {
-    return appUpdater.updateInfo
+    return appUpdaterStore.updateInfo
   }
 
   get isUpdateAvailable () {
-    return appUpdater.isUpdateAvailable
+    return appUpdaterStore.isUpdateAvailable
   }
 
   async checkForUpdate () {
-    await appUpdater.checkForUpdate()
+    await appUpdaterStore.checkForUpdate()
   }
 
   async processUpdate () {
-    await appUpdater.processUpdate()
+    await appUpdaterStore.processUpdate()
   }
 }
 </script>

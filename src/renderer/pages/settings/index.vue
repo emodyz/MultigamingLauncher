@@ -58,9 +58,14 @@ import { pageStore } from '~/store'
 import JetButton from '~/components/JetStream/Button.vue'
 import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
 
-interface SettingsSection {
+interface Section {
   name: string;
   component: any
+}
+
+export enum SettingsSections {
+  APPEARANCE = 'Appearance',
+  APP_UPDATER = 'App Updater'
 }
 
 @Component({
@@ -70,18 +75,18 @@ interface SettingsSection {
   }
 })
 export default class Settings extends Vue {
-  sections: SettingsSection[] = [
+  sections: Section[] = [
     {
-      name: 'Appearance',
+      name: SettingsSections.APPEARANCE,
       component: AppearanceSettings
     },
     {
-      name: 'Updater',
+      name: SettingsSections.APP_UPDATER,
       component: UpdaterSettings
     }
   ]
 
-  currentSection: SettingsSection = this.sections[0]
+  currentSection: Section = this.sections[0]
 
   mounted () {
     this.selectSection(this.$route.query.section as string)
