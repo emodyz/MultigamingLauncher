@@ -8,7 +8,7 @@
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
       <div
-        class="relative inline-block align-bottom bg-white rounded-lg text-left shadow-xl transform
+        class="relative inline-block align-bottom bg-white rounded-lg text-left shadow-xl
          transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full dark:bg-gray-800"
       >
         <img
