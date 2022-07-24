@@ -30,7 +30,7 @@
         <div v-if="sliderSlides.length - 2 > 1 && !hideControl">
           <div
             class="absolute flex top-2 right-1/2 text-indigo-400 blurred bg-black bg-opacity-20
-            rounded-full transform translate-x-1/2 "
+            rounded-full translate-x-1/2 "
           >
             <div
               v-for="(slide, index) of slides"
@@ -46,7 +46,7 @@
               />
             </div>
           </div>
-          <div class="absolute right-1 top-1/2 transform -translate-y-1/2">
+          <div class="absolute right-1 top-1/2  -translate-y-1/2">
             <button
               class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white
             transition-colors blurred hover:bg-opacity-50 focus:outline-none" @click="next"
@@ -59,7 +59,7 @@
               </svg>
             </button>
           </div>
-          <div class="absolute left-1 top-1/2 transform -translate-y-1/2">
+          <div class="absolute left-1 top-1/2  -translate-y-1/2">
             <button
               class="w-8 h-16 p-1 rounded-full font-bold bg-gray-800 bg-opacity-20 text-white transition-colors
              blurred hover:bg-opacity-50 focus:outline-none" @click="prev"

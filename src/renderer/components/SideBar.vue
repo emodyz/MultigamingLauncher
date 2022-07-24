@@ -54,7 +54,7 @@
                   <img :src="server.logo_url" class="object-cover shadow-md server-picture">
                   <div
                     v-if="hasUpdate(server.id, server.update_hash)"
-                    class="absolute top-0 right-0 flex transition-all transition transform cursor-pointer"
+                    class="absolute top-0 right-0 flex transition-all transition cursor-pointer"
                     :class="{
                       'translate-x-0.5': $route.fullPath === '/servers/' + server.id,
                       '-translate-y-0.5': $route.fullPath === '/servers/' + server.id

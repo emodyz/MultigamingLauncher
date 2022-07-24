@@ -29,7 +29,7 @@
                   placement: 'bottom',
                   trigger: 'manual'
                 }"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-300
+                class="absolute right-2 top-1/2 -translate-y-1/2 text-green-300
               cursor-pointer hover:text-green-400" @click="copy"
               >
                 <svg

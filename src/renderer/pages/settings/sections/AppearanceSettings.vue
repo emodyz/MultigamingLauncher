@@ -17,7 +17,7 @@
         >
           <img src="~/assets/images/appearances/color_mode_auto.svg" class="rounded-t-md">
           <div class="absolute flex items-center w-full h-7 left-0 right-0 bottom-0 rounded-b-md px-2">
-            <input type="radio" class="w-3 h-3 transform translate-y-0.5" :checked="themeSource === 'system'" disabled>
+            <input type="radio" class="w-3 h-3 translate-y-0.5" :checked="themeSource === 'system'" disabled>
             <span class="ml-2">
               System
             </span>
@@ -29,7 +29,7 @@
         >
           <img src="~/assets/images/appearances/color_mode_light.svg" class="rounded-t-md">
           <div class="absolute flex items-center  w-full h-7 left-0 right-0 bottom-0 rounded-b-md px-2">
-            <input type="radio" class="w-3 h-3 transform translate-y-0.5" :checked="themeSource === 'light'" disabled>
+            <input type="radio" class="w-3 h-3 translate-y-0.5" :checked="themeSource === 'light'" disabled>
             <span class="ml-2">
               Light
             </span>
@@ -41,7 +41,7 @@
         >
           <img src="~/assets/images/appearances/color_mode_dark.svg" class="rounded-t-md">
           <div class="absolute flex items-center w-full h-7 left-0 right-0 bottom-0 rounded-b-md px-2">
-            <input type="radio" class="w-3 h-3 transform translate-y-0.5" :checked="themeSource === 'dark'" disabled>
+            <input type="radio" class="w-3 h-3  translate-y-0.5" :checked="themeSource === 'dark'" disabled>
             <span class="ml-2">
               Dark
             </span>

@@ -8,7 +8,7 @@
       v-if="servers.length === 0" :key="0"
       class="flex justify-center items-center"
     >
-      <span class="text-6xl font-thin text-gray-400 dark:text-gray-100 transform -translate-y-1/2">
+      <span class="text-6xl font-thin text-gray-400 dark:text-gray-100 -translate-y-1/2">
         No servers.
       </span>
     </div>
