@@ -25,6 +25,7 @@ jobs:
       with:
         node-version: 16
     - run: yarn
+    - run: cp .env.ci .env
     - run: yarn build
     - name: Upload ${{ matrix.os }} build
       uses: actions/upload-artifact@v3

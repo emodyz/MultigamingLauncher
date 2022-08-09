@@ -1,9 +1,13 @@
+const Env = require('./src/env').default
 const ICONS_DIR = 'build/icons/'
+
+const productName = Env.get('APP_NAME', 'Emodyz Launcher')
+const snakedProductName = productName.toLowerCase().replace(' ', '_')
 
 const windowsOS = {
   win: {
     icon: ICONS_DIR + 'win-icon.ico',
-    publisherName: 'emodyz',
+    publisherName: snakedProductName,
     target: 'nsis'
   },
 
@@ -42,9 +46,9 @@ const macOS = {
 }
 
 module.exports = {
-  productName: 'ezgames',
-  appId: 'com.emodyz.ezgames',
-  artifactName: 'ezgames-${version}.${ext}',
+  productName,
+  appId: Env.get('APP_ID', 'com.emodyz.launcher'),
+  artifactName: `${snakedProductName}-\${version}.\${ext}`,
   directories: {
     output: 'build'
   },
@@ -52,7 +56,7 @@ module.exports = {
   publish: [
     {
       provider: 'generic',
-      url: 'https://updater.test',
+      url: `${Env.get('APP_URL', 'http://localhost')}/launcher`,
       channel: 'latest'
     }
   ],

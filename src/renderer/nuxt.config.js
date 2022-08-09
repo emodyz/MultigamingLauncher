@@ -4,6 +4,8 @@
  * @link {https://nuxtjs.org/guide/configuration/}
  */
 
+const Env = require('../env').default
+
 module.exports = {
   ssr: false,
   target: 'static',
@@ -61,7 +63,7 @@ module.exports = {
     }
   },
   axios: {
-    baseURL: 'https://9fc1a328-aaaf-431d-a6cc-cef02d341859.pub.instances.scw.cloud/api'
+    baseURL: `${Env.get('APP_URL')}/api`
   },
   build: {
     postcss: {
