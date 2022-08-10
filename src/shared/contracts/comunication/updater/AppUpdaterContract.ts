@@ -5,14 +5,16 @@ export type UpdateInfo = {
   releaseNotes?: string;
 }
 
-export enum UpdaterEvents {
+export enum AppUpdaterEvents {
   UPDATE_AVAILABLE = 'updater.newUpdateAvailable',
 }
 
-export interface UpdaterContract {
+export interface AppUpdaterContract {
   updateInfo: UpdateInfo|null
   version: string
+
   isUpdateAvailable: boolean
+  isUpdateInProgress: boolean
 
   checkForUpdate(): Promise<boolean>
   processUpdate(): Promise<void>

@@ -2,13 +2,16 @@ const Env = require('./src/env').default
 const ICONS_DIR = 'build/icons/'
 
 const productName = Env.get('APP_NAME', 'Emodyz Launcher')
+const appId = Env.get('APP_ID', 'com.emodyz.launcher')
+
 const snakedProductName = productName.toLowerCase().replace(' ', '_')
 
 const windowsOS = {
   win: {
     icon: ICONS_DIR + 'win-icon.ico',
     publisherName: snakedProductName,
-    target: 'nsis'
+    target: 'nsis',
+    verifyUpdateCodeSignature: false // TODO: Force use signature for windows ?
   },
 
   nsis: {
@@ -47,7 +50,7 @@ const macOS = {
 
 module.exports = {
   productName,
-  appId: Env.get('APP_ID', 'com.emodyz.launcher'),
+  appId,
   artifactName: `${snakedProductName}-\${version}.\${ext}`,
   directories: {
     output: 'build'

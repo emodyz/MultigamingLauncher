@@ -1,14 +1,19 @@
 import { autoUpdater } from 'electron-updater'
-import { UpdateInfo, UpdaterContract, UpdaterEvents } from '../../shared/contracts/comunication/updater/UpdaterContract'
+import {
+  UpdateInfo,
+  AppUpdaterContract,
+  AppUpdaterEvents
+} from '../../shared/contracts/comunication/updater/AppUpdaterContract'
 import MainCommunicator from '../../shared/communicator/main/MainCommunicator'
 import { Communicator } from '../../shared/communicator/main/Communicator'
 
-@MainCommunicator('updater')
-export default class MainUpdater extends Communicator<UpdaterEvents> implements UpdaterContract {
+@MainCommunicator('appUpdater')
+export default class MainAppUpdater extends Communicator<AppUpdaterEvents> implements AppUpdaterContract {
   updateInfo: UpdateInfo|null = null
   version: string = autoUpdater.currentVersion.version
 
   isUpdateAvailable: boolean = false
+  isUpdateInProgress: boolean = false
 
   constructor () {
     super()
@@ -29,7 +34,20 @@ export default class MainUpdater extends Communicator<UpdaterEvents> implements 
 
       this.updateInfo = customUpdateInfo
       this.isUpdateAvailable = true
-      this.trigger(UpdaterEvents.UPDATE_AVAILABLE, customUpdateInfo)
+      this.trigger(AppUpdaterEvents.UPDATE_AVAILABLE, customUpdateInfo)
+    })
+
+    autoUpdater.on('update-downloaded', async () => {
+      this.isUpdateInProgress = false
+
+      await autoUpdater.quitAndInstall()
+    })
+
+    autoUpdater.on('error', error => {
+      console.error(error)
+      if (this.isUpdateInProgress) {
+        this.isUpdateInProgress = false
+      }
     })
 
     this.checkForUpdate()
@@ -59,13 +77,12 @@ export default class MainUpdater extends Communicator<UpdaterEvents> implements 
       throw new Error('processUpdate: called too early, no version available')
     }
 
-    try {
-      await autoUpdater.downloadUpdate()
-
-      await autoUpdater.quitAndInstall()
-      console.log('OK')
-    } catch (e) {
-      console.error('ERROR', e)
+    if (this.isUpdateInProgress) {
+      throw new Error('processUpdate: updater already in progress')
     }
+
+    this.isUpdateInProgress = true
+
+    await autoUpdater.downloadUpdate()
   }
 }

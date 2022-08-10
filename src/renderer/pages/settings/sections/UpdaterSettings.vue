@@ -10,11 +10,13 @@
     </div>
 
     <div v-if="!isUpdateAvailable">
-      <JetButton @click="checkForUpdate">Check for updates</JetButton>
+      <JetButton :disabled="isUpdateInProgress" @click="checkForUpdate">Check for updates</JetButton>
     </div>
 
     <div v-if="isUpdateAvailable">
-      <JetButton @click="processUpdate">Update launcher</JetButton>
+      <JetButton :disabled="isUpdateInProgress" @click="processUpdate">
+        {{ isUpdateInProgress ? 'Updating...' : 'Update launcher' }}
+      </JetButton>
     </div>
   </div>
 </template>
@@ -40,6 +42,10 @@ export default class UpdaterSettings extends Vue {
 
   get isUpdateAvailable () {
     return appUpdaterStore.isUpdateAvailable
+  }
+
+  get isUpdateInProgress () {
+    return appUpdaterStore.isUpdateInProgress
   }
 
   async checkForUpdate () {
