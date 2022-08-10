@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/default
 import { config } from 'dotenv'
 
 interface Environment {
@@ -9,8 +10,11 @@ interface Environment {
   ICON_PATH: string
 }
 
+// Setup env
+config()
+
 export default class Env {
-  public static env = config().parsed ?? {}
+  public static env: any = process.env ?? {}
 
   static get<K extends keyof Environment> (key: K, defaultValue: Environment[K] | null = null): Environment[K] | null {
     if (this.env[key]) {
