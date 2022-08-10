@@ -54,8 +54,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { shell, clipboard } from 'electron'
-import JetButton from '~/components/JetStream/Button.vue'
-import JetInput from '~/components/JetStream/Input.vue'
+import JetButton from '@/components/JetStream/Button.vue'
+import JetInput from '@/components/JetStream/Input.vue'
 
 @Component({
   components: {

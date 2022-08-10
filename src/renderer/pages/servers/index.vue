@@ -100,8 +100,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { serverStore, pageStore } from '~/store'
-import JetButton from '~/components/JetStream/Button.vue'
+import { serverStore, pageStore } from '@/store'
+import JetButton from '@/components/JetStream/Button.vue'
 
 @Component({
   components: {

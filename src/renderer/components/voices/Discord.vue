@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { themeStore } from '~/store'
+import { themeStore } from '@/store'
 
 @Component
 export default class Discord extends Vue {

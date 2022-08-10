@@ -55,7 +55,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { ThemeSource } from '../../../../shared/contracts/comunication/theme/ThemeContract'
-import { themeStore } from '~/store'
+import { themeStore } from '@/store'
 
 @Component
 export default class AppearanceSettings extends Vue {

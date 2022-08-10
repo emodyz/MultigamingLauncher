@@ -1,5 +1,5 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { serverStore } from '~/utils/store-accessor'
+import { serverStore } from '@/utils/store-accessor'
 
 @Module({
   name: 'updater',

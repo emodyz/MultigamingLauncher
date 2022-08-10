@@ -16,8 +16,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 
-import Article from '~/components/news/article.vue'
-import Slider from '~/components/slider.vue'
+import Article from '@/components/news/article.vue'
+import Slider from '@/components/slider.vue'
 
 @Component({
   components: {

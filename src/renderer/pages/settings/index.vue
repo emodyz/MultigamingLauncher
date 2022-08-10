@@ -54,9 +54,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import { ipcRenderer } from 'electron'
 import AppearanceSettings from './sections/AppearanceSettings.vue'
 import UpdaterSettings from './sections/UpdaterSettings.vue'
-import { pageStore } from '~/store'
-import JetButton from '~/components/JetStream/Button.vue'
-import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
+import { pageStore } from '@/store'
+import JetButton from '@/components/JetStream/Button.vue'
+import JetSecondaryButton from '@/components/JetStream/SecondaryButton.vue'
 
 interface Section {
   name: string;

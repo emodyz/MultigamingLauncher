@@ -24,7 +24,11 @@ const options = {
 }
 
 async function generate () {
-  const files = await iconGen(path.resolve(__dirname, iconFilePath), path.resolve(__dirname, 'build/icons'), options)
+  const files = await iconGen(
+    path.resolve(__dirname, iconFilePath),
+    path.resolve(__dirname, 'build/icons'),
+    options
+  ) as string[]
   const filesToRenames = files.filter(file => file.includes('{tmp}'))
 
   for (const fileToRename of filesToRenames) {

@@ -59,8 +59,13 @@ export default class MainUpdater extends Communicator<UpdaterEvents> implements 
       throw new Error('processUpdate: called too early, no version available')
     }
 
-    await autoUpdater.downloadUpdate()
+    try {
+      await autoUpdater.downloadUpdate()
 
-    await autoUpdater.quitAndInstall()
+      await autoUpdater.quitAndInstall()
+      console.log('OK')
+    } catch (e) {
+      console.error('ERROR', e)
+    }
   }
 }

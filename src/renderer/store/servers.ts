@@ -1,6 +1,6 @@
 import { MutationAction, Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { $axios } from '~/utils/api'
-import Server from '~/models/server'
+import { $axios } from '@/utils/api'
+import Server from '@/models/server'
 
 @Module({
   name: 'servers',

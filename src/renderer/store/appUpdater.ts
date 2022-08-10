@@ -1,7 +1,7 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { UpdateInfo, UpdaterEvents } from '../../shared/contracts/comunication/updater/UpdaterContract'
-import Updater from '~/comunication/Updater'
-import { appUpdaterStore } from '~/store'
+import Updater from '@/comunication/Updater'
+import { appUpdaterStore } from '@/store'
 
 let updater: Updater
 

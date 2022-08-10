@@ -40,13 +40,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { $axios } from '~/utils/api'
-import JetAuthenticationCard from '~/components/JetStream/AuthenticationCard.vue'
-import JetAuthenticationCardLogo from '~/components/JetStream/AuthenticationCardLogo.vue'
-import JetLabel from '~/components/JetStream/Label.vue'
-import JetInput from '~/components/JetStream/Input.vue'
-import JetInputError from '~/components/JetStream/InputError.vue'
-import JetButton from '~/components/JetStream/Button.vue'
+import { $axios } from '@/utils/api'
+import JetAuthenticationCard from '@/components/JetStream/AuthenticationCard.vue'
+import JetAuthenticationCardLogo from '@/components/JetStream/AuthenticationCardLogo.vue'
+import JetLabel from '@/components/JetStream/Label.vue'
+import JetInput from '@/components/JetStream/Input.vue'
+import JetInputError from '@/components/JetStream/InputError.vue'
+import JetButton from '@/components/JetStream/Button.vue'
 
 @Component({
   // @ts-ignore
@@ -87,7 +87,7 @@ export default class Forgot extends Vue {
           value: response?.data?.message
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       this.errors = err?.response?.data?.errors || {}
 
       if (Object.values(this.errors).length === 0 && err?.response?.data?.message) {

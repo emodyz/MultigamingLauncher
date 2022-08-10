@@ -1,6 +1,6 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { ThemeSource } from '../../shared/contracts/comunication/theme/ThemeContract'
-import Theme from '~/comunication/Theme'
+import Theme from '@/comunication/Theme'
 
 const theme = new Theme()
 
