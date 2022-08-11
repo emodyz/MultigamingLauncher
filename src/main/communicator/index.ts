@@ -11,11 +11,7 @@ function start (Instance: any) {
   return new Instance()
 }
 
-const logger = start(MainLogger) as MainLogger
-
-console.log = (...args: any[]) => logger.log(...args)
-console.error = (...args: any[]) => logger.error(...args)
-
+start(MainLogger)
 start(MainAppUpdater)
 start(MainDownloaderController)
 start(MainTheme)

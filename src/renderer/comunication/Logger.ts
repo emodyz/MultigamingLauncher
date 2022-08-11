@@ -1,10 +1,10 @@
 import RendererCommunicator from '../../shared/communicator/renderer/RendererCommunicator'
 import { Communicator } from '../../shared/communicator/renderer/Communicator'
 import { MainLogger } from '../../main/communicator/MainLogger'
-import { LoggerEvents } from '../../shared/contracts/comunication/logger/LoggerContract'
+import LoggerContract, { LoggerEvents } from '../../shared/contracts/comunication/logger/LoggerContract'
 
 @RendererCommunicator('logger', MainLogger)
-export default class Logger extends Communicator<MainLogger, LoggerEvents> {
+export default class Logger extends Communicator<LoggerContract, LoggerEvents> {
   init () {
     console.log('Ready to log backend console')
 
