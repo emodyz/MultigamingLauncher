@@ -6,8 +6,10 @@ module.exports = {
   },
   parserOptions: {
     sourceType: 'module'
-
   },
+  ignorePatterns: [
+    'src/env.js'
+  ],
   extends: [
     '@nuxtjs/eslint-config-typescript'
   ],

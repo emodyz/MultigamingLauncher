@@ -149,8 +149,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { downloadersStore, updaterStore, appUpdaterStore, serverStore } from '~/store'
-import { SettingsSections } from '~/pages/settings/index.vue'
+import { downloadersStore, updaterStore, appUpdaterStore, serverStore } from '@/store'
+import { SettingsSections } from '@/pages/settings/index.vue'
 
 @Component
 export default class SideBar extends Vue {

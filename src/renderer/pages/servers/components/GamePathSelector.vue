@@ -82,12 +82,12 @@
 <script lang="ts">
 import { Component, Emit, Prop, PropSync, Vue, Watch } from 'vue-property-decorator'
 import { ipcRenderer } from 'electron'
-import JetButton from '~/components/JetStream/Button.vue'
-import JetSecondaryButton from '~/components/JetStream/SecondaryButton.vue'
-import JetInput from '~/components/JetStream/Input.vue'
-import JetInputError from '~/components/JetStream/InputError.vue'
-import SectionBorder from '~/components/JetStream/SectionBorder.vue'
-import GameModule from '~/comunication/GameModule'
+import JetButton from '@/components/JetStream/Button.vue'
+import JetSecondaryButton from '@/components/JetStream/SecondaryButton.vue'
+import JetInput from '@/components/JetStream/Input.vue'
+import JetInputError from '@/components/JetStream/InputError.vue'
+import SectionBorder from '@/components/JetStream/SectionBorder.vue'
+import GameModule from '@/comunication/GameModule'
 
 @Component({
   components: {

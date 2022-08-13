@@ -2,9 +2,10 @@ import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
 import { DownloaderState } from '@emodyz/node-downloader'
 import { DownloaderEvents } from '../../shared/contracts/comunication/downloader/DownloaderContract'
 import { DownloaderControllerEvents } from '../../shared/contracts/comunication/downloader/DownloaderControllerContract'
-import { updaterStore } from '~/store'
-import Downloader from '~/comunication/Downloader'
-import DownloaderController from '~/comunication/DownloaderController'
+import { updaterStore } from '@/store'
+import Downloader from '@/comunication/Downloader'
+import DownloaderController from '@/comunication/DownloaderController'
+import Logger from '@/comunication/Logger'
 
 interface StoreDownloaderState {
   serverId: any,
@@ -25,6 +26,9 @@ export default class Downloaders extends VuexModule {
   constructor (module) {
     super(module)
     const controller = new DownloaderController()
+
+    const logger = new Logger()
+    logger.init()
 
     // When window is reloaded, fetch backend queuedDownloaders to reinstate downloader list
     controller.queuedDownloaders()

@@ -62,12 +62,12 @@
 <script lang="ts">
 
 import { Component, Emit, Prop, PropSync, Vue } from 'vue-property-decorator'
-import JetAuthenticationCard from '~/components/JetStream/AuthenticationCard.vue'
-import JetAuthenticationCardLogo from '~/components/JetStream/AuthenticationCardLogo.vue'
-import JetButton from '~/components/JetStream/Button.vue'
-import JetInput from '~/components/JetStream/Input.vue'
-import JetLabel from '~/components/JetStream/Label.vue'
-import JetInputError from '~/components/JetStream/InputError.vue'
+import JetAuthenticationCard from '@/components/JetStream/AuthenticationCard.vue'
+import JetAuthenticationCardLogo from '@/components/JetStream/AuthenticationCardLogo.vue'
+import JetButton from '@/components/JetStream/Button.vue'
+import JetInput from '@/components/JetStream/Input.vue'
+import JetLabel from '@/components/JetStream/Label.vue'
+import JetInputError from '@/components/JetStream/InputError.vue'
 
 @Component({
   // @ts-ignore

@@ -61,13 +61,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import JetAuthenticationCard from '~/components/JetStream/AuthenticationCard.vue'
-import JetAuthenticationCardLogo from '~/components/JetStream/AuthenticationCardLogo.vue'
-import JetLabel from '~/components/JetStream/Label.vue'
-import JetInput from '~/components/JetStream/Input.vue'
-import JetInputError from '~/components/JetStream/InputError.vue'
-import JetButton from '~/components/JetStream/Button.vue'
-import { $axios } from '~/utils/api'
+import JetAuthenticationCard from '@/components/JetStream/AuthenticationCard.vue'
+import JetAuthenticationCardLogo from '@/components/JetStream/AuthenticationCardLogo.vue'
+import JetLabel from '@/components/JetStream/Label.vue'
+import JetInput from '@/components/JetStream/Input.vue'
+import JetInputError from '@/components/JetStream/InputError.vue'
+import JetButton from '@/components/JetStream/Button.vue'
+import { $axios } from '@/utils/api'
 
 @Component({
   // @ts-ignore

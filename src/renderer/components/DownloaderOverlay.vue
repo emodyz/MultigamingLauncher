@@ -58,14 +58,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { DownloaderState } from '@emodyz/node-downloader'
-import ProgressBar from '~/components/ProgressBar.vue'
-import { downloadersStore, serverStore } from '~/store'
-import PlayIcon from '~/components/icons/PlayIcon.vue'
-import ActionButton from '~/components/buttons/ActionButton.vue'
-import PauseIcon from '~/components/icons/PauseIcon.vue'
-import StopIcon from '~/components/icons/StopIcon.vue'
-import HideEyeIcon from '~/components/icons/HideEyeIcon.vue'
-import ExternalLink from '~/components/icons/ExternalLink.vue'
+import ProgressBar from '@/components/ProgressBar.vue'
+import { downloadersStore, serverStore } from '@/store'
+import PlayIcon from '@/components/icons/PlayIcon.vue'
+import ActionButton from '@/components/buttons/ActionButton.vue'
+import PauseIcon from '@/components/icons/PauseIcon.vue'
+import StopIcon from '@/components/icons/StopIcon.vue'
+import HideEyeIcon from '@/components/icons/HideEyeIcon.vue'
+import ExternalLink from '@/components/icons/ExternalLink.vue'
 
 @Component({
   components: { ExternalLink, HideEyeIcon, StopIcon, PauseIcon, ActionButton, ProgressBar, PlayIcon }

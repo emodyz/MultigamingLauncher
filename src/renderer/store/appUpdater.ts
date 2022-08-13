@@ -1,9 +1,10 @@
 import { Module, Mutation, VuexModule } from 'vuex-module-decorators'
-import { UpdateInfo, UpdaterEvents } from '../../shared/contracts/comunication/updater/UpdaterContract'
-import Updater from '~/comunication/Updater'
-import { appUpdaterStore } from '~/store'
+import { UpdateInfo, AppUpdaterEvents } from '../../shared/contracts/comunication/updater/AppUpdaterContract'
+// eslint-disable-next-line import/no-named-default
+import { default as BaseAppUpdater } from '@/comunication/AppUpdater'
+import { appUpdaterStore } from '@/store'
 
-let updater: Updater
+let updater: BaseAppUpdater
 
 @Module({
   name: 'appUpdater',
@@ -14,18 +15,32 @@ export default class AppUpdater extends VuexModule {
   currentVersion: string
   updateInfo: UpdateInfo|null
   isUpdateAvailable: boolean
+  isUpdateInProgress!: boolean
 
   constructor (props) {
     super(props)
 
-    updater = new Updater()
+    updater = new BaseAppUpdater()
 
     this.currentVersion = updater.version
     this.isUpdateAvailable = updater.isUpdateAvailable
     this.updateInfo = updater.updateInfo
 
+    updater.isUpdateInProgressSync.subscribe(status => {
+      if (!this.isUpdateInProgress) {
+        this.isUpdateInProgress = updater.isUpdateInProgress
+      } else {
+        appUpdaterStore.isUpdateInProgressChanged(status)
+      }
+    })
+
     // Cannot call this.newUpdateAvailable, don't know why.
-    updater.on(UpdaterEvents.UPDATE_AVAILABLE, updateInfo => appUpdaterStore.newUpdateAvailable(updateInfo))
+    updater.on(AppUpdaterEvents.UPDATE_AVAILABLE, updateInfo => appUpdaterStore.newUpdateAvailable(updateInfo))
+  }
+
+  @Mutation
+  isUpdateInProgressChanged (status: boolean) {
+    this.isUpdateInProgress = status
   }
 
   @Mutation

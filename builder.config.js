@@ -1,10 +1,20 @@
+const Env = require('./src/env').default
+const { version } = require('./package.json')
+
 const ICONS_DIR = 'build/icons/'
+
+const productName = Env.get('APP_NAME', 'Emodyz Launcher')
+const appId = Env.get('APP_ID', 'com.emodyz.launcher')
+const appVersion = Env.get('APP_VERSION', version)
+
+const snakedProductName = productName.toLowerCase().replace(' ', '_')
 
 const windowsOS = {
   win: {
     icon: ICONS_DIR + 'win-icon.ico',
-    publisherName: 'emodyz',
-    target: 'nsis'
+    publisherName: snakedProductName,
+    target: 'nsis',
+    verifyUpdateCodeSignature: false // TODO: Force use signature for windows ?
   },
 
   nsis: {
@@ -42,9 +52,12 @@ const macOS = {
 }
 
 module.exports = {
-  productName: 'ezgames',
-  appId: 'com.emodyz.ezgames',
-  artifactName: 'ezgames-${version}.${ext}',
+  productName,
+  extraMetadata: {
+    version: appVersion
+  },
+  appId,
+  artifactName: `${snakedProductName}-\${version}.\${ext}`,
   directories: {
     output: 'build'
   },
@@ -52,7 +65,7 @@ module.exports = {
   publish: [
     {
       provider: 'generic',
-      url: 'https://updater.test',
+      url: `${Env.get('APP_URL', 'http://localhost')}/launcher`,
       channel: 'latest'
     }
   ],
