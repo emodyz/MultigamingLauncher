@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const iconGen = require('icon-gen')
 
-const iconFilePath = Env.get('ICON_PATH')
+const iconFilePath = Env.get('ICON_PATH', 'icon.png')
 
 const options = {
   report: false,

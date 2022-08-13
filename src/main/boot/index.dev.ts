@@ -2,8 +2,8 @@
 import { Menu, MenuItem, app } from 'electron'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import { ELECTRON_RELAUNCH_CODE } from '../../../.electron-nuxt/config'
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 
 app.on('ready', () => {
   const menu = Menu.getApplicationMenu()

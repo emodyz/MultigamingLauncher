@@ -6,7 +6,6 @@ import { URL } from 'url'
 const PRODUCTION_APP_PROTOCOL = 'app'
 const PRODUCTION_APP_PATH = path.join(__dirname, '..', 'renderer')
 
-
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: PRODUCTION_APP_PROTOCOL, privileges: { secure: true, standard: true } }

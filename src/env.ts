@@ -7,6 +7,8 @@ interface Environment {
   APP_URL: string
   APP_ID: string
 
+  APP_VERSION: string
+
   ICON_PATH: string
 }
 

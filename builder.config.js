@@ -1,8 +1,11 @@
 const Env = require('./src/env').default
+const { version } = require('./package.json')
+
 const ICONS_DIR = 'build/icons/'
 
 const productName = Env.get('APP_NAME', 'Emodyz Launcher')
 const appId = Env.get('APP_ID', 'com.emodyz.launcher')
+const appVersion = Env.get('APP_VERSION', version)
 
 const snakedProductName = productName.toLowerCase().replace(' ', '_')
 
@@ -50,6 +53,9 @@ const macOS = {
 
 module.exports = {
   productName,
+  extraMetadata: {
+    version: appVersion
+  },
   appId,
   artifactName: `${snakedProductName}-\${version}.\${ext}`,
   directories: {
