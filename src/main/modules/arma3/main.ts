@@ -19,7 +19,7 @@ export default class Main extends GameModule {
     },
     {
       platform: 'win32',
-      binary: 'arma3battleye.exe'
+      binary: 'arma3.exe' // TODO: Add for multiple binary, ex arma3.exe and arma3battleye.exe
     }
   ]
 

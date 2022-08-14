@@ -1,5 +1,5 @@
 import ModPack from '../../../../sdk/definitions/ModPack'
-import DownloaderContract from '../downloader/DownloaderContract'
+import Server from '../../../../renderer/models/server'
 
 export default interface GameModuleContract
 {
@@ -7,7 +7,11 @@ export default interface GameModuleContract
 
   isGameRunning(): Promise<boolean>
 
-  checkGamePath(gamePath: string): Promise<boolean>;
+  checkGamePath(gamePath: string): Promise<boolean>
 
-  createDownloader(serverId: string, modPacks: ModPack[]): Promise<DownloaderContract>;
+  createDownloader(serverId: string, modPacks: ModPack[]): Promise<void>
+
+  play(modPacks: ModPack[], server: Server): Promise<boolean>
+
+  killGame(): Promise<boolean>
 }

@@ -27,8 +27,8 @@ export default class AppUpdater extends VuexModule {
     this.updateInfo = updater.updateInfo
 
     updater.isUpdateInProgressSync.subscribe(status => {
-      if (!this.isUpdateInProgress) {
-        this.isUpdateInProgress = updater.isUpdateInProgress
+      if (this.isUpdateInProgress === undefined) {
+        this.isUpdateInProgress = status
       } else {
         appUpdaterStore.isUpdateInProgressChanged(status)
       }
