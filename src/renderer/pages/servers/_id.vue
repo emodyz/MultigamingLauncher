@@ -99,11 +99,11 @@
 
           <div v-if="isGameRunning" class="self-start items-center">
             <a
-              class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-red-500
+              class="text-red-300 underline cursor-pointer hover:text-gray-300 dark:text-red-500
                  dark:hover:text-indigo-500"
               @click="killGame"
             >
-              Kill {{server.game.name}}
+              Kill {{ server.game.name }}
             </a>
           </div>
 
