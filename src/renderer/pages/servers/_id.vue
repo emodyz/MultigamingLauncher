@@ -99,11 +99,11 @@
 
           <div v-if="isGameRunning" class="self-start items-center">
             <a
-              class="text-gray-700 underline cursor-pointer hover:text-gray-300 dark:text-red-500
+              class="text-red-300 underline cursor-pointer hover:text-gray-300 dark:text-red-500
                  dark:hover:text-indigo-500"
               @click="killGame"
             >
-              Force kill the game
+              Kill {{ server.game.name }}
             </a>
           </div>
 
@@ -257,11 +257,9 @@ export default class Server extends Vue {
   }
 
   killGame () {
-    /**
     if (this.module) {
-      this.module.kill()
+      this.module.killGame()
     }
-     */ // TODO
   }
 
   async startDownload (installPath: string | null = null) {
@@ -324,20 +322,18 @@ export default class Server extends Vue {
   }
 
   async startGame () {
-    /** if (!this.module) {
+    if (!this.module) {
       console.error('Game module not found.')
       return
     }
 
-    if (!this.module.checkGamePath(this.savedGamePath || '')) {
+    if (!await this.module.checkGamePath(this.savedGamePath || '')) {
       this.openGamePathSelector = true
       return
     }
 
-    // this.module.gamePath = this.savedGamePath || ''
-
     const modPacks = (await this.$axios.$get(`/servers/${this.id}/modpacks`)).data
-    await this.module.play(modPacks, this.server) */
+    await this.module.play(modPacks, this.server)
   }
 }
 </script>
